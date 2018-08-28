@@ -55,16 +55,15 @@ class Reporter:
     @property
     def status(self):
         count = Counter([issue.status for issue in self.backlog if issue.frame == 'Working On'])
-        return {status:count[status] for status in count}
+        return {status: count[status] for status in count}
 
     @property
     def sprint_status(self):
         count = Counter([issue.status for issue in self.backlog
                          if issue.frame == 'Working On' and issue.issueType in backlogIssuesModel.shortTermTypes])
-        return {status:count[status] for status in count}
+        return {status: count[status] for status in count}
 
-    @property
-    def implemented(self):
+    def implemented(self, start=None, end=None):
         book = FWcalendar.monthBook
         createdIssues = Counter(['{:02d}-{}'.format(issue.created.month, issue.created.year) for issue in self.backlog])
         createdData = list(accumulate([createdIssues[book[month]] for month in FWcalendar.pastMonths]))
@@ -82,12 +81,28 @@ class Reporter:
         releasedData = list(accumulate(progressData))
 
         outdata = {}
-        outdata['categories'] = FWcalendar.timeline
-        outdata['created'] = createdData
-        outdata['resolved'] = resolvedData
-        outdata['updated'] = updatedData
-        outdata['released'] = releasedData
-        outdata['progress'] = progressData
+
+        if start is not None and end is not None:
+            start_month_id = FWcalendar.currentMonth(current_date=start)[1]
+            end_month_id = FWcalendar.currentMonth(current_date=end)[1]
+
+            start_index = FWcalendar.timeline.index(start_month_id)
+            end_index = FWcalendar.timeline.index(end_month_id) + 1
+
+            outdata['categories'] = FWcalendar.timeline[start_index:end_index]
+            outdata['created'] = createdData[start_index:end_index]
+            outdata['resolved'] = resolvedData[start_index:end_index]
+            outdata['updated'] = updatedData[start_index:end_index]
+            outdata['released'] = releasedData[start_index:end_index]
+            outdata['progress'] = progressData[start_index:end_index]
+        else:
+            outdata['categories'] = FWcalendar.timeline
+            outdata['created'] = createdData
+            outdata['resolved'] = resolvedData
+            outdata['updated'] = updatedData
+            outdata['released'] = releasedData
+            outdata['progress'] = progressData
+
         return outdata
 
     @property

@@ -625,7 +625,7 @@
     <enabler name="Ops-Health" chapter="Ops">
         <tracker_key>OPS</tracker_key>
         <cmp_key>10312</cmp_key>
-        <owner>TID</owner>
+        <owner>FF</owner>
         <type>Platform Component</type>
         <mode>Development</mode>
         <backlog_keyword>Health</backlog_keyword>

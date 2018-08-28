@@ -94,7 +94,7 @@ class Painter:
         chart.set_x_axis({'name': 'Perspective'})
         chart.set_y_axis({'name': '# items'})
         chart.set_legend({'none': True})
-        chart.set_size({'width': 524, 'height': 502, 'x_scale': 1, 'y_scale': 1})
+        chart.set_size({'width': 480, 'height': 502, 'x_scale': 1, 'y_scale': 1})
 
         chart.set_plotarea({'fill': {'color': '#FFFF99'}})
         chart.set_style(2)
@@ -292,6 +292,7 @@ class Painter:
                 'values': [sheet_name, 1, col + i, len(components), col + i],
                 'data_labels': {'value': True}
             })
+
         chart.set_title({'name': "{}s' Backlog Sprint Status".format(cmpType)})
         # chart.set_title({'none': True})
         chart.set_x_axis({'name': cmpType})
@@ -453,8 +454,8 @@ class BacklogReporter:
         self.spFormats = None
         self.factory = BacklogFactory()
         self.gReporter = ChaptersReporter(self.factory.getTechChaptersBacklog())
-        self.start = date(2016, 12, 1)  #year, month, day
-        self.end = date(2016, 12, 1)  #year, month, day
+        self.start = date(2016, 12, 1)  # year, month, day
+        self.end = date(2017, 11, 30)  # year, month, day
 
     def get_format(self, issue):
         _timeSlot = issue.timeSlot.split(' ')[1] if issue.timeSlot != 'Unscheduled' else 'Unscheduled'
@@ -522,6 +523,15 @@ class BacklogReporter:
         # row += 1
         ws.write(row, 2, 'Report Date:', self.spFormats.bold_right)
         ws.write(row, 3, date.today().strftime('%d-%m-%Y'))
+
+        row += 1
+        ws.write(row, 0, 'Start of Data Analysis:', self.spFormats.bold_right)
+        ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.start)))
+
+        row += 1
+        ws.write(row, 0, 'End of Data Analysis:', self.spFormats.bold_right)
+        ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.end)))
+
         #
         row += 2
         _format = self.workbook.add_format({'bold': True, 'font_size': 15, 'bg_color': '#60C1CF'})
@@ -546,49 +556,16 @@ class BacklogReporter:
         ws.write(row, 0, 'Status', self.spFormats.bold_right)
         ws.write(row, 1, '{0} Issues = {Implemented} Implemented  + {Working On} Working On  + '
                          ' {Foreseen} Foreseen'.format(sum(data.values()), **data))
-        #
-        row += 1
-        data = reporter.sprint_status
-        ws.write(row, 0, 'Sprint Status', self.spFormats.red_bold_right)
-        ws.write_string(row, 1, '{} Issues = {}'.format(sum(data.values()),
-                                                        ' + '.join("{!s} {}".format(v, k) for (k, v) in data.items())))
-
-        row += 1
-        ws.write(row, 0, 'Tests', self.spFormats.bold_right)
-        data = reporter.backlog.testMetrics
-        total = sum(data['OK'].values()) + sum(data['KO'].values())
-        ws.write_rich_string(row, 1,
-                             '{0:,} Tests = {1:,}'.format(total, sum(data['OK'].values())),
-                             self.spFormats.green, ' OK', ' + ',
-                             '{0:,}'.format(sum(data['KO'].values())), self.spFormats.red, ' KO ')
-
-        row += 1
-        data = reporter.errors
-        ws.write(row, 0, 'Errors', self.spFormats.bold_right)
-        ws.write_rich_string(row, 1,
-                             '{:,} Issues = {OK:,}'.format(sum(data.values()), **data), self.spFormats.green, ' OK',
-                             ' + '
-                             ' {KO:,}'.format(sum(data.values()), **data), self.spFormats.red, ' KO')
 
         row += 2
         chart = painter.draw_composition(reporter.issueType)
         ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
 
         chart = painter.draw_status(reporter.perspective)
-        ws.insert_chart(row, 1, chart, {'x_offset': 300, 'y_offset': 0})
+        ws.insert_chart(row, 1, chart, {'x_offset': 520, 'y_offset': 0})
 
-        chart = painter.draw_errors(reporter.errors)
-        ws.insert_chart(row, 1, chart, {'x_offset': 712, 'y_offset': 0})
-
-        row += 15
-        chart = painter.draw_sprint_burndown(reporter.burndown)
-        ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
-
-        chart = painter.draw_sprint_status(reporter.sprint_status)
-        ws.insert_chart(row, 1, chart, {'x_offset': 712, 'y_offset': 0})
-
-        row += 15
-        chart = painter.draw_evolution(reporter.implemented)
+        row += 26
+        chart = painter.draw_evolution(reporter.implemented(self.start, self.end))
         ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
 
         row += 15
@@ -625,13 +602,21 @@ class BacklogReporter:
 
         row += 1
         ws.write(row, 0, 'Project Time:', self.spFormats.bold_right)
-        ws.write(row, 1, '{}'.format(agileCalendar.projectTime))
+        ws.write(row, 1, '{}'.format(agileCalendar.projectTime()))
         # row += 1
         ws.write(row, 2, 'Report Date:', self.spFormats.bold_right)
         ws.write(row, 3, date.today().strftime('%d-%m-%Y'))
+
+        row += 1
+        ws.write(row, 0, 'Start of Data Analysis:', self.spFormats.bold_right)
+        ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.start)))
+
+        row += 1
+        ws.write(row, 0, 'End of Data Analysis:', self.spFormats.bold_right)
+        ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.end)))
+
         #
         row += 2
-
         _format = self.workbook.add_format({'bold': True, 'font_size': 15, 'color': 'green'})
         ename = enabler.Name if enabler.GE else enabler.name
         ws.write(row, 0, 'Enabler:', self.spFormats.bold_right)
@@ -665,49 +650,19 @@ class BacklogReporter:
         ws.write(row, 1, '{0:,} Issues = {Implemented:,} Implemented  + {Working On} Working On  + '
                          ' {Foreseen} Foreseen'.format(sum(data.values()), **data))
         #
-        row += 1
-        data = reporter.sprint_status
-        ws.write(row, 0, 'Sprint Status', self.spFormats.red_bold_right)
-        ws.write_string(row, 1, '{} Issues = {}'.format(sum(data.values()),
-                                                        ' + '.join("{!s} {}".format(v, k) for (k, v) in data.items())))
 
-        row += 1
-        ws.write(row, 0, 'Tests', self.spFormats.bold_right)
-        data = reporter.backlog.testMetrics
-        total = sum(data['OK'].values()) + sum(data['KO'].values())
-        ws.write_rich_string(row, 1,
-                             '{0:,} Tests = {1:,}'.format(total, sum(data['OK'].values())),
-                             self.spFormats.green, ' OK', ' + ',
-                             '{0:,}'.format(sum(data['KO'].values())), self.spFormats.red, ' KO ')
+        if not reporter.length:
+            return
 
-        row += 1
-        data = reporter.errors
-        ws.write(row, 0, 'Errors', self.spFormats.bold_right)
-        ws.write_rich_string(row, 1,
-                             '{:,} Issues = {OK:,}'.format(sum(data.values()), **data), self.spFormats.green, ' OK',
-                             ' + '
-                             ' {KO:,}'.format(sum(data.values()), **data), self.spFormats.red, ' KO')
-
-        if not reporter.length: return
         row += 2
         chart = painter.draw_composition(reporter.issueType)
         ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
 
         chart = painter.draw_status(reporter.perspective)
-        ws.insert_chart(row, 1, chart, {'x_offset': 300, 'y_offset': 0})
+        ws.insert_chart(row, 1, chart, {'x_offset': 520, 'y_offset': 0})
 
-        chart = painter.draw_errors(reporter.errors)
-        ws.insert_chart(row, 1, chart, {'x_offset': 712, 'y_offset': 0})
-
-        row += 15
-        chart = painter.draw_sprint_burndown(reporter.burndown)
-        ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
-
-        chart = painter.draw_sprint_status(reporter.sprint_status)
-        ws.insert_chart(row, 1, chart, {'x_offset': 712, 'y_offset': 0})
-
-        row += 15
-        chart = painter.draw_evolution(reporter.implemented)
+        row += 26
+        chart = painter.draw_evolution(reporter.implemented(self.start, self.end))
         ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
         row += 15
 
@@ -749,6 +704,14 @@ class BacklogReporter:
         ws.write(row, 2, 'Report Date:', self.spFormats.bold_right)
         ws.write(row, 3, date.today().strftime('%d-%m-%Y'))
         #
+
+        row += 1
+        ws.write(row, 0, 'Start of Data Analysis:', self.spFormats.bold_right)
+        ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.start)))
+
+        row += 1
+        ws.write(row, 0, 'End of Data Analysis:', self.spFormats.bold_right)
+        ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.end)))
 
         row += 2
         _format = self.workbook.add_format({'bold': True, 'font_size': 15, 'bg_color': '#60C1CF'})
@@ -801,26 +764,18 @@ class BacklogReporter:
                              ' + '
                              ' {KO:,}'.format(sum(data.values()), **data), self.spFormats.red, ' KO')
 
-        if not reporter.length: return
+        if not reporter.length:
+            return
+
         row += 2
         chart = painter.draw_composition(reporter.issueType)
         ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
 
         chart = painter.draw_status(reporter.perspective)
-        ws.insert_chart(row, 1, chart, {'x_offset': 300, 'y_offset': 0})
+        ws.insert_chart(row, 1, chart, {'x_offset': 520, 'y_offset': 0})
 
-        chart = painter.draw_errors(reporter.errors)
-        ws.insert_chart(row, 1, chart, {'x_offset': 712, 'y_offset': 0})
-
-        row += 15
-        chart = painter.draw_sprint_burndown(reporter.burndown)
-        ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
-
-        chart = painter.draw_sprint_status(reporter.sprint_status)
-        ws.insert_chart(row, 1, chart, {'x_offset': 712, 'y_offset': 0})
-
-        row += 15
-        chart = painter.draw_evolution(reporter.implemented)
+        row += 26
+        chart = painter.draw_evolution(reporter.implemented(self.start, self.end))
         ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
         row += 15
 
@@ -856,37 +811,52 @@ class BacklogReporter:
 
         row += 1
         ws.write(row, 0, 'Project Time:', self.spFormats.bold_right)
-        ws.write(row, 1, '{}'.format(agileCalendar.projectTime))
+        ws.write(row, 1, '{}'.format(agileCalendar.projectTime()))
         # row += 1
         ws.write(row, 2, 'Report Date:', self.spFormats.bold_right)
         ws.write(row, 3, date.today().strftime('%d-%m-%Y'))
+
+        row += 1
+        ws.write(row, 0, 'Start of Data Analysis:', self.spFormats.bold_right)
+        ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.start)))
+
+        row += 1
+        ws.write(row, 0, 'End of Data Analysis:', self.spFormats.bold_right)
+        ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.end)))
+
         #
         row += 2
         _format = self.workbook.add_format({'bold': True, 'font_size': 15, 'color': 'green'})
         ws.write(row, 0, 'Chapter Name:', self.spFormats.bold_right)
         ws.write(row, 1, chapter.Name, _format)
+
         row += 1
         _format = self.workbook.add_format({'bold': True, 'font_size': 15, 'bg_color': '#60C1CF'})
         ws.write(row, 0, 'Chapter Leader:', self.spFormats.bold_right)
         ws.write(row, 1, chapter.leader, _format)
         ws.write(row, 2, '', _format)
+
         if chapter.architect:
             row += 1
             ws.write(row, 0, 'Chapter Architect:', self.spFormats.bold_right)
             ws.write(row, 1, chapter.architect, _format)
             ws.write(row, 2, '', _format)
+
         row += 2
         if deploymentBook.roadmap[chapter.name]:
             ws.write(row, 0, 'Roadmap:', self.spFormats.bold_right)
             ws.write_url(row, 1, '{0}'.format(deploymentBook.roadmap[chapter.name]))
             row += 1
+
         link = deploymentBook.tracker[chapter.name] + '&func=browse'
         ws.write(row, 0, 'Tracker:', self.spFormats.bold_right)
         ws.write_url(row, 1, '{0}'.format(link))
+
         row += 1
         link = 'http://backlog.fiware.org/chapter/{}'.format(chapter.name)
         ws.write(row, 0, 'Backlog:', self.spFormats.bold_right)
         ws.write_url(row, 1, '{0}'.format(link))
+
         if deploymentBook.materializing[chapter.name]:
             row += 1
             ws.write(row, 0, 'Materializing:', self.spFormats.bold_right)
@@ -918,52 +888,20 @@ class BacklogReporter:
         ws.write(row, 0, 'Status', self.spFormats.bold_right)
         ws.write(row, 1, '{0:,} Issues = {Implemented:,} Implemented  + {Working On:,} Working On  + '
                          ' {Foreseen:,} Foreseen'.format(sum(data.values()), **data))
-        #
-        row += 1
-        data = reporter.sprint_status
-        ws.write(row, 0, 'Sprint Status', self.spFormats.red_bold_right)
-        ws.write_string(row, 1, '{} Issues = {}'.format(sum(data.values()),
-                                                        ' + '.join("{!s} {}".format(v, k) for (k, v) in data.items())))
-        row += 1
-        ws.write(row, 0, 'Tests', self.spFormats.bold_right)
-        data = reporter.backlog.testMetrics
-        total = sum(data['OK'].values()) + sum(data['KO'].values())
-        ws.write_rich_string(row, 1,
-                             '{0:,} Tests = {1:,}'.format(total, sum(data['OK'].values())),
-                             self.spFormats.green, ' OK', ' + ',
-                             '{0:,}'.format(sum(data['KO'].values())), self.spFormats.red, ' KO ')
-
-        row += 1
-        data = reporter.errors
-        ws.write(row, 0, 'Errors', self.spFormats.bold_right)
-        ws.write_rich_string(row, 1,
-                             '{:,} Issues = {OK:,}'.format(sum(data.values()), **data), self.spFormats.green, ' OK',
-                             ' + '
-                             ' {KO:,}'.format(sum(data.values()), **data), self.spFormats.red, ' KO')
 
         row += 2
         chart = painter.draw_composition(reporter.issueType)
         ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
 
         chart = painter.draw_status(reporter.perspective)
-        ws.insert_chart(row, 1, chart, {'x_offset': 300, 'y_offset': 0})
-
-        chart = painter.draw_errors(reporter.errors)
-        ws.insert_chart(row, 1, chart, {'x_offset': 712, 'y_offset': 0})
-
-        row += 15
-        chart = painter.draw_sprint_burndown(reporter.burndown)
-        ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
-
-        chart = painter.draw_sprint_status(reporter.sprint_status)
-        ws.insert_chart(row, 1, chart, {'x_offset': 712, 'y_offset': 0})
+        ws.insert_chart(row, 1, chart, {'x_offset': 520, 'y_offset': 0})
 
         # row += 15
         # chart = painter.draw_enablers_sprint_status(reporter.enablers,
         #                                    reporter.frame_status_graph_data)
         # ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
         if len(reporter.enablers):
-            row += 15
+            row += 26
             chart = painter.draw_component_status('Enabler', reporter.enablers, reporter.enablers_execution_status)
             ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
 
@@ -973,7 +911,7 @@ class BacklogReporter:
             ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
 
         row += 15
-        chart = painter.draw_evolution(reporter.implemented)
+        chart = painter.draw_evolution(reporter.implemented(self.start, self.end))
         ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
         row += 15
         ws.write(row, 0, '')
@@ -1054,28 +992,6 @@ class BacklogReporter:
         ws.write(row, 0, 'Status', self.spFormats.bold_right)
         ws.write(row, 1, '{0:,} Issues = {Implemented:,} Implemented  + {Working On:,} Working On  + '
                          ' {Foreseen:,} Foreseen'.format(sum(data.values()), **data))
-        #
-        # row += 1
-        # data = reporter.sprint_status
-        # ws.write(row, 0, 'Sprint Status', self.spFormats.red_bold_right)
-        # ws.write_string(row, 1, '{} Issues = {}'.format(sum(data.values()),
-        #                                                ' + '.join("{!s} {}".format(v, k) for (k, v) in data.items())))
-
-        # row += 1
-        # ws.write(row, 0, 'Tests', self.spFormats.bold_right)
-        # data = reporter.backlog.testMetrics
-        # total = sum(data['OK'].values()) + sum(data['KO'].values())
-        # ws.write_rich_string(row, 1,
-        #                     '{0:,} Tests = {1:,}'.format(total, sum(data['OK'].values())),
-        #                     self.spFormats.green, ' OK', ' + ',
-        #                     '{0:,}'.format(sum(data['KO'].values())), self.spFormats.red, ' KO ')
-        # row += 1
-        # data = reporter.errors
-        # ws.write(row, 0, 'Errors', self.spFormats.bold_right)
-        # ws.write_rich_string(row, 1,
-        #                      '{:,} Issues = {OK:,}'.format(sum(data.values()), **data), self.spFormats.green, ' OK',
-        #                      ' + '
-        #                      ' {KO:,}'.format(sum(data.values()), **data), self.spFormats.red, ' KO')
 
         row += 2
         chart = painter.draw_composition(reporter.issueType)
@@ -1084,23 +1000,8 @@ class BacklogReporter:
         chart = painter.draw_status(reporter.perspective)
         ws.insert_chart(row, 1, chart, {'x_offset': 520, 'y_offset': 0})
 
-        # chart = painter.draw_errors(reporter.errors)
-        # ws.insert_chart(row, 1, chart, {'x_offset': 712, 'y_offset': 0})
-
-        # row += 15
-        # chart = painter.draw_sprint_burndown(reporter.burndown)
-        # ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
-
-        # chart = painter.draw_sprint_status(reporter.sprint_status, legend=False)
-        # ws.insert_chart(row, 1, chart, {'x_offset': 712, 'y_offset': 0})
-
-        # row += 15
-        # chart = painter.draw_chapters_sprint_status(reporter.chapters,
-        #                                     reporter.chapters_sprint_status_graph_data)
-        # ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
-
         row += 26
-        chart = painter.draw_evolution(reporter.implemented)
+        chart = painter.draw_evolution(reporter.implemented(self.start, self.end))
         ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
 
         row += 15
@@ -1180,13 +1081,3 @@ if __name__ == "__main__":
             options[choice]()
         else:
             print('\n\n\nWrong option, please try again... ')
-
-# TODO: Delete backlog errors graphic
-# TODO: Delete Backlog Sprint evolutions
-# TODO: Delete Backlog sprint status
-# TODO: Add start date analysis
-# TODO: Add finish date analysis
-# TODO: Tests and Errors delete
-# TODO: Sprint status delete
-# TODO: Backlog Composition W 13,45 H 13,27
-# TODO: Backlog Status W 15,92 H 13,19
