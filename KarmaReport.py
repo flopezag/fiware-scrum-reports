@@ -289,7 +289,7 @@ class KarmaReport:
 
 
 def main():
-    DataEngine.snapshot(storage=settings.inHome)
+    DataEngine.snapshot(storage=settings.storeHome)
     sprint = agileCalendar.current_sprint
     #sprint = '5.1.2'
 

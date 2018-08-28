@@ -24,7 +24,7 @@ class BacklogFactory:
             self.trackersData[tracker.key] = self.__load(trackername)
 
     def _load(self, trackername):
-        fileList = os.listdir(settings.inHome)
+        fileList = os.listdir(settings.storeHome)
         mfilter = re.compile(r'\bFIWARE\.tracker\.(?P<tracker>[\w\-]+)\.(?P<day>\d{8})[-](?P<hour>\d{4})\.pkl\b')
         record = namedtuple('record','tracker, filename, day, time')
         files = [record(mfilter.match(f).group('tracker'),
@@ -39,13 +39,13 @@ class BacklogFactory:
         timestamp = datetime.strptime(_timestamp, '%Y%m%d-%H%M').strftime("%Y%m%d-%H:%M")
         #print(timestamp)
 
-        with open(os.path.join(settings.inHome, filename), 'rb') as f:
+        with open(os.path.join(settings.storeHome, filename), 'rb') as f:
             data = pickle.load(f)
         return data, timestamp
 
     def __load(self, trackername):
         filename = 'FIWARE.Engine.Tracker.{}.pkl'.format(trackername)
-        with open(os.path.join(settings.inHome, filename), 'rb') as f:
+        with open(os.path.join(settings.storeHome, filename), 'rb') as f:
             timestamp, data= pickle.load(f)
         return data, timestamp
 

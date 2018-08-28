@@ -1,8 +1,9 @@
-__author__ = "Manuel Escriche < mev@tid.es>"
 import os
 from xml.etree import ElementTree as ET
-from datetime import datetime, date
+from datetime import datetime
 from collections import namedtuple
+
+__author__ = "Manuel Escriche < mev@tid.es>"
 
 
 class Settings:
@@ -11,8 +12,9 @@ class Settings:
         self._review = dict()
         self.home = os.path.split(os.path.dirname(os.path.abspath(__file__)))[0]
         self.configHome = os.path.join(self.home, 'config')
+        # self.storeHome = os.path.join(self.home, 'store')
+        # self.inHome = os.path.join(self.home, 'INDATA')
         self.storeHome = os.path.join(self.home, 'store')
-        self.inHome = os.path.join(self.home, 'INDATA')
         self.backlogHome = os.path.join(self.home, 'BACKLOGS')
         self._logoshome = os.path.join(self.home, 'LOGOS')
         self.outHome = os.path.join(self.home, 'REPORTS')

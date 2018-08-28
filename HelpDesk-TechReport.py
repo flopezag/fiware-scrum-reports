@@ -1022,7 +1022,7 @@ class WorkBench:
     @staticmethod
     def snapshot():
         print('snapshot')
-        DataEngine.snapshot(storage=settings.inHome)
+        DataEngine.snapshot(storage=settings.storeHome)
 
     @staticmethod
     def upload():

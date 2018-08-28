@@ -24,15 +24,17 @@ from datetime import date, datetime
 import xlsxwriter
 from xlsxwriter.utility import xl_range
 
-from kernel.Reporter import ChapterReporter, EnablerReporter, CoordinationReporter, ChaptersReporter, ToolReporter
+# from kernel.Reporter import ChapterReporter, EnablerReporter, CoordinationReporter, ChaptersReporter, ToolReporter
+from kernel.Reporter import EnablerReporter
 from kernel.Calendar import agileCalendar
-from kernel.TrackerBook import chaptersBook, coordinationBook
+# from kernel.TrackerBook import chaptersBook, coordinationBook
+from kernel.TrackerBook import coordinationBook
 from kernel.DataFactory import DataEngine
 
 from kernel.Settings import settings
 from kernel.SheetFormats import SpreadsheetFormats
 from kernel.BacklogFactory import BacklogFactory
-from kernel.DeploymentModel import deploymentBook
+# from kernel.DeploymentModel import deploymentBook
 from kernel.UploaderTool import Uploader
 
 
@@ -223,7 +225,7 @@ class Painter:
         ws.write_column(1, col + 3, data['updated'])
         ws.write_column(1, col + 4, data['released'])
         ws.write_column(1, col + 5, data['progress'])
-        ws.write_column(1, col + 6, [0 for i in data['categories']])
+        ws.write_column(1, col + 6, [0]*(len(data['categories'])))
 
         sheet_name = ws.get_name()
         chart.add_series({
@@ -269,13 +271,13 @@ class Painter:
         self._column += len(headings) + 1
         return chart
 
-    def draw_component_sprint_status(self, cmpType, components, data):
+    def draw_component_sprint_status(self, cmp_type, components, data):
         wb = self._wb
         ws = self._ws
         _data = {item['name']: item['data'] for item in data}
         chart = wb.add_chart({'type': 'column', 'subtype': 'stacked'})
         status = tuple([item['name'] for item in data])
-        headings = (cmpType,) + status
+        headings = (cmp_type,) + status
         col = self._column
         ws.write_row(0, col, headings)
         ws.write_column(1, col + 0, components)
@@ -292,9 +294,9 @@ class Painter:
                 'values': [sheet_name, 1, col + i, len(components), col + i],
                 'data_labels': {'value': True}
             })
-        chart.set_title({'name': "{}s' Backlog Sprint Status".format(cmpType)})
+        chart.set_title({'name': "{}s' Backlog Sprint Status".format(cmp_type)})
         # chart.set_title({'none': True})
-        chart.set_x_axis({'name': cmpType})
+        chart.set_x_axis({'name': cmp_type})
         chart.set_y_axis({'name': '# items'})
         chart.set_legend({'position': 'top'})
         chart.set_size({'width': 1000, 'height': 288, 'x_scale': 1, 'y_scale': 1})
@@ -304,13 +306,13 @@ class Painter:
         self._column += len(headings) + 1
         return chart
 
-    def draw_component_status(self, cmpType, components, data):
+    def draw_component_status(self, cmp_type, components, data):
         wb = self._wb
         ws = self._ws
         _data = {item['name']: item['data'] for item in data}
         chart = wb.add_chart({'type': 'column', 'subtype': 'stacked'})
         status = tuple([item['name'] for item in data])
-        headings = (cmpType,) + status
+        headings = (cmp_type,) + status
         col = self._column
         ws.write_row(0, col, headings)
         ws.write_column(1, col + 0, components)
@@ -327,7 +329,8 @@ class Painter:
                 'values': [sheet_name, 1, col + i, len(components), col + i],
                 'data_labels': {'value': True}
             })
-        chart.set_title({'name': "{}s' Backlog Status".format(cmpType)})
+
+        chart.set_title({'name': "{}s' Backlog Status".format(cmp_type)})
         # chart.set_title({'none': True})
         chart.set_x_axis({'name': 'Enablers'})
         chart.set_y_axis({'name': '# items'})
@@ -452,6 +455,9 @@ class GlobalBacklogReporter:
         self.workbook = None
         self.spFormats = None
         self.factory = BacklogFactory()
+        self.start = date(2016, 12, 1)  # year, month, day
+        self.end = date(2017, 11, 30)  # year, month, day
+
         backlog = self.factory.getCoordinationBacklog('11700')
 
         self.gReporter = EnablerReporter(enablername='QualityAssurance',
@@ -461,7 +467,7 @@ class GlobalBacklogReporter:
         _timeSlot = issue.timeSlot.split(' ')[1] if issue.timeSlot != 'Unscheduled' else 'Unscheduled'
         if _timeSlot in agileCalendar.pastTimeSlots:
             return self.spFormats.brown
-        elif _timeSlot in agileCalendar.currentTimeSlots:
+        elif _timeSlot in agileCalendar.currentTimeSlots():
             return self.spFormats.green
         else:
             return self.spFormats.blue
@@ -517,23 +523,32 @@ class GlobalBacklogReporter:
         _heading = self.workbook.add_format({'bold': True, 'font_size': 30,
                                              'bg_color': '#002D67', 'font_color': '#FFE616', 'align': 'center'})
         ws.merge_range(xl_range(row, 0, row, 3),
-                       "Backlog for Enabler: '{0}'".format(enabler.name), _heading)
+                       "Backlog for Coordination: '{0}'".format(enabler.name), _heading)
         ws.set_row(0, 42)
         ws.insert_image(0, 0, settings.logofiware, {'x_scale': 0.5, 'y_scale': 0.5, 'x_offset': 0, 'y_offset': 0})
 
         row += 1
         ws.write(row, 0, 'Project Time:', self.spFormats.bold_right)
-        ws.write(row, 1, '{}'.format(agileCalendar.projectTime))
-        # row += 1
+        ws.write(row, 1, '{}'.format(agileCalendar.projectTime()))
+
         ws.write(row, 2, 'Report Date:', self.spFormats.bold_right)
         ws.write(row, 3, date.today().strftime('%d-%m-%Y'))
+
+        row += 1
+        ws.write(row, 0, 'Start of Data Analysis:', self.spFormats.bold_right)
+        ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.start)))
+
+        row += 1
+        ws.write(row, 0, 'End of Data Analysis:', self.spFormats.bold_right)
+        ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.end)))
+
         #
         row += 2
-
         _format = self.workbook.add_format({'bold': True, 'font_size': 15, 'color': 'green'})
         ename = enabler.name
         ws.write(row, 0, 'Enabler:', self.spFormats.bold_right)
         ws.write(row, 1, ename, _format)
+
         row += 1
         _format = self.workbook.add_format({'bold': True, 'font_size': 15, 'bg_color': '#60C1CF'})
         ws.write(row, 0, 'Product Owner:', self.spFormats.bold_right)
@@ -562,30 +577,6 @@ class GlobalBacklogReporter:
         ws.write(row, 0, 'Status', self.spFormats.bold_right)
         ws.write(row, 1, '{0:,} Issues = {Implemented:,} Implemented  + {Working On} Working On  + '
                          ' {Foreseen} Foreseen'.format(sum(data.values()), **data))
-        #
-        row += 1
-        data = reporter.sprint_status
-        ws.write(row, 0, 'Sprint Status', self.spFormats.red_bold_right)
-        ws.write_string(row, 1, '{} Issues = {}'.format(sum(data.values()),
-                                                        ' + '.join("{!s} {}".format(v, k) for (k, v) in data.items())))
-
-        # We do not show any more the tests and errors so we comment the next 2 blocks
-        # row += 1
-        # ws.write(row, 0, 'Tests', self.spFormats.bold_right)
-        # data = reporter.backlog.testMetrics
-        # total = sum(data['OK'].values()) + sum(data['KO'].values())
-        # ws.write_rich_string(row, 1,
-        #                      '{0:,} Tests = {1:,}'.format(total, sum(data['OK'].values())),
-        #                      self.spFormats.green, ' OK', ' + ',
-        #                      '{0:,}'.format(sum(data['KO'].values())), self.spFormats.red, ' KO ')
-        #
-        # row += 1
-        # data = reporter.errors
-        # ws.write(row, 0, 'Errors', self.spFormats.bold_right)
-        # ws.write_rich_string(row, 1,
-        #                      '{:,} Issues = {OK:,}'.format(sum(data.values()), **data), self.spFormats.green, ' OK',
-        #                      ' + '
-        #                      ' {KO:,}'.format(sum(data.values()), **data), self.spFormats.red, ' KO')
 
         if not reporter.length:
             return
@@ -601,15 +592,15 @@ class GlobalBacklogReporter:
         # chart = painter.draw_errors(reporter.errors)
         # ws.insert_chart(row, 1, chart, {'x_offset': 712, 'y_offset': 0})
 
-        row += 15
-        chart = painter.draw_sprint_burndown(reporter.burndown)
-        ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
+        # row += 15
+        # chart = painter.draw_sprint_burndown(reporter.burndown)
+        # ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
 
-        chart = painter.draw_sprint_status(reporter.sprint_status)
-        ws.insert_chart(row, 1, chart, {'x_offset': 712, 'y_offset': 0})
+        # chart = painter.draw_sprint_status(reporter.sprint_status)
+        # ws.insert_chart(row, 1, chart, {'x_offset': 712, 'y_offset': 0})
 
         row += 15
-        chart = painter.draw_evolution(reporter.implemented)
+        chart = painter.draw_evolution(reporter.implemented(self.start, self.end))
         ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
         row += 15
 
@@ -658,15 +649,13 @@ class WorkBench:
     def report():
         print('report')
         reporter = GlobalBacklogReporter()
-        coordination = settings.management
-        coordination = ('Coordination')
 
         reporter.chapter('GlobalCoordination')
 
     @staticmethod
     def snapshot():
         print('snapshot')
-        DataEngine.snapshot(storage=settings.inHome)
+        DataEngine.snapshot(storage=settings.storeHome)
 
     @staticmethod
     def upload():
@@ -684,5 +673,10 @@ if __name__ == "__main__":
     while True:
         menu = '\nMenu:\n\t0: get snapshot\n\t1: create reports \n\t2: upload report\n\tE: Exit'
         choice = input(menu + '\nEnter your choice[0-2,(E)xit] : ')
-        print('Chosen option:', choice)
-        options[choice]()
+
+        print('\nChosen option: {}\n'.format(choice))
+
+        if choice in ('0', '1', '2', 'E'):
+            options[choice]()
+        else:
+            print('\n\n\nWrong option, please try again... ')

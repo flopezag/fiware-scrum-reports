@@ -65,20 +65,30 @@ class Reporter:
 
     def implemented(self, start=None, end=None):
         book = FWcalendar.monthBook
-        createdIssues = Counter(['{:02d}-{}'.format(issue.created.month, issue.created.year) for issue in self.backlog])
-        createdData = list(accumulate([createdIssues[book[month]] for month in FWcalendar.pastMonths]))
+        created_issues = \
+            Counter(['{:02d}-{}'.format(issue.created.month, issue.created.year) for issue in self.backlog])
 
-        updatedIssues = Counter(['{:02d}-{}'.format(issue.updated.month, issue.updated.year) for issue in self.backlog])
-        updatedData = list(accumulate([updatedIssues[book[month]] for month in FWcalendar.pastMonths]))
+        created_data = list(accumulate([created_issues[book[month]] for month in FWcalendar.pastMonths]))
 
-        closedIssues = [issue for issue in self.backlog if issue.status == 'Closed']
-        resolvedIssues = Counter(['{:02d}-{}'.format(issue.resolved.month, issue.resolved.year) for issue in closedIssues])
-        resolvedData = list(accumulate([resolvedIssues[book[month]] for month in FWcalendar.pastMonths]))
+        updated_issues = \
+            Counter(['{:02d}-{}'.format(issue.updated.month, issue.updated.year) for issue in self.backlog])
 
-        finishedIssues = [issue for issue in closedIssues if issue.frame in ('Working On','Implemented')]
-        releasedIssues = Counter(['{:02d}-{}'.format(issue.released.month, issue.released.year) for issue in finishedIssues])
-        progressData = [releasedIssues[book[month]] for month in FWcalendar.pastMonths]
-        releasedData = list(accumulate(progressData))
+        updated_data = list(accumulate([updated_issues[book[month]] for month in FWcalendar.pastMonths]))
+
+        closed_issues = [issue for issue in self.backlog if issue.status == 'Closed']
+
+        resolved_issues = \
+            Counter(['{:02d}-{}'.format(issue.resolved.month, issue.resolved.year) for issue in closed_issues])
+
+        resolved_data = list(accumulate([resolved_issues[book[month]] for month in FWcalendar.pastMonths]))
+
+        finished_issues = [issue for issue in closed_issues if issue.frame in ('Working On', 'Implemented')]
+
+        released_issues = \
+            Counter(['{:02d}-{}'.format(issue.released.month, issue.released.year) for issue in finished_issues])
+
+        progress_data = [released_issues[book[month]] for month in FWcalendar.pastMonths]
+        released_data = list(accumulate(progress_data))
 
         outdata = {}
 
@@ -90,49 +100,50 @@ class Reporter:
             end_index = FWcalendar.timeline.index(end_month_id) + 1
 
             outdata['categories'] = FWcalendar.timeline[start_index:end_index]
-            outdata['created'] = createdData[start_index:end_index]
-            outdata['resolved'] = resolvedData[start_index:end_index]
-            outdata['updated'] = updatedData[start_index:end_index]
-            outdata['released'] = releasedData[start_index:end_index]
-            outdata['progress'] = progressData[start_index:end_index]
+            outdata['created'] = created_data[start_index:end_index]
+            outdata['resolved'] = resolved_data[start_index:end_index]
+            outdata['updated'] = updated_data[start_index:end_index]
+            outdata['released'] = released_data[start_index:end_index]
+            outdata['progress'] = progress_data[start_index:end_index]
         else:
             outdata['categories'] = FWcalendar.timeline
-            outdata['created'] = createdData
-            outdata['resolved'] = resolvedData
-            outdata['updated'] = updatedData
-            outdata['released'] = releasedData
-            outdata['progress'] = progressData
+            outdata['created'] = created_data
+            outdata['resolved'] = resolved_data
+            outdata['updated'] = updated_data
+            outdata['released'] = released_data
+            outdata['progress'] = progress_data
 
         return outdata
 
     @property
     def burndown(self):
-        issues = [issue for issue in self.backlog if issue.frame == 'Working On' \
-            and issue.issueType in backlogIssuesModel.shortTermTypes]
+        issues = [issue for issue in self.backlog if issue.frame == 'Working On' and issue.issueType
+                  in backlogIssuesModel.shortTermTypes]
 
-        closedIssues = Counter([issue.updated.day for issue in issues if issue.status == 'Closed'])
-        #print(closedIssued)
-        NIssues = len(issues)
+        closed_issues = Counter([issue.updated.day for issue in issues if issue.status == 'Closed'])
+        # print(closed_issued)
+        number_issues = len(issues)
         month_length = monthrange(date.today().year, date.today().month)[1]
 
-        data = [(day, closedIssues[day]) for day in range(1, date.today().day+1)]
-        #print(data)
+        data = [(day, closed_issues[day]) for day in range(1, date.today().day+1)]
+        # print(data)
         data = zip([item[0] for item in data], accumulate([item[1] for item in data]))
-        data = {item[0]: NIssues-item[1] for item in data}
-        #print(data)
+        data = {item[0]: number_issues-item[1] for item in data}
+        # print(data)
 
-        n = lambda x: NIssues/month_length if x > 0 else 0
-        ref_data = {day : n(day) for day in range(1, month_length+1)}
+        n = lambda x: number_issues/month_length if x > 0 else 0
+        ref_data = {day: n(day) for day in range(1, month_length+1)}
         ref_data = dict(zip(ref_data.keys(), accumulate(ref_data.values())))
-        ref_data = {day : round(abs(NIssues-ref_data[day]), 1) for day in ref_data}
-        #print(ref_data)
+        ref_data = {day: round(abs(number_issues-ref_data[day]), 1) for day in ref_data}
+        # print(ref_data)
 
         cdata = lambda d: data[d] if d in data else 'null'
         outdata = {}
+
         outdata['categories'] = [day for day in range(1, month_length+1)]
         outdata['reference'] = [ref_data[day] for day in range(1, month_length+1)]
         outdata['actual'] = [cdata(day) for day in range(1, date.today().day+1)]
-        outdata['closed'] = [closedIssues[day] for day in range(1, date.today().day+1)]
+        outdata['closed'] = [closed_issues[day] for day in range(1, date.today().day+1)]
         return outdata
 
     @property

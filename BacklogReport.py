@@ -1057,7 +1057,7 @@ class WorkBench:
     @staticmethod
     def snapshot():
         print('snapshot')
-        DataEngine.snapshot(storage=settings.inHome)
+        DataEngine.snapshot(storage=settings.storeHome)
 
     @staticmethod
     def upload():
@@ -1075,7 +1075,8 @@ if __name__ == "__main__":
     while True:
         menu = '\nMenu:\n\t0: get snapshot\n\t1: create reports \n\t2: upload report\n\tE: Exit'
         choice = input(menu + '\nEnter your choice[0-2,(E)xit] : ')
-        print('Chosen option:', choice)
+
+        print('\nChosen option: {}\n'.format(choice))
 
         if choice in ('0', '1', '2', 'E'):
             options[choice]()

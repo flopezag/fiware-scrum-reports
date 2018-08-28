@@ -3,7 +3,7 @@
     <coordinator name="Friendliness" tracker="Coordination">
         <cmp_key>11702</cmp_key>
         <tracker_key>TCOR</tracker_key>
-        <owner>TID</owner>
+        <owner>FF</owner>
         <backlog_keyword>Friend</backlog_keyword>
     </coordinator>
     <coordinator name="TechnicalCommitte" tracker="Coordination">
@@ -15,7 +15,7 @@
     <coordinator name="SuccessStories" tracker="Coordination">
         <cmp_key>11701</cmp_key>
         <tracker_key>TCOR</tracker_key>
-        <owner>TID</owner>
+        <owner>FF</owner>
         <backlog_keyword>SuccessStories</backlog_keyword>
     </coordinator>
     <coordinator name="QualityAssurance" tracker="Coordination">
@@ -27,37 +27,37 @@
     <coordinator name="Agile" tracker="Coordination">
         <cmp_key>10249</cmp_key>
         <tracker_key>COR</tracker_key>
-        <owner>TID</owner>
+        <owner>FF</owner>
         <backlog_keyword>Agile</backlog_keyword>
     </coordinator>
     <coordinator name="Deliverables" tracker="Coordination">
         <cmp_key>10401</cmp_key>
         <tracker_key>COR</tracker_key>
-        <owner>TID</owner>
+        <owner>FF</owner>
         <backlog_keyword>Deliverable</backlog_keyword>
     </coordinator>
     <coordinator name="Documentation" tracker="Coordination">
         <cmp_key>11500</cmp_key>
         <tracker_key>COR</tracker_key>
-        <owner>TID</owner>
+        <owner>FF</owner>
         <backlog_keyword>Documentation</backlog_keyword>
     </coordinator>
     <coordinator name="Risks" tracker="Coordination">
         <cmp_key>10319</cmp_key>
         <tracker_key>COR</tracker_key>
-        <owner>TID</owner>
+        <owner>FF</owner>
         <backlog_keyword>RiskManagement</backlog_keyword>
     </coordinator>
     <coordinator name="Issues" tracker="Coordination">
         <cmp_key>11703</cmp_key>
         <tracker_key>COR</tracker_key>
-        <owner>TID</owner>
+        <owner>FF</owner>
         <backlog_keyword>IssuesManagement</backlog_keyword>
     </coordinator>
     <coordinator name="SMTools" tracker="Coordination">
         <cmp_key>11200</cmp_key>
         <tracker_key>COR</tracker_key>
-        <owner>TID</owner>
+        <owner>FF</owner>
         <backlog_keyword>SMTool</backlog_keyword>
     </coordinator>
     <coordinator name="_Coordination" tracker="Apps">
