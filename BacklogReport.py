@@ -601,7 +601,7 @@ class BacklogReporter:
             self._write_issue(ws, row, issue)
 
     def _enabler_dashboard(self, enabler):
-        print('--->', enabler.name)
+        print('------>', enabler.name)
         wb = self.workbook
         ws = wb.add_worksheet(enabler.name)
         backlog = self.factory.getEnablerBacklog(enabler.name)
@@ -833,7 +833,7 @@ class BacklogReporter:
             self._write_issue(ws, row, issue)
 
     def _chapter_dashboard(self, chapter):
-        print('--->', chapter.name)
+        print('------>', chapter.name)
         wb = self.workbook
         ws = wb.add_worksheet('{} Chapter'.format(chapter.name))
         backlog = self.factory.getChapterBacklog(chapter.name)
@@ -977,7 +977,7 @@ class BacklogReporter:
         ws.write(row, 0, '')
 
     def _techChapters_dashboard(self):
-        print('--->TechChapters')
+        print('---> TechChapters')
         wb = self.workbook
         ws = wb.add_worksheet('Overview')
 
@@ -1099,7 +1099,10 @@ class BacklogReporter:
     def chapter(self, chaptername):
         if chaptername not in settings.chapters:
             raise Exception("Unknown chapter: {}".format(chaptername))
+
+        print()
         print("--monitor-- chapter:", chaptername)
+
         _date = datetime.now().strftime("%Y%m%d-%H%M")
         filename = 'FIWARE.backlog.report.' + chaptername + '.' + _date + '.xlsx'
         myfile = os.path.join(settings.outHome, filename)
@@ -1151,4 +1154,8 @@ if __name__ == "__main__":
         menu = '\nMenu:\n\t0: get snapshot\n\t1: create reports \n\t2: upload report\n\tE: Exit'
         choice = input(menu + '\nEnter your choice[0-2,(E)xit] : ')
         print('Chosen option:', choice)
-        options[choice]()
+
+        if choice in ('0', '1', '2', 'E'):
+            options[choice]()
+        else:
+            print('\n\n\nWrong option, please try again... ')

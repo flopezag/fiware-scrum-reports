@@ -499,10 +499,10 @@ class GlobalBacklogReporter:
             ws.write(row, 4, item.issueType, _format)
 
     def _enabler_dashboard(self, enabler):
-        print('--->', enabler.name)
+        print('------>', enabler.name)
         wb = self.workbook
         ws = wb.add_worksheet(enabler.name)
-        #backlog = self.factory.getEnablerBacklog(enabler.name)
+        # backlog = self.factory.getEnablerBacklog(enabler.name)
         backlog = self.factory.getCoordinationBacklog(enabler.key)
 
         backlog.sort(key=backlog.sortDict['name'])

@@ -1,9 +1,12 @@
 import base64
 import certifi
 import requests
+import urllib3
 from kernel.Settings import settings
 
 __author__ = 'Manuel Escriche'
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 class ConnectionToJIRA(Exception):
@@ -15,6 +18,10 @@ class JIRA:
     fields = 'summary,status,project,components,priority,issuetype,description,reporter,' \
              'resolution,assignee,created,updated,duedate,resolutiondate,fixVersions,releaseDate,issuelinks,' \
              'customfield_11103,customfield_11104,customfield_11105'
+
+    analysis_start_at = '2016-12-01'
+    analysis_finish_on = '2017-11-30'
+
     verify = False
 
     url_api = {
@@ -51,73 +58,95 @@ class JIRA:
             answer = self.session.get(url, params=params, verify=JIRA.verify)
         except Exception:
             raise ConnectionToJIRA
-        #print(answer.url)
+
+        # print(answer.url)
         data = answer.json()
         return data
 
     def getComponentData(self, comp_id):
-        startAt = 0
-        payload = {'fields':JIRA.fields,
-                   'maxResults':1000, 'startAt':startAt,
-                   'jql':'component={}'.format(comp_id) }
+        start_at = 0
+        payload = {'fields': JIRA.fields,
+                   'maxResults': 1000, 'startAt': start_at,
+                   'jql': 'component={}'.format(comp_id)}
         try:
             data = self.search(payload)
         except Exception:
             raise Exception
-        totalIssues, receivedIssues = data['total'], len(data['issues'])
-        while totalIssues > receivedIssues:
-            payload['startAt'] = receivedIssues
+
+        total_issues, received_issues = data['total'], len(data['issues'])
+
+        while total_issues > received_issues:
+            payload['startAt'] = received_issues
+
             try:
                 data['issues'].extend(self.search(payload)['issues'])
             except Exception:
                 raise Exception
-            receivedIssues = len(data['issues'])
+
+            received_issues = len(data['issues'])
+
         return data['issues']
 
     def getTrackerData(self, tracker_id):
-        startAt = 0
-        payload = {'fields':JIRA.fields,
-                   'maxResults':1000, 'startAt':startAt,
-                   'jql':'project={}'.format(tracker_id) }
+        start_at = 0
+
+        jql = 'project={} AND createdDate >= {} AND createdDate <= {}'\
+            .format(tracker_id, self.analysis_start_at, self.analysis_finish_on)
+
+        payload = {'fields': JIRA.fields,
+                   'maxResults': 1000,
+                   'startAt': start_at,
+                   'jql': jql}
+
         try:
             data = self.search(payload)
         except Exception:
             raise Exception
-        totalIssues, receivedIssues = data['total'], len(data['issues'])
-        while totalIssues > receivedIssues:
-            payload['startAt'] = receivedIssues
+
+        total_issues, received_issues = data['total'], len(data['issues'])
+
+        while total_issues > received_issues:
+            payload['startAt'] = received_issues
             try:
                 data['issues'].extend(self.search(payload)['issues'])
             except Exception:
                 raise Exception
-            receivedIssues = len(data['issues'])
+
+            received_issues = len(data['issues'])
+
         return data['issues']
 
     def getQuery(self, jql):
-        startAt = 0
+        start_at = 0
         payload = {'fields': JIRA.fields,
-                   'maxResults':1000, 'startAt':startAt,
-                   'jql': jql }
+                   'maxResults': 1000, 'startAt': start_at,
+                   'jql': jql}
         try:
             data = self.search(payload)
         except Exception:
             raise Exception
-        totalIssues, receivedIssues = data['total'], len(data['issues'])
-        while totalIssues > receivedIssues:
-            payload['startAt'] = receivedIssues
+
+        total_issues, received_issues = data['total'], len(data['issues'])
+
+        while total_issues > received_issues:
+            payload['startAt'] = received_issues
             try:
                 data['issues'].extend(self.search(payload)['issues'])
             except Exception:
                 raise Exception
-            receivedIssues = len(data['issues'])
+
+            received_issues = len(data['issues'])
+
         return data['issues']
 
     def getIssue(self, id):
         url = '{}{}/{}'.format(self.root_url, JIRA.url_api['issue'], id)
+
         try:
             answer = self.session.get(url, verify=JIRA.verify)
         except Exception:
             raise ConnectionToJIRA
-        #print(answer.url)
+
+        # print(answer.url)
         data = answer.json()
         return data

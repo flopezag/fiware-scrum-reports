@@ -1,10 +1,14 @@
-__author__ = "Manuel Escriche <mev@tid.es>"
-
-import os, pickle, base64, requests
+import os
+import pickle
+import base64
+import requests
 from datetime import datetime
 from kernel.TrackerBook import trackersBook, trackersBookByKey
 from kernel.ComponentsBook import tComponentsBook
 from kernel.Jira import JIRA
+
+__author__ = "Manuel Escriche <mev@tid.es>"
+
 
 class DataEngine:
     class DataObject:
@@ -24,6 +28,7 @@ class DataEngine:
 
         def load(self):
             filename = 'FIWARE.Engine.{}.{}.pkl'.format(self._type, self.name)
+
             try:
                 f = open(os.path.join(self.storage, filename), 'rb')
                 timestamp, data = pickle.load(f)
@@ -31,38 +36,42 @@ class DataEngine:
                 raise
             else:
                 f.close()
+
             return data, timestamp
 
     class Tracker(DataObject):
         _type = 'Tracker'
+
         def __init__(self, trackername, storage):
             super().__init__(trackername, storage)
 
     class Comp(DataObject):
         _type = 'Component'
+
         def __init__(self, cmpname, storage):
             super().__init__(cmpname, storage)
 
-
-
     class Query(DataObject):
         _type = 'Query'
+
         def __init__(self, name, storage):
             super().__init__(name, storage )
 
     def __init__(self, storage):
         self.storage = storage
-        #self.jira = JIRA()
+        # self.jira = JIRA()
 
     @classmethod
     def snapshot(cls, storage):
         jira = JIRA()
         files = list()
+
         for trackername in trackersBook:
             tracker = trackersBook[trackername]
             data = jira.getTrackerData(tracker.keystone)
             filename = DataEngine.Tracker(trackername, storage).save(data)
             files.append(filename)
+
         return files
 
     def getTrackerData(self, tracker_id):
@@ -82,10 +91,16 @@ class DataEngine:
             tracker = trackersBookByKey[comp.tracker]
             trackerData, timestamp = DataEngine.Tracker(tracker.name, self.storage).load()
             data = list()
+
             for item in trackerData:
-                try:key = item['fields']['components'][0]['id']
-                except Exception: continue
-                if cmp_id == key: data.append(item)
+                try:
+                    key = item['fields']['components'][0]['id']
+                except Exception:
+                    continue
+
+                if cmp_id == key:
+                    data.append(item)
+
             return data, timestamp
 
     def saveComponentData(self, cmp_id, data):
@@ -98,6 +113,7 @@ class DataEngine:
 
     def saveQueryData(self, name, data):
         DataEngine.Query(name, self.storage).save(data)
+
 
 class DataFactory:
     def __init__(self, storage):
@@ -117,6 +133,7 @@ class DataFactory:
         except Exception:
             data, timestamp = self.engine.getComponentData(cmp_id)
             source = 'store'
+
         return data, timestamp, source
 
     def getQueryData(self, name, jql):
@@ -128,6 +145,7 @@ class DataFactory:
         except:
             data, timestamp = self.engine.getQueryData(name)
             source = 'store'
+
         return data, timestamp, source
 
     def getTrackerNoComponentData(self, tracker_id):
@@ -141,6 +159,7 @@ class DataFactory:
         except Exception:
             data, timestamp = self.engine.getQueryData(name)
             source = 'store'
+
         return data, timestamp, source
 
 

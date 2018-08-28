@@ -559,7 +559,7 @@ class HelpDeskReporter:
                      .format(**data))
 
     def _enabler_helpdesk(self, enabler):
-        print('--->', enabler.name)
+        print('--------->', enabler.name)
         wb = self.workbook
         ws = wb.add_worksheet(enabler.name)
         deck = EnablerDeck(enabler, *Data.getEnablerHelpDesk(enabler.name))
@@ -736,7 +736,7 @@ class HelpDeskReporter:
                 ws.write(row+1, 0, '>>>>> {} issues found'.format(len(reporter.deck.resolved)))
 
     def _chapter_helpdesk(self, chapter):
-        print('--->', chapter.name)
+        print('------>', chapter.name)
         wb = self.workbook
         ws = wb.add_worksheet('{} Chapter'.format(chapter.name))
         deck = ChapterDeck(chapter, *Data.getChapterHelpDesk(chapter.name))
@@ -862,7 +862,7 @@ class HelpDeskReporter:
         ws.insert_chart(row, 1, chart, {'x_offset': 500, 'y_offset': 0})
 
     def _techChannel_helpdesk(self):
-        print('--->TechChapters')
+        print('---> TechChapters')
         wb = self.workbook
         ws = wb.add_worksheet('Tech Channel')
         deck = self.deck
