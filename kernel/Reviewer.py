@@ -163,16 +163,28 @@ class StatusBacklogTest(BacklogItemRule):
         return True if item.status not in entryWorkflow.defined and item.timeSlot != 'Unscheduled'else False
 
     def _rule_status_calendar_consistency(self, item):
-        if item.issueType in entryModel.longTermTypes: return True
-        if item.status in entryWorkflow.defined and item.timeSlot == 'Unscheduled': return True
-        if item.status in entryWorkflow.future and item.nTimeSlot in agileCalendar.futureTimeSlots: return True
-        if item.status in entryWorkflow.present and item.nTimeSlot in agileCalendar.currentTimeSlots: return True
-        if item.status in entryWorkflow.past and item.nTimeSlot in agileCalendar.pastTimeSlots: return True
+        if item.issueType in entryModel.longTermTypes:
+            return True
+
+        if item.status in entryWorkflow.defined and item.timeSlot == 'Unscheduled':
+            return True
+
+        if item.status in entryWorkflow.future and item.nTimeSlot in agileCalendar.futureTimeSlots:
+            return True
+
+        if item.status in entryWorkflow.present and item.nTimeSlot in agileCalendar.currentTimeSlots():
+            return True
+
+        if item.status in entryWorkflow.past and item.nTimeSlot in agileCalendar.pastTimeSlots:
+            return True
+
         return False
+
     def _rule_status_dates_consistency(self, item):
         # activate whenever needed to check close dates
         #return False if item.status in entryWorkflow.resolved and not self.__calendar.isProjectDate(item.close_date) else True
         return True
+
     def __call__(self, item):
         _key = lambda i: '{0}.{1}'.format(self.name, i)
         if self._filter_excluded(item):
@@ -184,7 +196,7 @@ class StatusBacklogTest(BacklogItemRule):
             output[_key(2)] = 'OK' if self._rule_status_timeFrame_consistency(item) else 'KO'
             if output[_key(2)] == 'OK':
                 output[_key(3)] = 'OK' if self._rule_status_calendar_consistency(item) else 'KO'
-        #output[_key(4)] = 'OK' if output[_key(3)] == 'OK' and self.__rule_status_dates_consistency(item) else 'KO'
+        # output[_key(4)] = 'OK' if output[_key(3)] == 'OK' and self.__rule_status_dates_consistency(item) else 'KO'
         status = 'OK' if all(value == 'OK' for value in output.values()) else 'KO'
         item.test.test[self.name] = output
         item.test.status[self.name] = status

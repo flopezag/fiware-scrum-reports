@@ -31,7 +31,7 @@ class Calendar(OrderedDict):
 
         self.start = date(int(self['M01'].year), int(self['M01'].month), 1)
         self.months = list(self.keys())
-        self.monthBook = { month: '{1}-{2}'.format(*self[month]) for month in self}
+        self.monthBook = {month: '{1}-{2}'.format(*self[month]) for month in self}
 
     def getMonth(self, month):
         start = self.start + relativedelta(months=month-1)
@@ -40,27 +40,40 @@ class Calendar(OrderedDict):
 
     @property
     def pastMonths(self):
-        month = self.currentMonth[0]
+        month = self.currentMonth()[0]
         return [item for item in self if int(item[1:]) <= month]
 
-    @property
-    def currentMonth(self):
-        d1, d2 = date.today(), self.start
-        month =  (12 * d1.year + d1.month) - (12 * d2.year + d2.month) + 1
-        monthId = self.months[month - 1]
-        return month, monthId
+    def currentMonth(self, current_date=None):
+        if current_date is None:
+            d1, d2 = date.today(), self.start
+        else:
+            d1, d2 = current_date, self.start
+
+        month = (12 * d1.year + d1.month) - (12 * d2.year + d2.month) + 1
+        month_id = self.months[month - 1]
+
+        return month, month_id
+
+    # @property
+    # def currentMonth(self):
+    #     d1, d2 = date.today(), self.start
+
+    #     month = (12 * d1.year + d1.month) - (12 * d2.year + d2.month) + 1
+    #     month_id = self.months[month - 1]
+
+    #     return month, month_id
 
     @property
     def nextMonth(self):
         month = self.currentMonth[0] + 1
-        monthId = self.months[month - 1]
-        return month, monthId
+        month_id = self.months[month - 1]
+        return month, month_id
 
     @property
     def prevMonth(self):
         month = self.currentMonth[0] - 1
-        monthId = self.months[month - 1]
-        return month, monthId
+        month_id = self.months[month - 1]
+        return month, month_id
 
     @property
     def timeline(self):
@@ -98,16 +111,27 @@ class AgileCalendar(OrderedDict):
         self.Sprints = ['Sprint {}'.format(sprint) for sprint in self.sprints]
         self.Releases = ['Release {}'.format(release) for release in self.releases]
 
-    @property
-    def currentTimeSlots(self):
-        month = self.calendar.currentMonth[1]
-        sprint = [self[month].sprint]
-        release = [self[month].release]
+    #@property
+    #def currentTimeSlots(self):
+    #    month = self.calendar.currentMonth[1]
+    #    sprint = [self[month].sprint]
+    #    release = [self[month].release]
+    #    return release + sprint
+
+    def currentTimeSlots(self, current_date=None):
+        if current_date is None:
+            month, month_id = self.calendar.currentMonth()
+        else:
+            month, month_id = self.calendar.currentMonth(current_date=current_date)
+
+        sprint = [self[month_id].sprint]
+        release = [self[month_id].release]
         return release + sprint
 
     @property
     def pastTimeSlots(self):
-        month = self.calendar.currentMonth[1]
+        month = self.calendar.currentMonth()[1]
+
         i = self.calendar.months.index(month) - 1
         sprints = [sprint for sprint in self.sprints[:i] if sprint != self.sprints[i]]
         _releases = [release for release in self.releases[:i] if release != self.releases[i]]
@@ -116,7 +140,7 @@ class AgileCalendar(OrderedDict):
 
     @property
     def futureTimeSlots(self):
-        month = self.calendar.currentMonth[1]
+        month = self.calendar.currentMonth()[1]
         i = self.calendar.months.index(month) - 1
         sprints = [sprint for sprint in self.sprints[i:] if sprint != self.sprints[i]]
         _releases = [release for release in self.releases[i:] if release != self.releases[i]]
@@ -163,12 +187,15 @@ class AgileCalendar(OrderedDict):
     def isValidRelease(self, timeSlot):
         return True if timeSlot in self.Releases else False
 
-    @property
-    def projectTime(self):
-        monthId = self.calendar.currentMonth[1]
-        entry = self.calendar[monthId]
+    def projectTime(self, current_date=None):
+        if current_date is None:
+            month, month_id = self.calendar.currentMonth()
+        else:
+            month, month_id = self.calendar.currentMonth(current_date=current_date)
+
+        entry = self.calendar[month_id]
         month = Calendar.month_names[entry.month]
-        return '{} - {} {} - Sprint {}'.format(monthId, month, entry.year, self.currentTimeSlots[1])
+        return '{} - {} {} - Sprint {}'.format(month_id, month, entry.year, self.currentTimeSlots(current_date=current_date)[1])
 
 
 agileCalendar = AgileCalendar()

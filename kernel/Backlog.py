@@ -120,7 +120,7 @@ class Issue(dict):
             self['frame'] = 'Foreseen'
         elif version in agileCalendar.pastTimeSlots:
             self['frame'] = 'Implemented'
-        elif version in agileCalendar.currentTimeSlots:
+        elif version in agileCalendar.currentTimeSlots():
             self['frame'] = 'Working On'
         elif version in agileCalendar.futureTimeSlots:
             self['frame'] = 'Foreseen'
