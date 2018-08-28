@@ -1,0 +1,647 @@
+<?xml version="1.0"?>
+<data>
+    <!-- APPS Chapter -->
+    <enabler name="Marketplace" chapter="Apps">
+        <tracker_key>APP</tracker_key>
+        <cmp_key>10103</cmp_key>
+        <owner>UPM</owner>
+        <type>Product</type>
+        <mode>Deprecated</mode>
+        <backlog_keyword>Marketplace</backlog_keyword>
+        <bundle_keyword></bundle_keyword>
+        <package_keyword></package_keyword>
+        <GE>Marketplace</GE>
+        <GEi>Marketplace RI</GEi>
+    </enabler>
+    <enabler name="Repository" chapter="Apps">
+        <tracker_key>APP</tracker_key>
+        <cmp_key>10102</cmp_key>
+        <owner>UPM</owner>
+        <type>Product</type>
+        <mode>Deprecated</mode>
+        <backlog_keyword>Repository</backlog_keyword>
+        <GE>Repository</GE>
+        <GEi>Repository RI</GEi>
+    </enabler>
+    <enabler name="Revenue" chapter="Apps">
+        <tracker_key>APP</tracker_key>
+        <cmp_key>10104</cmp_key>
+        <owner>UPM</owner>
+        <type>Service</type>
+        <mode>Deprecated</mode>
+        <backlog_keyword>RSS</backlog_keyword>
+        <GE>Revenue Settlement and Sharing System</GE>
+        <GEi></GEi>
+    </enabler>
+    <enabler name="SpagoBI" chapter="Apps">
+        <tracker_key>APP</tracker_key>
+        <cmp_key>10106</cmp_key>
+        <owner>ENG</owner>
+        <type>Product</type>
+        <mode>Support</mode>
+        <backlog_keyword>DataViz-SpagoBI</backlog_keyword>
+        <GE>Data Visualization</GE>
+        <GEi>SpagoBI</GEi>
+    </enabler>
+    <enabler name="Knowage" chapter="Apps">
+        <tracker_key>APP</tracker_key>
+        <cmp_key>11905</cmp_key>
+        <owner>ENG</owner>
+        <type>Product</type>
+        <mode>Development</mode>
+        <backlog_keyword>DataVisualization</backlog_keyword>
+        <GE>Data Visualization</GE>
+        <GEi>Knowage Data Visualization And Analytics</GEi>
+    </enabler>
+    <enabler name="Wirecloud" chapter="Apps">
+        <tracker_key>APP</tracker_key>
+        <cmp_key>10101</cmp_key>
+        <owner>UPM</owner>
+        <type>Product</type>
+        <mode>Development</mode>
+        <backlog_keyword>ApplicationMashup</backlog_keyword>
+        <GE>Application Mashup</GE>
+        <GEi>Wirecloud Mashup platform</GEi>
+    </enabler>
+    <enabler name="WStore" chapter="Apps">
+        <tracker_key>APP</tracker_key>
+        <cmp_key>10105</cmp_key>
+        <owner>UPM</owner>
+        <type>Product</type>
+        <mode>Deprecated</mode>
+        <backlog_keyword>Store</backlog_keyword>
+        <GE>Store</GE>
+        <GEi>WStore</GEi>
+    </enabler>
+    <enabler name="Business Ecosystem" chapter="Apps">
+        <tracker_key>APP</tracker_key>
+        <cmp_key>11505</cmp_key>
+        <owner>UPM</owner>
+        <type>Product</type>
+        <mode>Development</mode>
+        <backlog_keyword>BusinessAPIEcosystem</backlog_keyword>
+        <GE>BusinessEcosystem</GE>
+        <GEi>Data/API Biz Framework</GEi>
+    </enabler>
+
+    <!-- CLOUD -->
+    <enabler name="Cloud Portal" chapter="Cloud">
+        <tracker_key>CLD</tracker_key>
+        <cmp_key>10202</cmp_key>
+        <owner>UPM</owner>
+        <type>Platform Component</type>
+        <mode>Development</mode>
+        <backlog_keyword>CloudPortal</backlog_keyword>
+        <GE>Self-Service Interfaces</GE>
+        <GEi>Cloud Portal</GEi>
+    </enabler>
+    <enabler name="IaaS RM" chapter="Cloud">
+        <tracker_key>CLD</tracker_key>
+        <cmp_key>10201</cmp_key>
+        <owner>IBM</owner>
+        <type>Platform Component</type>
+        <mode>Support</mode>
+        <backlog_keyword>ResMgmt</backlog_keyword>
+        <GE>IaaS Data Center Resource Management</GE>
+        <GEi></GEi>
+    </enabler>
+    <enabler name="Monitoring" chapter="Cloud">
+        <tracker_key>CLD</tracker_key>
+        <cmp_key>10206</cmp_key>
+        <owner>TID</owner>
+        <type>Platform Component</type>
+        <mode>Support</mode>
+        <backlog_keyword>Monitoring</backlog_keyword>
+        <GE>Monitoring</GE>
+        <GEi></GEi>
+    </enabler>
+    <enabler name="Object Storage" chapter="Cloud">
+        <tracker_key>CLD</tracker_key>
+        <cmp_key>10203</cmp_key>
+        <owner>IBM</owner>
+        <type>Platform Component</type>
+        <mode>Support</mode>
+        <backlog_keyword>ObjectStorage</backlog_keyword>
+        <GE>Object Storage</GE>
+        <GEi></GEi>
+    </enabler>
+    <enabler name="Pegasus" chapter="Cloud">
+        <tracker_key>CLD</tracker_key>
+        <cmp_key>10205</cmp_key>
+        <owner>TID</owner>
+        <type>Platform Component</type>
+        <mode>Support</mode>
+        <backlog_keyword>PaaSManager</backlog_keyword>
+        <GE>PaaS Management</GE>
+        <GEi>Pegasus</GEi>
+    </enabler>
+    <enabler name="Bosun" chapter="Cloud">
+        <tracker_key>CLD</tracker_key>
+        <cmp_key>10207</cmp_key>
+        <owner>TID</owner>
+        <type>Platform Component</type>
+        <mode>Support</mode>
+        <backlog_keyword>PolicyMgr</backlog_keyword>
+        <GE>Policy Manager</GE>
+        <GEi>Bosun</GEi>
+    </enabler>
+    <enabler name="Sagitta" chapter="Cloud">
+        <tracker_key>CLD</tracker_key>
+        <cmp_key>10204</cmp_key>
+        <owner>TID</owner>
+        <type>Platform Component</type>
+        <mode>Support</mode>
+        <backlog_keyword>SwDeployConfig</backlog_keyword>
+        <GE>Software Deployment And Configuration</GE>
+        <GEi>Sagitta</GEi>
+    </enabler>
+    <enabler name="Murano" chapter="Cloud">
+        <tracker_key>CLD</tracker_key>
+        <cmp_key>10506</cmp_key>
+        <owner>TID</owner>
+        <type>Platform Component</type>
+        <mode>Support</mode>
+        <backlog_keyword>Murano</backlog_keyword>
+        <GE>Application Manager</GE>
+        <GEi>Murano</GEi>
+    </enabler>
+    <enabler name="Docker" chapter="Cloud">
+        <tracker_key>CLD</tracker_key>
+        <cmp_key>11204</cmp_key>
+        <owner>IBM</owner>
+        <type>Platform Component</type>
+        <mode>Support</mode>
+        <backlog_keyword>Docker</backlog_keyword>
+        <GE></GE>
+        <GEi></GEi>
+    </enabler>
+
+    <!-- DATA -->
+    <enabler name="CEP" chapter="Data">
+        <tracker_key>DATA</tracker_key>
+        <cmp_key>10209</cmp_key>
+        <owner>IBM</owner>
+        <type>Product</type>
+        <mode>Support</mode>
+        <backlog_keyword>CEP - IBM</backlog_keyword>
+        <GE>Complex Event Processing</GE>
+        <GEi>Proton Complex Event Processing</GEi>
+    </enabler>
+    <enabler name="Perseo" chapter="Data">
+        <tracker_key>DATA</tracker_key>
+        <cmp_key>11909</cmp_key>
+        <owner>FICODES</owner>
+        <type>Product</type>
+        <mode>Development</mode>
+        <backlog_keyword>Perseo</backlog_keyword>
+        <GE>Complex Event Processing</GE>
+        <GEi>Perseo Complex Event Processing</GEi>
+    </enabler>
+    <enabler name="CKAN" chapter="Data">
+        <tracker_key>DATA</tracker_key>
+        <cmp_key>10212</cmp_key>
+        <owner>OKFN</owner>
+        <type>Product</type>
+        <mode>Development</mode>
+        <backlog_keyword>CKAN</backlog_keyword>
+        <GE>Short-term Historic Open Data Repository</GE>
+        <GEi>Extended CKAN Data Publication Platform</GEi>
+    </enabler>
+    <enabler name="Cosmos" chapter="Data">
+        <tracker_key>DATA</tracker_key>
+        <cmp_key>10210</cmp_key>
+        <owner>TID</owner>
+        <type>Service</type>
+        <mode>Support</mode>
+        <backlog_keyword>BigData-Analysis</backlog_keyword>
+        <GE>BigData Analysis</GE>
+        <GEi>Cosmos Big Data Analysis platform</GEi>
+    </enabler>
+    <enabler name="Kurento" chapter="Data">
+        <tracker_key>DATA</tracker_key>
+        <cmp_key>10211</cmp_key>
+        <owner>URJC/Naevatec</owner>
+        <type>Product</type>
+        <mode>Development</mode>
+        <backlog_keyword>Stream-oriented</backlog_keyword>
+        <GE>Stream Oriented GE</GE>
+        <GEi>Kurento Real-time Media Stream Processing</GEi>
+    </enabler>
+    <enabler name="Orion" chapter="Data">
+        <tracker_key>DATA</tracker_key>
+        <cmp_key>10208</cmp_key>
+        <owner>FF</owner>
+        <type>Product</type>
+        <mode>Development</mode>
+        <backlog_keyword>OrionContextBroker</backlog_keyword>
+        <GE>Publish/Subscribe Broker</GE>
+        <GEi>Orion Context Broker</GEi>
+    </enabler>
+    <enabler name="Cygnus" chapter="Data">
+        <tracker_key>DATA</tracker_key>
+        <cmp_key>11721</cmp_key>
+        <owner>UPM</owner>
+        <type>Product</type>
+        <mode>Development</mode>
+        <backlog_keyword>Cygnus</backlog_keyword>
+        <GE>Cygnus</GE>
+        <GEi>Cygnus</GEi>
+    </enabler>
+    <enabler name="STH-Comet" chapter="Data">
+        <tracker_key>DATA</tracker_key>
+        <cmp_key>11908</cmp_key>
+        <owner>UPM</owner>
+        <type>Product</type>
+        <mode>Development</mode>
+        <backlog_keyword>STH-Comet</backlog_keyword>
+        <GE>STH Comet</GE>
+        <GEi>STH Comet</GEi>
+    </enabler>
+    <enabler name="Aeon" chapter="Data">
+        <tracker_key>DATA</tracker_key>
+        <cmp_key>10332</cmp_key>
+        <owner>ATOS</owner>
+        <type>Product</type>
+        <mode>Support</mode>
+        <backlog_keyword>Aeon</backlog_keyword>
+        <GE>Cloud Messaging</GE>
+        <GEi>AEON Cloud Messaging</GEi>
+    </enabler>
+    <!--
+    <enabler name="MetaWare" chapter="Data">
+        <tracker_key>DATA</tracker_key>
+        <cmp_key>10333</cmp_key>
+        <owner>TI</owner>
+        <type>Product</type>
+        <mode>Deprecated</mode>
+        <backlog_keyword>MetaDataStoreManagementPlatform</backlog_keyword>
+        <GE>Metadata Store Management Platform</GE>
+        <GEi>MetaWare</GEi>
+    </enabler>
+    <enabler name="Social Aggregator" chapter="Data">
+        <tracker_key>DATA</tracker_key>
+        <cmp_key>10320</cmp_key>
+        <owner>TI</owner>
+        <type>Product</type>
+        <mode>Incubated</mode>
+        <backlog_keyword>SocialDataAggregator</backlog_keyword>
+        <GE>Social Data Aggregator</GE>
+        <GEi></GEi>
+    </enabler>
+    <enabler name="Semantic Enricher" chapter="Data">
+        <tracker_key>DATA</tracker_key>
+        <cmp_key>10334</cmp_key>
+        <cmp_key>TI</cmp_key>
+        <owner>TI</owner>
+        <type>Product</type>
+        <mode>Incubated</mode>
+        <backlog_keyword>SocialSemanticEnricher</backlog_keyword>
+        <GE>Social Semantic Enricher</GE>
+        <GEi></GEi>
+    </enabler>
+    -->
+
+    <!-- I2ND -->
+    <enabler name="Kiara" chapter="I2ND">
+        <tracker_key>MIND</tracker_key>
+        <cmp_key>10214</cmp_key>
+        <owner>Eprosima</owner>
+        <type>Platform Component</type>
+        <mode>Support</mode>
+        <backlog_keyword>Kiara</backlog_keyword>
+        <GE>Advanced Middleware</GE>
+        <GEi>Kiara</GEi>
+    </enabler>
+    <enabler name="OFNIC" chapter="I2ND">
+        <tracker_key>MIND</tracker_key>
+        <cmp_key>10213</cmp_key>
+        <owner>UniRoma</owner>
+        <type>Component</type>
+        <mode>Support</mode>
+        <backlog_keyword>OFNIC</backlog_keyword>
+        <GE>Network Information and Control</GE>
+        <GEi>OFNIC</GEi>
+    </enabler>
+    <enabler name="Netfloc" chapter="I2ND">
+        <tracker_key>MIND</tracker_key>
+        <cmp_key>10254</cmp_key>
+        <owner>ZHAW</owner>
+        <type>Product</type>
+        <mode>Support</mode>
+        <backlog_keyword>Netfloc</backlog_keyword>
+        <GE>Netfloc</GE>
+        <GEi>Netfloc</GEi>
+    </enabler>
+    <enabler name="Robotics" chapter="I2ND">
+        <tracker_key>MIND</tracker_key>
+        <cmp_key>10403</cmp_key>
+        <owner>Jaime Martin</owner>
+        <type>Product</type>
+        <mode>Support</mode>
+        <backlog_keyword>Robotics</backlog_keyword>
+        <GE>Robotics</GE>
+        <GEi>Robotics</GEi>
+    </enabler>
+    <enabler name="FastRTPS" chapter="I2ND">
+        <tracker_key>MIND</tracker_key>
+        <cmp_key>11838</cmp_key>
+        <owner>Jaime Martin</owner>
+        <type>Product</type>
+        <mode>Development</mode>
+        <backlog_keyword>FastRTPS</backlog_keyword>
+        <GE>FastRTPS</GE>
+        <GEi>FastRTPS</GEi>
+    </enabler>
+
+    <!-- IOT -->
+    <enabler name="EPCGE" chapter="IoT">
+        <tracker_key>IOT</tracker_key>
+        <cmp_key>10224</cmp_key>
+        <owner>Orange</owner>
+        <type>Product</type>
+        <mode>Deprecated</mode>
+        <backlog_keyword>EPCGE</backlog_keyword>
+        <GE>Gateway Protocol Adapter</GE>
+        <GEi>EPCGE</GEi>
+    </enabler>
+    <enabler name="Cepheus" chapter="IoT">
+        <tracker_key>IOT</tracker_key>
+        <cmp_key>10222</cmp_key>
+        <owner>Orange</owner>
+        <type>Product</type>
+        <mode>Support</mode>
+        <backlog_keyword>DataEdge-Cepheus</backlog_keyword>
+        <GE>Data Edge Consolidation</GE>
+        <GEi>Cepheus</GEi>
+    </enabler>
+    <enabler name="IDAS" chapter="IoT">
+        <tracker_key>IOT</tracker_key>
+        <cmp_key>10218</cmp_key>
+        <owner>TID</owner>
+        <type>Product</type>
+        <mode>Development</mode>
+        <backlog_keyword>IDAS</backlog_keyword>
+        <GE>Backend Device Manager</GE>
+        <GEi>IDAS</GEi>
+    </enabler>
+    <enabler name="IoT Broker" chapter="IoT">
+        <tracker_key>IOT</tracker_key>
+        <cmp_key>10219</cmp_key>
+        <owner>NEC</owner>
+        <type>Product</type>
+        <mode>Development</mode>
+        <backlog_keyword>BackendIoTBroker</backlog_keyword>
+        <GE>Backend IoT Broker</GE>
+        <GEi>IoT Broker</GEi>
+    </enabler>
+    <enabler name="IoT Discovery" chapter="IoT">
+        <tracker_key>IOT</tracker_key>
+        <cmp_key>10221</cmp_key>
+        <owner>SU</owner>
+        <type>Product</type>
+        <mode>Development</mode>
+        <backlog_keyword>IoTDiscovery</backlog_keyword>
+        <GE>Backend Configuration Manager</GE>
+        <GEi>IoT Discovery</GEi>
+    </enabler>
+
+    <!-- SEC -->
+    <enabler name="AuthZForce" chapter="Security">
+        <tracker_key>SEC</tracker_key>
+        <cmp_key>10229</cmp_key>
+        <owner>THALES</owner>
+        <type>Product</type>
+        <mode>Support</mode>
+        <backlog_keyword>AuthorizationPDP</backlog_keyword>
+        <GE>Authorization PDP</GE>
+        <GEi>AuthZForce PDP</GEi>
+    </enabler>
+    <enabler name="Cyber Security" chapter="Security">
+        <tracker_key>SEC</tracker_key>
+        <cmp_key>10231</cmp_key>
+        <owner>THALES</owner>
+        <type>Product</type>
+        <mode>Deprecated</mode>
+        <backlog_keyword>CyberSecurity</backlog_keyword>
+        <GE>Cyber Security</GE>
+        <GEi></GEi>
+    </enabler>
+    <enabler name="KeyRock" chapter="Security">
+        <tracker_key>SEC</tracker_key>
+        <cmp_key>10228</cmp_key>
+        <owner>UPM</owner>
+        <type>Product</type>
+        <mode>Development</mode>
+        <backlog_keyword>IDM-KeyRock</backlog_keyword>
+        <GE>Identity Management</GE>
+        <GEi>KeyRock Identity Management</GEi>
+    </enabler>
+    <enabler name="Wilma" chapter="Security">
+        <tracker_key>SEC</tracker_key>
+        <cmp_key>10402</cmp_key>
+        <owner>UPM</owner>
+        <type>Product</type>
+        <mode>Development</mode>
+        <backlog_keyword>PEP-Proxy</backlog_keyword>
+        <GE>PEP Proxy</GE>
+        <GEi>Wilma PEP Proxy</GEi>
+    </enabler>
+    <enabler name="Privacy" chapter="Security">
+        <tracker_key>SEC</tracker_key>
+        <cmp_key>10233</cmp_key>
+        <owner>ZHAW</owner>
+        <type>Product</type>
+        <mode>Support</mode>
+        <backlog_keyword>Privacy</backlog_keyword>
+        <GE>Privacy</GE>
+        <GEi>Preserving Authentication</GEi>
+    </enabler>
+    <enabler name="Trust" chapter="Security">
+        <tracker_key>SEC</tracker_key>
+        <cmp_key>10232</cmp_key>
+        <owner>THALES</owner>
+        <type>Product</type>
+        <mode>Deprecated</mode>
+        <backlog_keyword>TrustworthyFactory</backlog_keyword>
+        <GE>Trustworthy Factory</GE>
+        <GEi>Trust</GEi>
+    </enabler>
+
+    <!-- WEBUI -->
+    <enabler name="Augmented Reality" chapter="WebUI">
+        <tracker_key>WEB</tracker_key>
+        <cmp_key>10242</cmp_key>
+        <owner>DFKI</owner>
+        <type>product</type>
+        <mode>Support</mode>
+        <backlog_keyword>AugmentedReality</backlog_keyword>
+        <GE>Augmented Reality</GE>
+        <GEi></GEi>
+    </enabler>
+    <enabler name="Cloud Render" chapter="WebUI">
+        <tracker_key>WEB</tracker_key>
+        <cmp_key>10238</cmp_key>
+        <owner>Adminotech</owner>
+        <type>Product</type>
+        <mode>Support</mode>
+        <backlog_keyword>CloudRendering</backlog_keyword>
+        <GE>Cloud Rendering</GE>
+        <GEi></GEi>
+    </enabler>
+    <enabler name="Fives" chapter="WebUI">
+        <tracker_key>WEB</tracker_key>
+        <cmp_key>10512</cmp_key>
+        <owner>DFKI</owner>
+        <type>Product</type>
+        <mode>Development</mode>
+        <backlog_keyword>Fives</backlog_keyword>
+        <GE>Synchronization</GE>
+        <GEi>Fives - Synchronization</GEi>
+    </enabler>
+    <enabler name="GIS Provider" chapter="WebUI">
+        <tracker_key>WEB</tracker_key>
+        <cmp_key>10239</cmp_key>
+        <owner>Cyberlightning</owner>
+        <type>Product</type>
+        <mode>Support</mode>
+        <backlog_keyword>GISDataProvider</backlog_keyword>
+        <GE>GIS Data Provier</GE>
+        <GEi></GEi>
+    </enabler>
+    <enabler name="UI Designer" chapter="WebUI">
+        <tracker_key>WEB</tracker_key>
+        <cmp_key>10245</cmp_key>
+        <owner>Adminotech</owner>
+        <type>Product</type>
+        <mode>Support</mode>
+        <backlog_keyword>InterfaceDesigner</backlog_keyword>
+        <GE>Interface Designer</GE>
+        <GEi></GEi>
+    </enabler>
+    <enabler name="POI Provider" chapter="WebUI">
+        <tracker_key>WEB</tracker_key>
+        <cmp_key>10240</cmp_key>
+        <owner>UOULU/CIE</owner>
+        <type>Product</type>
+        <mode>Support</mode>
+        <backlog_keyword>POIDataProvider</backlog_keyword>
+        <GE>POI Data Provider</GE>
+        <GEi></GEi>
+    </enabler>
+    <enabler name="Real Virtual Interaction" chapter="WebUI">
+        <tracker_key>WEB</tracker_key>
+        <cmp_key>10243</cmp_key>
+        <owner>Cyberlightning</owner>
+        <type>Product</type>
+        <mode>Deprecated</mode>
+        <backlog_keyword>RealVirtualInteraction</backlog_keyword>
+        <GE>Real/Virtual Interaction</GE>
+        <GEi></GEi>
+    </enabler>
+    <enabler name="Synch - Tundra" chapter="WebUI">
+        <tracker_key>WEB</tracker_key>
+        <cmp_key>10237</cmp_key>
+        <owner>Ludocraft</owner>
+        <type>Product</type>
+        <mode>Support</mode>
+        <backlog_keyword>Synchronization</backlog_keyword>
+        <GE>Synchronization</GE>
+        <GEi>Tundra</GEi>
+    </enabler>
+    <enabler name="Web Tundra Avatar" chapter="WebUI">
+        <tracker_key>WEB</tracker_key>
+        <cmp_key>10244</cmp_key>
+        <owner>Ludocraft</owner>
+        <type>Product</type>
+        <mode>Support</mode>
+        <backlog_keyword>VirtualCharacters</backlog_keyword>
+        <GE>Virtual Characters</GE>
+        <GEi>WebTundra Avatar</GEi>
+    </enabler>
+    <enabler name="Web Tundra 3D" chapter="WebUI">
+        <tracker_key>WEB</tracker_key>
+        <cmp_key>10236</cmp_key>
+        <owner>Adminotech</owner>
+        <type>Product</type>
+        <mode>Support</mode>
+        <backlog_keyword>WebTundra3D</backlog_keyword>
+        <GE>3D-UI</GE>
+        <GEi>Web Tundra</GEi>
+    </enabler>
+    <enabler name="XML3D" chapter="WebUI">
+        <tracker_key>WEB</tracker_key>
+        <cmp_key>10235</cmp_key>
+        <owner>DFKI</owner>
+        <type>Product</type>
+        <mode>Development</mode>
+        <backlog_keyword>XML3D</backlog_keyword>
+        <GE>3D-UI</GE>
+        <GEi>XML3D</GEi>
+    </enabler>
+    <enabler name="2D-3D Capture" chapter="WebUI">
+        <tracker_key>WEB</tracker_key>
+        <cmp_key>10241</cmp_key>
+        <owner>Cyberlightning</owner>
+        <type>Product</type>
+        <mode>Deprecated</mode>
+        <backlog_keyword>2D-3DCapture</backlog_keyword>
+        <GE>2D-3D Capture</GE>
+        <GEi></GEi>
+    </enabler>
+    <enabler name="2D-UI" chapter="WebUI">
+        <tracker_key>WEB</tracker_key>
+        <cmp_key>10234</cmp_key>
+        <owner>Adminotech</owner>
+        <type>Product</type>
+        <mode>Deprecated</mode>
+        <backlog_keyword>2D-UI</backlog_keyword>
+        <GE>2D-UI</GE>
+        <GEi></GEi>
+    </enabler>
+
+    <!-- OPS -->
+    <enabler name="Ops-Dashboard" chapter="Ops">
+        <tracker_key>OPS</tracker_key>
+        <cmp_key>10311</cmp_key>
+        <owner>UPM</owner>
+        <type>Platform Component</type>
+        <backlog_keyword>Dash</backlog_keyword>
+        <mode>Development</mode>
+        <dissemination>Private</dissemination>
+        <GE>Dashboard</GE>
+        <GEi></GEi>
+    </enabler>
+    <enabler name="Ops-Deploy" chapter="Ops">
+        <tracker_key>OPS</tracker_key>
+        <cmp_key>10310</cmp_key>
+        <owner>Create-Net</owner>
+        <type>Platform Component</type>
+        <mode>Development</mode>
+        <backlog_keyword>Deploy</backlog_keyword>
+        <dissemination>Private</dissemination>
+        <GE>Deploy</GE>
+        <GEi></GEi>
+    </enabler>
+    <enabler name="Ops-Health" chapter="Ops">
+        <tracker_key>OPS</tracker_key>
+        <cmp_key>10312</cmp_key>
+        <owner>TID</owner>
+        <type>Platform Component</type>
+        <mode>Development</mode>
+        <backlog_keyword>Health</backlog_keyword>
+        <dissemination>Private</dissemination>
+        <GE>Health</GE>
+        <GEi></GEi>
+    </enabler>
+    <enabler name="Ops-Toolkit" chapter="Ops">
+        <tracker_key>OPS</tracker_key>
+        <cmp_key>10313</cmp_key>
+        <owner>ATOS</owner>
+        <type>Platform Component</type>
+        <mode>Development</mode>
+        <backlog_keyword>Toolkit</backlog_keyword>
+        <dissemination>Private</dissemination>
+        <GE>Toolkit</GE>
+        <GEi></GEi>
+    </enabler>
+</data>

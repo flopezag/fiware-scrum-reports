@@ -1,0 +1,287 @@
+<?xml version="1.0"?>
+<data>
+    <!-- Coaching -->
+    <group name="CEED Tech" group="Coaching">
+        <tracker_key>COAC</tracker_key>
+        <cmp_key>11300</cmp_key>
+        <owner>Consoft - Marco Terrinoni</owner>
+        <backlog_keyword>CEED-Tech</backlog_keyword>
+        <mode>Finished</mode>
+    </group>
+    <group name="CreatiFI" group="Coaching">
+        <tracker_key>COAC</tracker_key>
+        <cmp_key>11301</cmp_key>
+        <owner>CreateNet - Silvio Cretti</owner>
+        <backlog_keyword>CreatiFi</backlog_keyword>
+        <mode>Finished</mode>
+    </group>
+    <group name="EuropeanPioneers" group="Coaching">
+        <tracker_key>COAC</tracker_key>
+        <cmp_key>11302</cmp_key>
+        <owner>Orange - Joel Riga</owner>
+        <backlog_keyword>EuropeanPionners</backlog_keyword>
+        <mode>Finished</mode>
+    </group>
+    <group name="FABulous" group="Coaching">
+        <tracker_key>COAC</tracker_key>
+        <cmp_key>11303</cmp_key>
+        <owner>ENG - Pasquale Vitale</owner>
+        <backlog_keyword>FABulous</backlog_keyword>
+        <mode>Finished</mode>
+    </group>
+    <group name="FI-ADOPT" group="Coaching">
+        <tracker_key>COAC</tracker_key>
+        <cmp_key>11304</cmp_key>
+        <owner>ATOS - Ilknur Chulani</owner>
+        <backlog_keyword>FI-ADOPT</backlog_keyword>
+        <mode>Finished</mode>
+    </group>
+    <group name="FI-C3" group="Coaching">
+        <tracker_key>COAC</tracker_key>
+        <cmp_key>11305</cmp_key>
+        <owner>EGM - Franck Le Gall</owner>
+        <backlog_keyword>FI-C3</backlog_keyword>
+        <mode>Finished</mode>
+    </group>
+    <group name="FICHe" group="Coaching">
+        <tracker_key>COAC</tracker_key>
+        <cmp_key>11306</cmp_key>
+        <owner>EGM - Franck Le Gall</owner>
+        <backlog_keyword>FICHe</backlog_keyword>
+        <mode>Finished</mode>
+    </group>
+    <group name="Finish" group="Coaching">
+        <tracker_key>COAC</tracker_key>
+        <cmp_key>11307</cmp_key>
+        <owner>ATOS - Ilknur Chulani</owner>
+        <backlog_keyword>Finish</backlog_keyword>
+        <mode>Finished</mode>
+    </group>
+    <group name="FINODEX" group="Coaching">
+        <tracker_key>COAC</tracker_key>
+        <cmp_key>11308</cmp_key>
+        <owner>ENG - Pasquale Vitale</owner>
+        <backlog_keyword>FINODEX</backlog_keyword>
+        <mode>Finished</mode>
+    </group>
+    <group name="FRACTALS" group="Coaching">
+        <tracker_key>COAC</tracker_key>
+        <cmp_key>11309</cmp_key>
+        <owner>ATOS - Ilknur Chulani</owner>
+        <backlog_keyword>FRACTALS</backlog_keyword>
+        <mode>Finished</mode>
+    </group>
+    <group name="FrontierCities" group="Coaching">
+        <tracker_key>COAC</tracker_key>
+        <cmp_key>11310</cmp_key>
+        <owner>ENG - Francesco Arigliano</owner>
+        <backlog_keyword>FrontierCities</backlog_keyword>
+        <mode>Finished</mode>
+    </group>
+    <group name="IMPACT" group="Coaching">
+        <tracker_key>COAC</tracker_key>
+        <cmp_key>11311</cmp_key>
+        <owner>IMDEA - Leandro Guillen</owner>
+        <backlog_keyword>IMPACT</backlog_keyword>
+        <mode>Finished</mode>
+    </group>
+    <group name="INCENSe" group="Coaching">
+        <tracker_key>COAC</tracker_key>
+        <cmp_key>11312</cmp_key>
+        <owner>ENG - Pasquale Andriani</owner>
+        <backlog_keyword>INCENSe</backlog_keyword>
+        <mode>Finished</mode>
+    </group>
+    <group name="SmartAgriFood2" group="Coaching">
+        <tracker_key>COAC</tracker_key>
+        <cmp_key>11313</cmp_key>
+        <owner>ATOS - Ilknur Chulani</owner>
+        <backlog_keyword>SmartAgriFood2</backlog_keyword>
+        <mode>Finished</mode>
+    </group>
+    <group name="SOUL-FI" group="Coaching">
+        <tracker_key>COAC</tracker_key>
+        <cmp_key>11314</cmp_key>
+        <owner>TID - Sergio García</owner>
+        <backlog_keyword>SOUL-FI</backlog_keyword>
+        <mode>Finished</mode>
+    </group>
+    <group name="SpeedUp Europe" group="Coaching">
+        <tracker_key>COAC</tracker_key>
+        <cmp_key>11315</cmp_key>
+        <owner>IMDEA - Leandro Guillén</owner>
+        <backlog_keyword>SpeedUpEurope</backlog_keyword>
+        <mode>Finished</mode>
+    </group>
+
+
+    <!-- Collaboration -->
+    <group name="PPP Programme" group="Collaboration">
+        <tracker_key>WC</tracker_key>
+        <cmp_key>11718</cmp_key>
+        <owner>ATOS - Nuria de Lama</owner>
+        <backlog_keyword>PPP</backlog_keyword>
+    </group>
+    <group name="Other Initiatives" group="Collaboration">
+        <tracker_key>WC</tracker_key>
+        <cmp_key>11719</cmp_key>
+        <owner>ATOS - Nuria de Lama</owner>
+        <backlog_keyword>Other</backlog_keyword>
+    </group>
+    <group name="EIT Digital" group="Collaboration">
+        <tracker_key>WC</tracker_key>
+        <cmp_key>11720</cmp_key>
+        <owner>EIT-D Angelo Giuliana</owner>
+        <backlog_keyword>EIT</backlog_keyword>
+    </group>
+
+
+    <!-- Dissemination -->
+    <group name="BootCamps" group="Dissemination">
+        <tracker_key>WD</tracker_key>
+        <cmp_key>10351</cmp_key>
+        <owner></owner>
+        <backlog_keyword>BootCamps</backlog_keyword>
+    </group>
+    <group name="Campus Party" group="Dissemination">
+        <tracker_key>WD</tracker_key>
+        <cmp_key>10354</cmp_key>
+        <owner>FN - Javier De Vicente</owner>
+        <backlog_keyword>CampusParty</backlog_keyword>
+    </group>
+    <group name="Challenges" group="Dissemination">
+        <tracker_key>WD</tracker_key>
+        <cmp_key>10353</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Challenges</backlog_keyword>
+    </group>
+    <group name="Workshops" group="Dissemination">
+        <tracker_key>WD</tracker_key>
+        <cmp_key>10352</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Workshops</backlog_keyword>
+    </group>
+    <group name="EC Events" group="Dissemination">
+        <tracker_key>WD</tracker_key>
+        <cmp_key>11716</cmp_key>
+        <owner>Pablo Honrubia</owner>
+        <backlog_keyword>EC-Events</backlog_keyword>
+    </group>
+    <group name="FIWARE Events" group="Dissemination">
+        <tracker_key>WD</tracker_key>
+        <cmp_key>11715</cmp_key>
+        <owner>Pablo Honrubia</owner>
+        <backlog_keyword>FW-Events</backlog_keyword>
+    </group>
+    <group name="Third Party Events" group="Dissemination">
+        <tracker_key>WD</tracker_key>
+        <cmp_key>11714</cmp_key>
+        <owner>Pablo Honrubia</owner>
+        <backlog_keyword>TP-Events</backlog_keyword>
+    </group>
+
+
+    <!-- Exploitation -->
+    <group name="Open Source" group="Exploitation">
+        <tracker_key>EXPL</tracker_key>
+        <cmp_key>10290</cmp_key>
+        <owner>IBM - Kenneth Nagin</owner>
+        <backlog_keyword>OpenSource</backlog_keyword>
+    </group>
+    <group name="Exploitation Plans" group="Exploitation">
+        <tracker_key>EXPL</tracker_key>
+        <cmp_key>10287</cmp_key>
+        <owner>ATOS - Juan Bareño</owner>
+        <backlog_keyword>Plans</backlog_keyword>
+    </group>
+    <group name="Standardisation Relationships" group="Exploitation">
+        <tracker_key>EXPL</tracker_key>
+        <cmp_key>10289</cmp_key>
+        <owner>NEC - Tobias Jacobs</owner>
+        <backlog_keyword>Standardisation</backlog_keyword>
+    </group>
+
+
+    <!-- Press Office -->
+    <group name="Community Management" group="PressOffice">
+        <tracker_key>PRES</tracker_key>
+        <cmp_key>10302</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Community</backlog_keyword>
+    </group>
+    <group name="Off-Line Materials" group="PressOffice">
+        <tracker_key>PRES</tracker_key>
+        <cmp_key>10304</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Materials</backlog_keyword>
+    </group>
+    <group name="On-Line Materials" group="PressOffice">
+        <tracker_key>PRES</tracker_key>
+        <cmp_key>10305</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Materials</backlog_keyword>
+    </group>
+    <group name="Paid Media" group="PressOffice">
+        <tracker_key>PRES</tracker_key>
+        <cmp_key>10306</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Media</backlog_keyword>
+    </group>
+    <group name="Press Relations" group="PressOffice">
+        <tracker_key>PRES</tracker_key>
+        <cmp_key>10307</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Relations</backlog_keyword>
+    </group>
+    <group name="Web Management" group="PressOffice">
+        <tracker_key>PRES</tracker_key>
+        <cmp_key>10301</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Web</backlog_keyword>
+    </group>
+
+
+    <!-- Sustainability -->
+    <group name="Academy Relationships" group="Sustainability">
+        <tracker_key>SUS</tracker_key>
+        <cmp_key>10511</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Academy</backlog_keyword>
+    </group>
+    <group name="Bylaws" group="Sustainability">
+        <tracker_key>SUS</tracker_key>
+        <cmp_key>10345</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Bylaws</backlog_keyword>
+    </group>
+    <group name="Developers Community" group="Sustainability">
+        <tracker_key>SUS</tracker_key>
+        <cmp_key>10923</cmp_key>
+        <owner>TID - José Manuel Cantera</owner>
+        <backlog_keyword>DevCommunity</backlog_keyword>
+    </group>
+    <group name="Developers Web Site" group="Sustainability">
+        <tracker_key>SUS</tracker_key>
+        <cmp_key>10922</cmp_key>
+        <owner>TID - José Manuel Cantera</owner>
+        <backlog_keyword>DevWebSite</backlog_keyword>
+    </group>
+    <group name="Showcases" group="Sustainability">
+        <tracker_key>SUS</tracker_key>
+        <cmp_key>11717</cmp_key>
+        <owner>TID - José Manuel Cantera</owner>
+        <backlog_keyword>Showcases</backlog_keyword>
+    </group>
+    <group name="Training Material" group="Sustainability">
+        <tracker_key>SUS</tracker_key>
+        <cmp_key>10513</cmp_key>
+        <owner>E-IIS - Laura Pucci</owner>
+        <backlog_keyword>TrainingMaterial</backlog_keyword>
+    </group>
+    <group name="Trust Label" group="Sustainability">
+        <tracker_key>SUS</tracker_key>
+        <cmp_key>10343</cmp_key>
+        <owner>EGM - Franck Le Gall</owner>
+        <backlog_keyword>TrustLabel</backlog_keyword>
+    </group>
+</data>

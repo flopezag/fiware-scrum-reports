@@ -1,0 +1,255 @@
+<?xml version="1.0"?>
+<data>
+    <channel name="CEED-Tech">
+        <cmp_name>CEED Tech</cmp_name>
+        <tracker_key>HELC</tracker_key>
+        <cmp_key>10356</cmp_key>
+        <inbox>fiware-ceedtech-coaching@lists.fiware.org</inbox>
+    </channel>
+
+    <channel name="CreatiFI">
+        <cmp_name>CreatiFI</cmp_name>
+        <tracker_key>HELC</tracker_key>
+        <cmp_key>10357</cmp_key>
+        <inbox>fiware-creatifi-coaching@lists.fiware.org</inbox>
+    </channel>
+
+    <channel name="EuropeanPioneers">
+        <cmp_name>EuropeanPioneers</cmp_name>
+        <tracker_key>HELC</tracker_key>
+        <cmp_key>10358</cmp_key>
+        <inbox>fiware-europeanpioneers-coaching@lists.fiware.org</inbox>
+    </channel>
+
+    <channel name="FABulous">
+        <cmp_name>FABulous</cmp_name>
+        <tracker_key>HELC</tracker_key>
+        <cmp_key>10359</cmp_key>
+    </channel>
+
+    <channel name="FI-ADOPT">
+        <cmp_name>FI-ADOPT</cmp_name>
+        <tracker_key>HELC</tracker_key>
+        <cmp_key>10361</cmp_key>
+    </channel>
+
+    <channel name="FI-C3">
+        <cmp_name>FI-C3</cmp_name>
+        <tracker_key>HELC</tracker_key>
+        <cmp_key>10360</cmp_key>
+    </channel>
+
+    <channel name="FICHe">
+        <cmp_name>FICHe</cmp_name>
+        <tracker_key>HELC</tracker_key>
+        <cmp_key>10362</cmp_key>
+    </channel>
+
+    <channel name="Finish">
+        <cmp_name>Finish</cmp_name>
+        <tracker_key>HELC</tracker_key>
+        <cmp_key>10363</cmp_key>
+    </channel>
+
+    <channel name="FINODEX">
+        <cmp_name>FINODEX</cmp_name>
+        <tracker_key>HELC</tracker_key>
+        <cmp_key>10364</cmp_key>
+    </channel>
+
+    <channel name="FRACTALS">
+        <cmp_name>FRACTALS</cmp_name>
+        <tracker_key>HELC</tracker_key>
+        <cmp_key>10365</cmp_key>
+    </channel>
+
+    <channel name="FrontierCities">
+        <cmp_name>FrontierCities</cmp_name>
+        <tracker_key>HELC</tracker_key>
+        <cmp_key>10366</cmp_key>
+    </channel>
+
+    <channel name="IMPACT">
+        <cmp_name>IMPACT</cmp_name>
+        <tracker_key>HELC</tracker_key>
+        <cmp_key>10367</cmp_key>
+    </channel>
+
+    <channel name="INCENSe">
+        <cmp_name>INCENSe</cmp_name>
+        <tracker_key>HELC</tracker_key>
+        <cmp_key>10368</cmp_key>
+    </channel>
+
+    <channel name="SmartAgriFood2">
+        <cmp_name>SmartAgriFood2</cmp_name>
+        <tracker_key>HELC</tracker_key>
+        <cmp_key>10369</cmp_key>
+    </channel>
+
+    <channel name="SOUL-FI">
+        <cmp_name>SOUL-FI</cmp_name>
+        <tracker_key>HELC</tracker_key>
+        <cmp_key>10370</cmp_key>
+    </channel>
+
+    <channel name="SpeedUp-Europe">
+        <cmp_name>SpeedUp Europe</cmp_name>
+        <tracker_key>HELC</tracker_key>
+        <cmp_key>10371</cmp_key>
+    </channel>
+
+    <channel name="ODINE">
+        <cmp_name>ODINE</cmp_name>
+        <tracker_key>HELC</tracker_key>
+        <cmp_key>11501</cmp_key>
+    </channel>
+
+    <channel name="FIWARE-Coaching">
+        <cmp_name>FIWARE-Coaching</cmp_name>
+        <tracker_key>HELC</tracker_key>
+        <cmp_key>11904</cmp_key>
+    </channel>
+
+
+    <channel name="Collaboration">
+        <cmp_name>COLLABORATION-REQ</cmp_name>
+        <tracker_key>HELP</tracker_key>
+        <cmp_key>10283</cmp_key>
+        <inbox>fiware-collaboration-req@lists.fiware.org</inbox>
+    </channel>
+    <channel name="Feedback">
+        <cmp_name>FEEDBACK</cmp_name>
+        <tracker_key>HELP</tracker_key>
+        <cmp_key>10281</cmp_key>
+        <inbox>fiware-feedback@lists.fiware.org</inbox>
+    </channel>
+    <channel name="General">
+        <cmp_name>GENERAL-HELP</cmp_name>
+        <tracker_key>HELP</tracker_key>
+        <cmp_key>10277</cmp_key>
+        <inbox>fiware-general-help@lists.fiware.org</inbox>
+    </channel>
+    <channel name="Lab">
+        <cmp_name>LAB-HELP</cmp_name>
+        <tracker_key>HELP</tracker_key>
+        <cmp_key>10279</cmp_key>
+        <inbox>fiware-lab-help@lists.fiware.org</inbox>
+    </channel>
+    <channel name="Mundus">
+        <cmp_name>MUNDUS-REQ</cmp_name>
+        <tracker_key>HELP</tracker_key>
+        <cmp_key>10286</cmp_key>
+        <inbox>fiware-mundus-req@lists.fiware.org</inbox>
+    </channel>
+    <channel name="OpenData">
+        <cmp_name>OPEN-DATA-REQ</cmp_name>
+        <tracker_key>HELP</tracker_key>
+        <cmp_key>10285</cmp_key>
+        <inbox>fiware-open-data-req@lists.fiware.org</inbox>
+    </channel>
+    <channel name="Operations">
+        <cmp_name>OPS-HELP</cmp_name>
+        <tracker_key>HELP</tracker_key>
+        <cmp_key>10280</cmp_key>
+        <inbox>fiware-ops-help@lists.fiware.org</inbox>
+    </channel>
+    <channel name="SmartCities">
+        <cmp_name>SMART-CITIES-REQ</cmp_name>
+        <tracker_key>HELP</tracker_key>
+        <cmp_key>10284</cmp_key>
+        <inbox>fiware-smart-cities-req@lists.fiware.org</inbox>
+    </channel>
+    <channel name="Speakers">
+        <cmp_name>SPEAKERS-REQ</cmp_name>
+        <tracker_key>HELP</tracker_key>
+        <cmp_key>10282</cmp_key>
+        <inbox>fiware-speakers-req@lists.fiware.org</inbox>
+    </channel>
+    <channel name="Tech">
+        <cmp_name>TECH-HELP</cmp_name>
+        <tracker_key>HELP</tracker_key>
+        <cmp_key>10278</cmp_key>
+        <inbox>fiware-tech-help@jira.fiware.org</inbox>
+    </channel>
+    <channel name="Training">
+        <cmp_name>TRAINING-REQ</cmp_name>
+        <tracker_key>HELP</tracker_key>
+        <cmp_key>10404</cmp_key>
+        <inbox>fiware-trainning-req@jira.fiware.org</inbox>
+    </channel>
+
+
+    <channel name="Academy">
+        <cmp_name>ACADEMY</cmp_name>
+        <tracker_key>SUPP</tracker_key>
+        <cmp_key>10700</cmp_key>
+        <inbox>jira-support-desk@jira.fiware.org</inbox>
+    </channel>
+    <channel name="Askbot">
+        <cmp_name>ASKBOT</cmp_name>
+        <tracker_key>SUPP</tracker_key>
+        <cmp_key>11100</cmp_key>
+        <inbox>jira-support-desk@jira.fiware.org</inbox>
+    </channel>
+    <channel name="Backlog">
+        <cmp_name>BACKLOG</cmp_name>
+        <tracker_key>SUPP</tracker_key>
+        <cmp_key>10507</cmp_key>
+        <inbox>jira-support-desk@jira.fiware.org</inbox>
+    </channel>
+    <channel name="Catalogue">
+        <cmp_name>CATALOGUE</cmp_name>
+        <tracker_key>SUPP</tracker_key>
+        <cmp_key>10701</cmp_key>
+    </channel>
+    <channel name="Forge">
+        <cmp_name>FORGE</cmp_name>
+        <tracker_key>SUPP</tracker_key>
+        <cmp_key>10400</cmp_key>
+        <inbox>jira-support-desk@jira.fiware.org</inbox>
+    </channel>
+    <channel name="Jira">
+        <cmp_name>JIRA</cmp_name>
+        <tracker_key>SUPP</tracker_key>
+        <cmp_key>10246</cmp_key>
+        <inbox>jira-support-desk@jira.fiware.org</inbox>
+    </channel>
+    <channel name="Ldap">
+        <cmp_name>LDAP</cmp_name>
+        <tracker_key>SUPP</tracker_key>
+        <cmp_key>11104</cmp_key>
+        <inbox>jira-support-desk@jira.fiware.org</inbox>
+    </channel>
+    <channel name="Mail">
+        <cmp_name>MAIL</cmp_name>
+        <tracker_key>SUPP</tracker_key>
+        <cmp_key>10247</cmp_key>
+        <inbox>jira-support-desk@jira.fiware.org</inbox>
+    </channel>
+    <channel name="Marketplace">
+        <cmp_name>MARKETPLACE</cmp_name>
+        <tracker_key>SUPP</tracker_key>
+        <cmp_key>11706</cmp_key>
+        <inbox>jira-support-desk@jira.fiware.org</inbox>
+    </channel>
+
+    <channel name="Slack">
+        <cmp_name>Slack</cmp_name>
+        <tracker_key>SUPP</tracker_key>
+        <cmp_key>11000</cmp_key>
+        <inbox>jira-support-desk@jira.fiware.org</inbox>
+    </channel>
+    <channel name="Surveys">
+        <cmp_name>Surveys</cmp_name>
+        <tracker_key>SUPP</tracker_key>
+        <cmp_key>11201</cmp_key>
+        <inbox>jira-support-desk@jira.fiware.org</inbox>
+    </channel>
+    <channel name="WebSite">
+        <cmp_name>WEBSITE</cmp_name>
+        <tracker_key>SUPP</tracker_key>
+        <cmp_key>10702</cmp_key>
+        <inbox>jira-support-desk@jira.fiware.org</inbox>
+    </channel>
+</data>

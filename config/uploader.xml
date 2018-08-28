@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<uploads>
+    <upload target="backlog">
+        <docman group_id='59' at_id='598'/>
+    </upload>
+    <upload target="helpdesk-tech">
+        <docman group_id="59" at_id="624"/>
+    </upload>
+</uploads>

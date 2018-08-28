@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+<data>
+    <node name='Berlin'>
+        <support>BerlinSupportTeam</support>
+        <mode>Closed</mode>
+        <worker>Berlin Node Helpdesk</worker>
+    </node>
+    <node name='Brittany'>
+        <support>support-brittany</support>
+        <mode>Closed</mode>
+        <worker></worker>
+    </node>
+    <node name='Budapest'>
+        <support>WIGNER</support>
+        <mode>Active</mode>
+        <worker>Budapest Node Helpdesk</worker>
+        <worker>Sándor Laki</worker>
+    </node>
+    <node name='Crete'>
+        <support>CreteNHD</support>
+        <mode>Active</mode>
+        <worker>Crete Node Helpdesk</worker>
+    </node>
+    <node name="Genoa">
+        <support>tntlab</support>
+        <mode>Active</mode>
+        <worker></worker>
+    </node>
+    <node name='Gent'>
+        <support>IMINDS</support>
+        <mode>Closed</mode>
+        <worker>Gent Node Helpdesk</worker>
+    </node>
+    <node name="Hannover">
+        <support>netzlink</support>
+        <mode>Active</mode>
+        <worker></worker>
+    </node>
+    <node name='Karlskrona'>
+        <support>BTH</support>
+        <mode>Closed</mode>
+        <worker>Karlskrona Node Helpdesk</worker>
+    </node>
+    <node name='Lannion'>
+        <support>lannionsupport</support>
+        <mode>Active</mode>
+        <worker>Lannion Node Helpdesk</worker>
+    </node>
+    <node name='Messina'>
+        <support>MessinaNHD</support>
+        <mode>Negotiation</mode>
+        <worker>Messina Node Helpdesk</worker>
+    </node>
+    <node name='Mexico'>
+        <support>internetdelfuturo</support>
+        <mode>Active</mode>
+        <worker>Mexico Node Support</worker>
+    </node>
+    <node name="Netherland">
+        <support></support>
+        <mode>Negotiation</mode>
+        <worker></worker>
+    </node>
+    <node name='PiraeusN'>
+        <support>neuropublic</support>
+        <mode>Closed</mode>
+        <worker>PiraeusN Node Helpdesk</worker>
+    </node>
+    <node name='PiraeusU'>
+        <support>UPRC</support>
+        <mode>Active</mode>
+        <worker>PiraeusU Node Helpdesk</worker>
+    </node>
+    <node name='Poznan'>
+        <support>PSNC</support>
+        <mode>Active</mode>
+        <worker>Poznan Node Helpdesk</worker>
+    </node>
+    <node name='Prague'>
+        <support>prgsupportteam</support>
+        <mode>Closed</mode>
+        <worker>Prague Node Helpdesk</worker>
+    </node>
+    <node name="SaoPaolo">
+        <support>pad_lsi</support>
+        <mode>Active</mode>
+        <worker></worker>
+    </node>
+    <node name="SophiaAntipolis">
+        <support>Com4Innov</support>
+        <mode>Active</mode>
+        <worker>Sophia Antipolis Node Helpdesk</worker>
+    </node>
+    <node name='Spain'>
+        <support>spain.node</support>
+        <mode>Active</mode>
+        <worker>Spain Node Support Team</worker>
+        <worker>Leandro Guillén</worker>
+        <worker>Henar Muñoz</worker>
+        <worker>Jesus Movilla</worker>
+        <worker>Fernando Lopez</worker>
+        <worker>Guillermo Jimenez</worker>
+        <worker>José Ignacio Carretero Guarde</worker>
+        <worker>Jose Maria Peribañez</worker>
+    </node>
+    <node name="SpainTenerife">
+        <support>fw_support_st</support>
+        <mode>Active</mode>
+        <worker></worker>
+    </node>
+    <node name='Stockholm'>
+        <support>stockholm</support>
+        <mode>Closed</mode>
+        <worker>Stockholm Node Helpdesk</worker>
+    </node>
+    <node name='Trento'>
+        <support>TrentoNodeTeam</support>
+        <mode>Active</mode>
+        <worker>Trento Node Team</worker>
+    </node>
+    <node name="Vicenza">
+        <support>mauropecetti</support>
+        <mode>Active</mode>
+        <worker></worker>
+    </node>
+    <node name='Volos'>
+        <support>UTH</support>
+        <mode>Active</mode>
+        <worker>Volos Node Helpdesk</worker>
+    </node>
+    <node name="Waterford">
+        <support>Tynan</support>
+        <mode>Closed</mode>
+        <worker>Waterford Node Helpdesk</worker>
+    </node>
+    <node name="Wroclaw">
+        <support>radamkiewicz</support>
+        <mode>Active</mode>
+        <worker>patrykschauer</worker>
+    </node>
+    <node name="Zurich">
+        <support>ZHAW Node Helpdesk</support>
+        <mode>Active</mode>
+        <worker>Zurich Node Helpdesk</worker>
+    </node>
+    <node name="ZurichS">
+        <support>zurichs</support>
+        <mode>Active</mode>
+        <worker></worker>
+    </node>
+</data>

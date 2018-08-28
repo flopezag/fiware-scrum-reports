@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<data>
+    <tool name="cPlatform" chapter="Catalogue">
+        <tracker_key>CAT</tracker_key>
+        <cmp_key>10340</cmp_key>
+        <owner>UPM</owner>
+        <type>Tool</type>
+        <mode>Development</mode>
+        <backlog_keyword>Platform</backlog_keyword>
+        <dissemination>Private</dissemination>
+    </tool>
+    <tool name="aPlatform" chapter="Academy">
+         <tracker_key>ACA</tracker_key>
+         <cmp_key>10335</cmp_key>
+         <owner>ENG</owner>
+         <type>Tool</type>
+         <mode>Development</mode>
+         <backlog_keyword>Platform</backlog_keyword>
+         <dissemination>Private</dissemination>
+    </tool>
+    <tool name="Builder" chapter="Academy">
+         <tracker_key>ACA</tracker_key>
+         <cmp_key>10338</cmp_key>
+         <owner>ENG</owner>
+         <type>Tool</type>
+         <mode>Development</mode>
+         <backlog_keyword>Builder</backlog_keyword>
+         <dissemination>Private</dissemination>
+    </tool>
+
+    <tool name="Player" chapter="Academy">
+         <tracker_key>ACA</tracker_key>
+         <cmp_key>10337</cmp_key>
+         <owner>ENG</owner>
+         <type>Tool</type>
+         <mode>Development</mode>
+         <backlog_keyword>Player</backlog_keyword>
+         <dissemination>Private</dissemination>
+    </tool>
+    <tool name="mPlatform" chapter="Marketplace">
+         <tracker_key>MRK</tracker_key>
+         <cmp_key>11705</cmp_key>
+         <owner>who?</owner>
+         <type>Tool</type>
+         <mode>Development</mode>
+         <backlog_keyword>Platform</backlog_keyword>
+         <dissemination>Private</dissemination>
+    </tool>
+</data>

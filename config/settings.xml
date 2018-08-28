@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<data>
+    <logo1>Logo Fiware Azul.png</logo1>
+    <logo2>Logo Fiware Azul Osc.png</logo2>
+    <logo3>fiware_logo.jpg</logo3>
+
+    <domain>forge.fiware.org</domain>
+
+    <dashboard>
+        <deliverable>No</deliverable>
+    </dashboard>
+
+    <server name='FORGE'>
+        <domain>forge.fiware.org</domain>
+        <username>user</username>
+        <password>password</password>
+    </server>
+
+    <server name="JIRA">
+        <domain>jira.fiware.org</domain>
+        <username>user</username>
+        <password>password</password>
+    </server>
+
+    <server name="JIRATEST">
+        <domain>130.206.80.89</domain>
+        <username>user</username>
+        <password>password</password>
+    </server>
+
+    <server name="BACKLOG">
+        <domain>backlog.fiware.org</domain>
+        <username>user</username>
+        <password>password</password>
+    </server>
+</data>

@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+
+<data>
+    <channel name="CEED Tech">
+        <tracker_key>FLUA</tracker_key>
+        <cmp_key>10800</cmp_key>
+    </channel>
+    <channel name="CreatiFI">
+        <tracker_key>FLUA</tracker_key>
+        <cmp_key>10600</cmp_key>
+    </channel>
+    <channel name="EuropeanPioneers">
+        <tracker_key>FLUA</tracker_key>
+        <cmp_key>10602</cmp_key>
+    </channel>
+    <channel name="FABulous">
+        <tracker_key>FLUA</tracker_key>
+        <cmp_key>10615</cmp_key>
+    </channel>
+    <channel name="FI-ADOPT">
+        <tracker_key>FLUA</tracker_key>
+        <cmp_key>10609</cmp_key>
+    </channel>
+    <channel name="FI-C3">
+        <tracker_key>FLUA</tracker_key>
+        <cmp_key>10603</cmp_key>
+    </channel>
+    <channel name="FI-PPP">
+        <tracker_key>FLUA</tracker_key>
+        <cmp_key>10616</cmp_key>
+    </channel>
+    <channel name="FICHe">
+        <tracker_key>FLUA</tracker_key>
+        <cmp_key>10611</cmp_key>
+    </channel>
+    <channel name="Finish">
+        <tracker_key>FLUA</tracker_key>
+        <cmp_key>10613</cmp_key>
+    </channel>
+    <channel name="FINODEX">
+        <tracker_key>FLUA</tracker_key>
+        <cmp_key>10610</cmp_key>
+    </channel>
+    <channel name="FRACTALS">
+        <tracker_key>FLUA</tracker_key>
+        <cmp_key>10612</cmp_key>
+    </channel>
+    <channel name="FrontierCities">
+        <tracker_key>FLUA</tracker_key>
+        <cmp_key>10604</cmp_key>
+    </channel>
+    <channel name="IMPACT">
+        <tracker_key>FLUA</tracker_key>
+        <cmp_key>10605</cmp_key>
+    </channel>
+    <channel name="INCENSe">
+        <tracker_key>FLUA</tracker_key>
+        <cmp_key>10606</cmp_key>
+    </channel>
+    <channel name="SmartAgriFood2">
+        <tracker_key>FLUA</tracker_key>
+        <cmp_key>10614</cmp_key>
+    </channel>
+    <channel name="SOUL-FI">
+        <tracker_key>FLUA</tracker_key>
+        <cmp_key>10607</cmp_key>
+    </channel>
+    <channel name="SpeedUp Europe">
+        <tracker_key>FLUA</tracker_key>
+        <cmp_key>10608</cmp_key>
+    </channel>
+    <channel name="ODINE">
+        <tracker_key>FLUA</tracker_key>
+        <cmp_key>11503</cmp_key>
+    </channel>
+    <channel name="Other">
+        <tracker_key>FLUA</tracker_key>
+        <cmp_key>11101</cmp_key>
+    </channel>
+</data>

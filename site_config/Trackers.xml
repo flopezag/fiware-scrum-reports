@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<data>
+    <tracker name="Coordination" type="MNG">
+        <keystone>COR</keystone>
+    </tracker>
+    <tracker name="TechnicalCoordination" type="MNG">
+        <keystone>TCOR</keystone>
+    </tracker>
+    <tracker name="Apps" type="CHAPTER">
+        <keystone>APP</keystone>
+        <leader>ENG - Alessandro Portosa</leader>
+        <architect>UPM - Miguel Jimenez</architect>
+        <name>Apps/Service and Data Delivery</name>
+        <inbox>fiware-apps-jira@jira.fiware.org</inbox>
+    </tracker>
+    <tracker name="Cloud" type="CHAPTER">
+        <keystone>CLD</keystone>
+        <leader>IBM - Kenneth Nagin</leader>
+        <architect>IBM - Alex Glikson</architect>
+        <name>Cloud Hosting</name>
+        <inbox>fiware-cloud-jira@jira.fiware.org</inbox>
+    </tracker>
+    <tracker name="Data" type="CHAPTER">
+        <keystone>DATA</keystone>
+        <leader>FF - Jose Manuel Cantera</leader>
+        <architect>FF - Jose Manuel Cantera</architect>
+        <name>Data/Media and Context Management</name>
+        <inbox>fiware-data-jira@jira.fiware.org</inbox>
+    </tracker>
+    <tracker name="I2ND" type="CHAPTER">
+        <keystone>MIND</keystone>
+        <leader> TID - Miguel Carrillo and Manuel Escriche</leader>
+        <architect>ZHAW - Thomas Bohnert</architect>
+        <name>Advanced Middleware and Interfaces to Networks and Robotics</name>
+        <inbox>fiware-i2nd-jira@jira.fiware.org</inbox>
+    </tracker>
+    <tracker name="IoT" type="CHAPTER">
+        <keystone>IOT</keystone>
+        <leader>ORANGE - Gilles Privat</leader>
+        <architect>FF - Fernando Lopez</architect>
+        <name>IoT Services Enablement</name>
+        <inbox>fiware-iot-jira@jira.fiware.org</inbox>
+    </tracker>
+    <tracker name="Security" type="CHAPTER">
+        <keystone>SEC</keystone>
+        <leader>TS - Pascal Bisson</leader>
+        <architect>TS - Cyril Dangerville</architect>
+        <name>Security</name>
+        <inbox>fiware-security-jira@jira.fiware.org</inbox>
+    </tracker>
+    <tracker name="WebUI" type="CHAPTER">
+        <keystone>WEB</keystone>
+        <leader>DFKI - Torsten Spieldenner</leader>
+        <architect>DFKI - Torsten Spieldenner</architect>
+        <name>Advanced Web-based User Interfaces</name>
+        <inbox>fiware-webui-jira@jira.fiware.org</inbox>
+    </tracker>
+    <tracker name="Ops" type="CHAPTER">
+        <keystone>OPS</keystone>
+        <leader>MARTEL - Federico Michele Facca</leader>
+        <name>FI-Ops Tools</name>
+        <inbox>fiware-ops-jira@jira.fiware.org</inbox>
+    </tracker>
+    <tracker name="Academy" type="CHAPTER">
+        <keystone>ACA</keystone>
+        <leader>E-IIS - Davide Dalle Carbonare</leader>
+        <name>Sustainaility Support Tools - Academy</name>
+        <inbox>fiware-academy-jira@jira.fiware.org</inbox>
+    </tracker>
+    <tracker name="Catalogue" type="CHAPTER">
+        <keystone>CAT</keystone>
+        <leader>E-IIS - Davide Dalle Carbonare</leader>
+        <name>Sustainability Support Tools - Catalogue</name>
+        <inbox>fiware-catalogue-jira@jira.fiware.org</inbox>
+    </tracker>
+    <tracker name="Marketplace" type="CHAPTER">
+        <keystone>MRK</keystone>
+        <leader>E-IIS - Davide Dalle Carbonare</leader>
+        <name>Sustainability Support Tools - Marketplace</name>
+        <inbox>fiware-marketplace-jira@fi-ware.org</inbox>
+    </tracker>
+
+    <!--
+    <tracker name="InGEIs" type="CHAPTER">
+        <keystone>INGEI</keystone>
+        <name>Incubated GEIs</name>
+    </tracker>
+    -->
+    <tracker name="Lab" type="LAB">
+        <keystone>LAB</keystone>
+        <leader>E-IIS - Alfonso Pietropaolo</leader>
+        <inbox>fiware-lab-jira@jira.fiware.org</inbox>
+    </tracker>
+    <tracker name="Coaching" type="WG">
+        <keystone>COAC</keystone>
+        <leader>ENG - Stefano Di Panfilis</leader>
+        <inbox>fiware-coaching-jira@jira.fiware.org</inbox>
+    </tracker>
+    <tracker name="Collaboration" type="WG">
+        <keystone>WC</keystone>
+        <leader>ATOS - Nuria De Lama</leader>
+        <inbox>fiware-collaboration-jira@jira.fiware.org</inbox>
+    </tracker>
+    <tracker name="Dissemination" type="WG">
+        <keystone>WD</keystone>
+        <leader>Ogilvy - Pablo Honrubia</leader>
+        <inbox>fiware-dissemination-jira@jira.fiware.org</inbox>
+    </tracker>
+    <tracker name="Exploitation" type="WG">
+        <keystone>EXPL</keystone>
+        <leader>ATOS - Juan Bareño</leader>
+        <inbox>fiware-exploitation-jira@jira.fiware.org</inbox>
+    </tracker>
+    <tracker name="PressOffice" type="WG">
+        <keystone>PRES</keystone>
+        <leader>Ogilvy - Pablo Honrubia</leader>
+    </tracker>
+    <tracker name="Sustainability" type="WG">
+        <keystone>SUS</keystone>
+        <leader>Orange - Jöel Riga</leader>
+        <inbox>fiware-sustainability-jira@jira.fiware.org</inbox>
+    </tracker>
+    <tracker name="Main-Help-Desk" type="HDESK">
+        <keystone>HELP</keystone>
+        <leader>FF - Fernando Lopez</leader>
+        <inbox>jira-help-desk@jira.fiware.org</inbox>
+    </tracker>
+    <tracker name="Coaches-Help-Desk" type="HDESK">
+        <keystone>HELC</keystone>
+        <leader>Stefano Di Panfilis</leader>
+        <inbox>coaches-help-desk-jira@jira.fiware.org</inbox>
+    </tracker>
+    <tracker name="ToolsSupport-Help-Desk" type="HDESK">
+        <keystone>SUPP</keystone>
+        <leader>FF - Fernando Lopez</leader>
+        <inbox>jira-support-desk@jira.fiware.org</inbox>
+    </tracker>
+    <tracker name="Accounts-Desk" type="ADESK">
+        <keystone>FLUA</keystone>
+        <leader>E-IIS Alfonso Pietropaolo</leader>
+    </tracker>
+</data>

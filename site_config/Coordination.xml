@@ -1,0 +1,135 @@
+<?xml version="1.0"?>
+<data>
+    <coordinator name="Friendliness" tracker="Coordination">
+        <cmp_key>11702</cmp_key>
+        <tracker_key>TCOR</tracker_key>
+        <owner>TID</owner>
+        <backlog_keyword>Friend</backlog_keyword>
+    </coordinator>
+    <coordinator name="TechnicalCommitte" tracker="Coordination">
+        <cmp_key>10509</cmp_key>
+        <tracker_key>TCOR</tracker_key>
+        <owner>FF</owner>
+        <backlog_keyword>_Coordination</backlog_keyword>
+    </coordinator>
+    <coordinator name="SuccessStories" tracker="Coordination">
+        <cmp_key>11701</cmp_key>
+        <tracker_key>TCOR</tracker_key>
+        <owner>TID</owner>
+        <backlog_keyword>SuccessStories</backlog_keyword>
+    </coordinator>
+    <coordinator name="QualityAssurance" tracker="Coordination">
+        <cmp_key>11700</cmp_key>
+        <tracker_key>TCOR</tracker_key>
+        <owner>ATOS</owner>
+        <backlog_keyword>QualityAssurance</backlog_keyword>
+    </coordinator>
+    <coordinator name="Agile" tracker="Coordination">
+        <cmp_key>10249</cmp_key>
+        <tracker_key>COR</tracker_key>
+        <owner>TID</owner>
+        <backlog_keyword>Agile</backlog_keyword>
+    </coordinator>
+    <coordinator name="Deliverables" tracker="Coordination">
+        <cmp_key>10401</cmp_key>
+        <tracker_key>COR</tracker_key>
+        <owner>TID</owner>
+        <backlog_keyword>Deliverable</backlog_keyword>
+    </coordinator>
+    <coordinator name="Documentation" tracker="Coordination">
+        <cmp_key>11500</cmp_key>
+        <tracker_key>COR</tracker_key>
+        <owner>TID</owner>
+        <backlog_keyword>Documentation</backlog_keyword>
+    </coordinator>
+    <coordinator name="Risks" tracker="Coordination">
+        <cmp_key>10319</cmp_key>
+        <tracker_key>COR</tracker_key>
+        <owner>TID</owner>
+        <backlog_keyword>RiskManagement</backlog_keyword>
+    </coordinator>
+    <coordinator name="Issues" tracker="Coordination">
+        <cmp_key>11703</cmp_key>
+        <tracker_key>COR</tracker_key>
+        <owner>TID</owner>
+        <backlog_keyword>IssuesManagement</backlog_keyword>
+    </coordinator>
+    <coordinator name="SMTools" tracker="Coordination">
+        <cmp_key>11200</cmp_key>
+        <tracker_key>COR</tracker_key>
+        <owner>TID</owner>
+        <backlog_keyword>SMTool</backlog_keyword>
+    </coordinator>
+    <coordinator name="_Coordination" tracker="Apps">
+        <cmp_key>10255</cmp_key>
+        <tracker_key>APP</tracker_key>
+    </coordinator>
+    <coordinator name="_Coordination" tracker="Cloud">
+        <cmp_key>10261</cmp_key>
+        <tracker_key>CLD</tracker_key>
+    </coordinator>
+    <coordinator name="_Coordination" tracker="Data">
+        <cmp_key>10262</cmp_key>
+        <tracker_key>DATA</tracker_key>
+    </coordinator>
+    <coordinator name="_Coordination" tracker="I2ND">
+        <cmp_key>10263</cmp_key>
+        <tracker_key>MIND</tracker_key>
+    </coordinator>
+    <coordinator name="_Coordination" tracker="IoT">
+        <cmp_key>10264</cmp_key>
+        <tracker_key>IOT</tracker_key>
+    </coordinator>
+    <coordinator name="_Coordination" tracker="Security">
+        <cmp_key>10265</cmp_key>
+        <tracker_key>SEC</tracker_key>
+    </coordinator>
+    <coordinator name="_Coordination" tracker="WebUI">
+        <cmp_key>10266</cmp_key>
+        <tracker_key>WEB</tracker_key>
+    </coordinator>
+    <coordinator name="_Coordination" tracker="Ops">
+        <cmp_key>10268</cmp_key>
+        <tracker_key>OPS</tracker_key>
+    </coordinator>
+    <coordinator name="_Coordination" tracker="Lab">
+        <cmp_key>10267</cmp_key>
+        <tracker_key>LAB</tracker_key>
+    </coordinator>
+    <coordinator name="_Coordination" tracker="Catalogue">
+        <cmp_key>10276</cmp_key>
+        <tracker_key>CAT</tracker_key>
+    </coordinator>
+    <coordinator name="_Coordination" tracker="Academy">
+        <cmp_key>10269</cmp_key>
+        <tracker_key>ACA</tracker_key>
+    </coordinator>
+    <coordinator name="_Coordination" tracker="Marketplace">
+        <cmp_key>11704</cmp_key>
+        <tracker_key>MRK</tracker_key>
+    </coordinator>
+    <coordinator name="_Coordination" tracker="Coaching">
+        <cmp_key>10270</cmp_key>
+        <tracker_key>COAC</tracker_key>
+    </coordinator>
+    <coordinator name="_Coordination" tracker="Collaboration">
+        <cmp_key>10271</cmp_key>
+        <tracker_key>WC</tracker_key>
+    </coordinator>
+    <coordinator name="_Coordination" tracker="Dissemination">
+        <cmp_key>10272</cmp_key>
+        <tracker_key>WD</tracker_key>
+    </coordinator>
+    <coordinator name="_Coordination" tracker="Exploitation">
+        <cmp_key>10275</cmp_key>
+        <tracker_key>EXPL</tracker_key>
+    </coordinator>
+    <coordinator name="_Coordination" tracker="PressOffice">
+        <cmp_key>10274</cmp_key>
+        <tracker_key>PRES</tracker_key>
+    </coordinator>
+    <coordinator name="_Coordination" tracker="Sustainability">
+        <cmp_key>10273</cmp_key>
+        <tracker_key>SUS</tracker_key>
+    </coordinator>
+</data>

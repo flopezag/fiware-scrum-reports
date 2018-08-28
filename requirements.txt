@@ -1,0 +1,6 @@
+# Project executed with Python3.6
+# Use virtualenv -p python3.6 env
+
+XlsxWriter==1.0.2
+requests==2.18.4
+python-dateutil==2.6.1

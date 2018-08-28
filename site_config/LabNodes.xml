@@ -1,0 +1,231 @@
+<?xml version="1.0"?>
+<data>
+    <component name="Recovery">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>10801</cmp_key>
+        <owner>ENG</owner>
+        <backlog_keyword>Recovery</backlog_keyword>
+    </component>
+    <component name="Deployment">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>10292</cmp_key>
+        <owner>TID</owner>
+        <backlog_keyword>Recovery</backlog_keyword>
+    </component>
+    <component name="Support">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>10703</cmp_key>
+        <owner>TID</owner>
+        <backlog_keyword>Support</backlog_keyword>
+    </component>
+    <component name="Test Bed">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>10349</cmp_key>
+        <owner>TID</owner>
+        <backlog_keyword>TestBed</backlog_keyword>
+    </component>
+    <!--             -->
+    <node name="Berlin">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11804</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Berlin</backlog_keyword>
+        <mode>Closed</mode>
+    </node>
+        <node name="Brittany">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11840</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Brittany</backlog_keyword>
+        <mode>Active</mode>
+    </node>
+    <node name="Budapest">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11806</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Budapest</backlog_keyword>
+        <mode>Active</mode>
+    </node>
+    <node name="Crete">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11807</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Crete</backlog_keyword>
+        <mode>Active</mode>
+    </node>
+    <node name="Genoa">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11808</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Genoa</backlog_keyword>
+        <mode>Active</mode>
+    </node>
+    <node name="Gent">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11809</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Gent</backlog_keyword>
+        <mode>Closed</mode>
+    </node>
+    <node name="Hannover">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11810</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Hannover</backlog_keyword>
+        <mode>Closed</mode>
+    </node>
+    <node name="Karlskrona">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11811</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Karlskrona</backlog_keyword>
+        <mode>Closed</mode>
+    </node>
+    <node name="Lannion">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11103</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Lannion</backlog_keyword>
+        <mode>Active</mode>
+    </node>
+    <node name="Messina">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11812</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Messina</backlog_keyword>
+        <mode>Negotiation</mode>
+    </node>
+    <node name="Mexico">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11107</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Mexico</backlog_keyword>
+        <mode>Active</mode>
+    </node>
+    <node name="Netherland">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11205</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Netherland</backlog_keyword>
+        <mode>Negotiation</mode>
+    </node>
+    <node name="PiraeusN">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11813</cmp_key>
+        <owner></owner>
+        <backlog_keyword>PiraeusN</backlog_keyword>
+        <mode>Closed</mode>
+    </node>
+    <node name="PiraeusU">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11814</cmp_key>
+        <owner></owner>
+        <backlog_keyword>PiraeusU</backlog_keyword>
+        <mode>Active</mode>
+    </node>
+    <node name="Poznan">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11816</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Poznan</backlog_keyword>
+        <mode>Active</mode>
+    </node>
+    <node name="Prague">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11815</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Prague</backlog_keyword>
+        <mode>Closed</mode>
+    </node>
+    <node name="Sao Paolo">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11105</cmp_key>
+        <owner></owner>
+        <backlog_keyword>SaoPaolo</backlog_keyword>
+        <mode>Active</mode>
+    </node>
+    <node name="Senegal">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>12000</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Senegal</backlog_keyword>
+        <mode>Active</mode>
+    </node>
+    <node name="Sophia Antipolis">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11817</cmp_key>
+        <owner></owner>
+        <backlog_keyword>SohiaAntipolis</backlog_keyword>
+        <mode>Active</mode>
+    </node>
+    <node name="Spain">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11102</cmp_key>
+        <owner>TID</owner>
+        <backlog_keyword>Spain</backlog_keyword>
+        <mode>Active</mode>
+    </node>
+    <node name="Spain-Tenerife">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11818</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Spain-Tenerife</backlog_keyword>
+        <mode>Closed</mode>
+    </node>
+    <node name="Stockholm">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11819</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Stockholm</backlog_keyword>
+        <mode>Closed</mode>
+    </node>
+    <node name="Trento">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11820</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Trento</backlog_keyword>
+        <mode>Closed</mode>
+    </node>
+    <node name="Vicenza">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11821</cmp_key>
+        <owner>ENG</owner>
+        <backlog_keyword>Vicenza</backlog_keyword>
+        <mode>Active</mode>
+    </node>
+    <node name="Volos">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11822</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Volos</backlog_keyword>
+        <mode>Active</mode>
+    </node>
+    <node name="Waterford">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11823</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Waterford</backlog_keyword>
+        <mode>Closed</mode>
+    </node>
+    <node name="Wroclaw">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11824</cmp_key>
+        <owner>Radoslaw Adamkiewicz</owner>
+        <backlog_keyword>Wroclaw</backlog_keyword>
+        <mode>Active</mode>
+    </node>
+    <node name="Zurich">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11825</cmp_key>
+        <owner></owner>
+        <backlog_keyword>Zurich</backlog_keyword>
+        <mode>Active</mode>
+    </node>
+    <node name="ZurichS">
+        <tracker_key>LAB</tracker_key>
+        <cmp_key>11826</cmp_key>
+        <owner>Simon Leinen</owner>
+        <backlog_keyword>ZurichS</backlog_keyword>
+        <mode>Closed</mode>
+    </node>
+</data>
