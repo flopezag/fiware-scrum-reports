@@ -65,9 +65,15 @@ class JIRA:
 
     def getComponentData(self, comp_id):
         start_at = 0
+
+        jql = 'component={} AND createdDate >= {} AND createdDate <= {}'\
+            .format(comp_id, self.analysis_start_at, self.analysis_finish_on)
+
         payload = {'fields': JIRA.fields,
                    'maxResults': 1000, 'startAt': start_at,
-                   'jql': 'component={}'.format(comp_id)}
+                   'jql': jql
+                   }
+
         try:
             data = self.search(payload)
         except Exception:

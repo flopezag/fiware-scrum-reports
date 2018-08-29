@@ -49,15 +49,20 @@ class _Deck(list):
     @property
     def lastResolved(self):
         issues = [issue for issue in [issue for issue in self if issue.resolved]
-                  if  (date.today() - issue.resolutionDate).days <= 60 ]
+                  if (date.today() - issue.resolutionDate).days <= 60
+                  ]
+
         return sorted(issues, key=attrgetter('resolutionDate'), reverse=True)
 
     @property
     def resolution_level(self):
-        #assert len(self) == 0, 'empty deck'
-        try: result = len(self.unresolved) / len(self)
-        except: raise
-        else: return result
+        # assert len(self) == 0, 'empty deck'
+        try:
+            result = len(self.unresolved) / len(self)
+        except:
+            raise
+        else:
+            return result
 
     @property
     def monthly_evolution_graph_data(self):

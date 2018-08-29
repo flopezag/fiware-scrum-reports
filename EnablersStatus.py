@@ -1,6 +1,6 @@
-__author__ = 'Manuel Escriche'
-
-import os, re, xlsxwriter
+import os
+import re
+import xlsxwriter
 from datetime import datetime
 from xlsxwriter.utility import xl_range
 from Kernel.Calendar import agileCalendar
@@ -8,7 +8,10 @@ from _Kernel.Settings import settings
 from _Kernel.SheetFormats import SpreadsheetFormats
 from Kernel.TrackerBook import chaptersBook
 
-class StatusReport():
+__author__ = 'Manuel Escriche'
+
+
+class StatusReport:
     def __init__(self, sprint):
         self.workbook = None
         self.spFormats = None
@@ -48,7 +51,13 @@ class StatusReport():
             ws.write(row, 2, 'Leader: {}'.format(chapter.leader))
             ws.write(row, 3, 'Architect: {}'.format(chapter.architect))
             row += 1
-            ws.write_row(row, 0, ('Enabler/Tool', 'Owner-Leader', 'GE-GEI', 'Keyword' , 'Mode', 'Comment'), self.spFormats.column_heading )
+
+            ws.write_row(row,
+                         0,
+                         ('Enabler/Tool', 'Owner-Leader', 'GE-GEI', 'Keyword', 'Mode', 'Comment'),
+                         self.spFormats.column_heading
+                         )
+
             row += 1
             for enablername in chapter.enablers:
                 enabler = chapter.enablers[enablername]
@@ -69,14 +78,13 @@ class StatusReport():
             row += 1
 
 
-
 def main():
     sprint = agileCalendar.current_sprint
     report = StatusReport(sprint)
     _sprint = re.sub(r'\.', '', sprint)
     _date = datetime.now().strftime("%Y%m%d-%H%M")
 
-    filename = 'FIWARE.backlog.enablerStatus.sprint-'+ _sprint + '.' + _date + '.xlsx'
+    filename = 'FIWARE.backlog.enablerStatus.sprint-' + _sprint + '.' + _date + '.xlsx'
     myfile = os.path.join(settings.outHome, filename)
     report.workbook = xlsxwriter.Workbook(myfile)
     report.spFormats = SpreadsheetFormats(report.workbook)

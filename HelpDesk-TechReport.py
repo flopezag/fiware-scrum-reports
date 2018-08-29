@@ -1,5 +1,3 @@
-__author__ = "Manuel Escriche <mev@tid.es>"
-
 import os
 import operator
 from collections import OrderedDict
@@ -21,6 +19,7 @@ from kernel.Settings import settings
 from kernel.SheetFormats import SpreadsheetFormats
 from kernel.UploaderTool import Uploader
 
+__author__ = "Manuel Escriche <mev@tid.es>"
 
 chapters = ('Apps', 'Cloud', 'Data', 'IoT', 'I2ND', 'Security', 'WebUI')
 
@@ -71,7 +70,7 @@ class Painter:
         status = ('Closed', 'Answered', 'Impeded', 'In Progress', 'Open')
         ws.write_row(0, col, headings)
         ws.write_column(1, col+0, status)
-        value = lambda x, y: y[x] if x in y else 0
+        value = (lambda x, y: y[x] if x in y else 0)
         ws.write_column(1, col+1, [value(k, data) for k in status])
         sheet_name = ws.get_name()
         chart.add_series({
@@ -111,7 +110,7 @@ class Painter:
                        "Won't Fix")
 
         col = self._column
-        value = lambda x, y: y[x] if x in y else 0
+        value = (lambda x, y: y[x] if x in y else 0)
         ws.write_row(0, col, headings)
         ws.write_column(1, col+0, resolutions)
         ws.write_column(1, col+1, [value(k, data) for k in resolutions])
@@ -129,7 +128,7 @@ class Painter:
         chart.set_x_axis({'name': '# items'})
         chart.set_legend({'none': True})
         # chart.set_legend({'position': 'top'})
-        height = 120 + 35 * len(data)
+        # height = 120 + 35 * len(data)
         chart.set_size({'width': 450, 'height': 300, 'x_scale': 1, 'y_scale': 1})
 
         chart.set_plotarea({'fill': {'color': '#FFFF99'}})
@@ -151,7 +150,7 @@ class Painter:
         ws.write_column(1, col+1, data['created']['data'])
         ws.write_column(1, col+2, data['resolved']['data'])
         ws.write_column(1, col+3, data['progress']['data'])
-        ws.write_column(1, col+4, [0 for i in data['categories']])
+        ws.write_column(1, col+4, [0]*(len(data['categories'])))
 
         sheet_name = ws.get_name()
         chart.add_series({
@@ -190,7 +189,7 @@ class Painter:
         self._column += len(headings) + 1
         return chart
 
-    def draw_resolutionTime(self, data):
+    def draw_resolution_time(self, data):
         wb = self._wb
         ws = self._ws
         chart = wb.add_chart({'type': 'column'})
@@ -280,7 +279,7 @@ class Painter:
         _data = sorted({k: sum(data[k][0].values()) for k in data}.items(), key=operator.itemgetter(1), reverse=True)
         enablers = list(reversed([item[0] for item in _data]))
 
-        chart = wb.add_chart({'type':'bar'})
+        chart = wb.add_chart({'type': 'bar'})
         headings = ('Enabler', 'Size')
         col = self._column
         ws.write_row(0, col, headings)
@@ -321,7 +320,7 @@ class Painter:
         col = self._column
         ws.write_row(0, col, headings)
         ws.write_column(1, col+0, enablers)
-        value = lambda x: int(x) if x else None
+        value = (lambda x: int(x) if x else None)
         ws.write_column(1, col+1, [value(data[enabler][1]['mean']) for enabler in enablers])
         ws.write_column(1, col+2, [value(data[enabler][2]['mean']) for enabler in enablers])
 
@@ -391,7 +390,7 @@ class Painter:
         col = self._column
         ws.write_row(0, col, headings)
         chapters = [k for k in data]
-        value = lambda x: int(x) if x else None
+        value = (lambda x: int(x) if x else None)
         ws.write_column(1, col+0, data)
         ws.write_column(1, col+1, [value(data[k][1]['mean']) for k in data])
         ws.write_column(1, col+2, [value(data[k][2]['mean']) for k in data])
@@ -430,10 +429,12 @@ class HelpDeskReporter:
         self.calendar = agileCalendar
         self.workbook = None
         self.spFormats = None
-        # belongs to the tech channel - it's put here in order not to instanciate it every round
+        # belongs to the tech channel - it's put here in order not to instantiate it every round
         self.data, self.timestamp, self.source = Data.getHelpDeskTechChannel()
         self.deck = Deck(self.data, self.timestamp, self.source)
-        self.reporter = TechChannelReporter(self.deck)
+        self.start = date(2016, 12, 1)  # year, month, day
+        self.end = date(2017, 11, 30)  # year, month, day
+        self.reporter = TechChannelReporter(self.deck, start=self.start, end=self.end)
         self.reporter.deck = self.deck
 
     def _coordination_helpdesk(self, coordination):
@@ -458,10 +459,18 @@ class HelpDeskReporter:
 
         row += 1
         ws.write(row, 0, 'Project Time:', self.spFormats.bold_right)
-        ws.write(row, 1, '{}'.format(agileCalendar.projectTime))
-        # row += 1
+        ws.write(row, 1, '{}'.format(agileCalendar.projectTime()))
+
         ws.write(row, 2, 'Report Date:', self.spFormats.bold_right)
         ws.write(row, 3, date.today().strftime('%d-%m-%Y'))
+
+        row += 1
+        ws.write(row, 0, 'Start of Data Analysis:', self.spFormats.bold_right)
+        ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.start)))
+
+        row += 1
+        ws.write(row, 0, 'End of Data Analysis:', self.spFormats.bold_right)
+        ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.end)))
 
         #
         row += 2
@@ -547,8 +556,10 @@ class HelpDeskReporter:
             row += 1
             self._write_issue(ws, row, issue)
 
-    def _write_stats(self, ws, row, data):
-        if data['n'] == 0: ws.write(row, 1, 'n={n}'.format(**data))
+    @staticmethod
+    def _write_stats(ws, row, data):
+        if data['n'] == 0:
+            ws.write(row, 1, 'n={n}'.format(**data))
         elif data['n'] > 1:
             ws.write(row, 1,
                      'n={n}; min={min} days; max={max} days; mean={mean:.0f} days; median={median:.0f} days; '
@@ -582,13 +593,21 @@ class HelpDeskReporter:
 
         row += 1
         ws.write(row, 0, 'Project Time:', self.spFormats.bold_right)
-        ws.write(row, 1, '{}'.format(agileCalendar.projectTime))
-        # row += 1
+        ws.write(row, 1, '{}'.format(agileCalendar.projectTime()))
+
         ws.write(row, 3, 'Report Date:', self.spFormats.bold_right)
         ws.write(row, 4, date.today().strftime('%d-%m-%Y'))
+
+        row += 1
+        ws.write(row, 0, 'Start of Data Analysis:', self.spFormats.bold_right)
+        ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.start)))
+
+        row += 1
+        ws.write(row, 0, 'End of Data Analysis:', self.spFormats.bold_right)
+        ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.end)))
+
         #
         row += 2
-
         _format = self.workbook.add_format({'bold': True, 'font_size': 15, 'color': 'green'})
         ename = enabler.Name if enabler.GE else enabler.name
         ws.write(row, 0, 'Enabler:', self.spFormats.bold_right)
@@ -609,12 +628,12 @@ class HelpDeskReporter:
         #
         row += 1
 
-        reporter = DeckReporter(enabler.name, deck)
+        reporter = DeckReporter(enabler.name, deck, start=self.start, end=self.end)
         reporter.deck = deck
         data = reporter.deck.issueType
         ws.write(row, 0, 'Composition', self.spFormats.bold_right)
-        ws.write(row, 1, '{0:,} Issues = {extRequest} extRequests + '
-                         '{Monitor:,} Monitors'.format(sum(data.values()), **data))
+        ws.write(row, 1, '{0:,} Issues = {extRequest} extRequests + {Monitor:,} Monitors'
+                 .format(sum(data.values()), **data))
 
         row += 1
         data = reporter.deck.status
@@ -666,7 +685,7 @@ class HelpDeskReporter:
 
         if len(reporter.deck):
             row += 1
-            chart = painter.draw_resolutionTime(reporter.resolutionTime_graph_data)
+            chart = painter.draw_resolution_time(reporter.resolutionTime_graph_data)
             ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
 
             row += 15
@@ -740,7 +759,7 @@ class HelpDeskReporter:
         wb = self.workbook
         ws = wb.add_worksheet('{} Chapter'.format(chapter.name))
         deck = ChapterDeck(chapter, *Data.getChapterHelpDesk(chapter.name))
-        reporter = TechChapterReporter(chapter, deck)
+        reporter = TechChapterReporter(chapter, deck, start=self.start, end=self.end)
         painter = Painter(wb, ws)
         ws.set_zoom(80)
         ws.set_column(0, 0, 30)
@@ -759,10 +778,19 @@ class HelpDeskReporter:
 
         row += 1
         ws.write(row, 0, 'Project Time:', self.spFormats.bold_right)
-        ws.write(row, 1, '{}'.format(agileCalendar.projectTime))
-        # row += 1
+        ws.write(row, 1, '{}'.format(agileCalendar.projectTime()))
+
         ws.write(row, 2, 'Report Date:', self.spFormats.bold_right)
         ws.write(row, 3, date.today().strftime('%d-%m-%Y'))
+
+        row += 1
+        ws.write(row, 0, 'Start of Data Analysis:', self.spFormats.bold_right)
+        ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.start)))
+
+        row += 1
+        ws.write(row, 0, 'End of Data Analysis:', self.spFormats.bold_right)
+        ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.end)))
+
         #
         row += 2
         _format = self.workbook.add_format({'bold': True, 'font_size': 15, 'color': 'green'})
@@ -835,7 +863,7 @@ class HelpDeskReporter:
             self._write_stats(ws, row, reporter.statsOfPending)
         if len(deck):
             row += 1
-            chart = painter.draw_resolutionTime(reporter.resolutionTime_graph_data)
+            chart = painter.draw_resolution_time(reporter.resolutionTime_graph_data)
             ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
 
             row += 15
@@ -861,7 +889,7 @@ class HelpDeskReporter:
         chart = painter.draw_enablers_service_time(reporter.enablers)
         ws.insert_chart(row, 1, chart, {'x_offset': 500, 'y_offset': 0})
 
-    def _techChannel_helpdesk(self):
+    def _tech_channel_help_desk(self):
         print('---> TechChapters')
         wb = self.workbook
         ws = wb.add_worksheet('Tech Channel')
@@ -889,14 +917,23 @@ class HelpDeskReporter:
         # TODO: Probably we have to change these data.
         row += 1
         ws.write(row, 0, 'Project Time:', self.spFormats.bold_right)
-        ws.write(row, 1, '{}'.format(agileCalendar.projectTime))
-        # row += 1
+        ws.write(row, 1, '{}'.format(agileCalendar.projectTime()))
+
         ws.write(row, 2, 'Report Date:', self.spFormats.bold_right)
         ws.write(row, 3, date.today().strftime('%d-%m-%Y'))
+
+        row += 1
+        ws.write(row, 0, 'Start of Data Analysis:', self.spFormats.bold_right)
+        ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.start)))
+
+        row += 1
+        ws.write(row, 0, 'End of Data Analysis:', self.spFormats.bold_right)
+        ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.end)))
+
         row += 2
         _format = self.workbook.add_format({'bold': True, 'font_size': 15, 'bg_color': '#60C1CF'})
         ws.write(row, 0, 'Tech Channel Leader:', self.spFormats.bold_right)
-        ws.write(row, 1, 'TID - Manuel Escriche', _format)
+        ws.write(row, 1, 'FF - Veronika Vlnkova', _format)
         ws.write(row, 2, '', _format)
 
         row += 2
@@ -955,7 +992,7 @@ class HelpDeskReporter:
 
         if len(reporter.deck):
             row += 1
-            chart = painter.draw_resolutionTime(reporter.resolutionTime_graph_data)
+            chart = painter.draw_resolution_time(reporter.resolutionTime_graph_data)
             ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
 
             row += 15
@@ -978,7 +1015,7 @@ class HelpDeskReporter:
         ws.insert_chart(row, 1, chart,  {'x_offset': 0, 'y_offset': 0})
 
         row += 16
-        ws.merge_range(xl_range(row,1,row,2), 'Enablers Contribution and Service Time', _format)
+        ws.merge_range(xl_range(row, 1, row, 2), 'Enablers Contribution and Service Time', _format)
         # ws.write(row, 1, 'Enablers Contribution and Service Time', _format)
 
         row += 1
@@ -992,7 +1029,7 @@ class HelpDeskReporter:
         if chaptername not in settings.chapters:
             raise Exception("Unknown chapter: {}".format(chaptername))
 
-        print("--monitor-- chapter:", chaptername)
+        print("\n--monitor-- chapter:", chaptername)
 
         # _date = datetime.now().strftime("%Y%m%d-%H%M")
         _date = datetime.now().strftime("%Y%m%d")
@@ -1000,7 +1037,7 @@ class HelpDeskReporter:
         myfile = os.path.join(settings.outHome, filename)
         self.workbook = xlsxwriter.Workbook(myfile)
         self.spFormats = SpreadsheetFormats(self.workbook)
-        self._techChannel_helpdesk()
+        self._tech_channel_help_desk()
         chapter = chaptersBook[chaptername]
         self._chapter_helpdesk(chapter)
         # self._coordination_helpdesk(chapter.coordination)
@@ -1032,9 +1069,6 @@ class WorkBench:
 
 
 if __name__ == "__main__":
-    # from kernel.Settings import settings
-    # settings.storeHome = settings.storeHome
-
     options = {'0': WorkBench.snapshot,
                '1': WorkBench.report,
                '2': WorkBench.upload,
@@ -1043,5 +1077,13 @@ if __name__ == "__main__":
     while True:
         menu = '\nMenu:\n\t0: get snapshot\n\t1: create reports \n\t2: upload report\n\tE: Exit'
         choice = input(menu + '\nEnter your choice[0-2,(E)xit] : ')
-        print('Chosen option:', choice)
-        options[choice]()
+
+        print('\nChosen option: {}\n'.format(choice))
+
+        if choice in ('0', '1', '2', 'E'):
+            options[choice]()
+        else:
+            print('\n\n\nWrong option, please try again... ')
+
+# TODO: the period of time should be a parameter to put on the initialization
+#       of the scripts and the code should work with or without these data.

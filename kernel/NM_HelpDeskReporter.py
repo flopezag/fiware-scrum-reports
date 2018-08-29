@@ -17,7 +17,7 @@ __author__ = 'Manuel Escriche'
 
 
 class DeckReporter:
-    def __init__(self, chaptername, deck):
+    def __init__(self, chaptername, deck, start=None, end=None):
         self.chaptername = chaptername
         self.timestamp = deck.timestamp
         self.stats = self._stats(deck)
@@ -25,7 +25,7 @@ class DeckReporter:
         self.statsOfRecent = self._statsOfRecent(deck)
         self.statsOfVeryRecent = self._statsOfVeryRecent(deck)
         self.achievement_graph_data = self._achievement_graph_data(deck)
-        self.evolution_graph_data = self._evolution_graph_data(deck)
+        self.evolution_graph_data = self._evolution_graph_data(deck, start=start, end=end)
         self.resolutionTime_graph_data = self._resolutionTime_graph_data(deck)
         self.monthly_evolution_graph_data = self._monthly_evolution_graph_data(deck)
         self.monthly_resolutionTime_graph_data = self._monthly_resolutionTime_graph_data(deck)
@@ -203,44 +203,106 @@ class DeckReporter:
     def _achievement_graph_data(self, deck):
         color = {'Resolved':'#bada55', 'Pending':'#ff4040'}
         value = {True: 'Resolved', False: 'Pending'}
-        count = Counter([value[issue.resolved != None] for issue in deck])
-        return [{'name':_type, 'y': count[_type], 'color': color[_type]} for _type in count]
+        count = Counter([value[issue.resolved is not None] for issue in deck])
+        return [{'name': _type, 'y': count[_type], 'color': color[_type]} for _type in count]
 
-    def _evolution_graph_data(self, deck):
+    def _evolution_graph_data(self, deck, start=None, end=None):
         book = FWcalendar.monthBook
 
-        createdIssues = Counter(['{:02d}-{}'.format(issue.created.month, issue.created.year) for issue in deck])
-        createdData = list(accumulate([createdIssues[book[month]] for month in FWcalendar.pastMonths]))
+        created_issues = Counter(['{:02d}-{}'.format(issue.created.month, issue.created.year) for issue in deck])
+        created_data = list(accumulate([created_issues[book[month]] for month in FWcalendar.pastMonths]))
 
         issues = [issue for issue in deck if issue.resolved]
-        resolvedIssues = Counter(['{:02d}-{}'.format(issue.resolutionDate.month, issue.resolutionDate.year) for issue in issues])
-        progressData = [resolvedIssues[book[month]] for month in FWcalendar.pastMonths]
-        resolvedData = list(accumulate(progressData))
+
+        resolved_issues = \
+            Counter(['{:02d}-{}'.format(issue.resolutionDate.month, issue.resolutionDate.year) for issue in issues])
+
+        progress_data = [resolved_issues[book[month]] for month in FWcalendar.pastMonths]
+        resolved_data = list(accumulate(progress_data))
 
         outdata = dict()
-        outdata['categories'] = FWcalendar.timeline
-        outdata['ncategories'] = len(FWcalendar.timeline) - 1
-        outdata['created'] = dict()
-        outdata['created']['type'] = 'spline'
-        outdata['created']['name'] = 'Created'
-        outdata['created']['data'] = createdData
-        outdata['resolved'] = dict()
-        outdata['resolved']['type'] = 'spline'
-        outdata['resolved']['name'] = 'Resolved'
-        outdata['resolved']['data'] = resolvedData
-        outdata['progress'] = dict()
-        outdata['progress']['type'] = 'column'
-        outdata['progress']['name'] = 'Progress'
-        outdata['progress']['data'] = progressData
-        outdata['summary'] = dict()
-        outdata['summary']['type'] = 'pie'
-        outdata['summary']['name'] = 'Status'
-        outdata['summary']['data'] = [{'name': 'Resolved', 'y': resolvedData[-1], 'color': 'Highcharts.getOptions().colors[1]' },
-                                      {'name': 'Pending', 'y': createdData[-1] - resolvedData[-1], 'color': '#ff4040'}]
-        outdata['summary']['center'] = [70, 60]
-        outdata['summary']['size'] = 80
-        outdata['summary']['dataLabels'] = {'enabled': 'true',
-                                            'format': '<b>{point.name}</b>: <br/> {point.y} ({point.percentage:.1f}%)'}
+
+        if start is not None and end is not None:
+            start_month_id = FWcalendar.currentMonth(current_date=start)[1]
+            end_month_id = FWcalendar.currentMonth(current_date=end)[1]
+
+            start_index = FWcalendar.timeline.index(start_month_id)
+            end_index = FWcalendar.timeline.index(end_month_id) + 1
+
+            outdata['categories'] = FWcalendar.timeline[start_index:end_index]
+            outdata['ncategories'] = len(FWcalendar.timeline[start_index:end_index]) - 1
+            outdata['created'] = dict()
+            outdata['created']['type'] = 'spline'
+            outdata['created']['name'] = 'Created'
+            outdata['created']['data'] = created_data[start_index:end_index]
+            outdata['resolved'] = dict()
+            outdata['resolved']['type'] = 'spline'
+            outdata['resolved']['name'] = 'Resolved'
+            outdata['resolved']['data'] = resolved_data[start_index:end_index]
+            outdata['progress'] = dict()
+            outdata['progress']['type'] = 'column'
+            outdata['progress']['name'] = 'Progress'
+            outdata['progress']['data'] = progress_data[start_index:end_index]
+            outdata['summary'] = dict()
+            outdata['summary']['type'] = 'pie'
+            outdata['summary']['name'] = 'Status'
+            outdata['summary']['data'] = [
+                {
+                    'name': 'Resolved',
+                    'y': resolved_data[start_index:end_index][-1],
+                    'color': 'Highcharts.getOptions().colors[1]'
+                },
+                {
+                    'name': 'Pending',
+                    'y': created_data[start_index:end_index][-1] - resolved_data[start_index:end_index][-1],
+                    'color': '#ff4040'
+                }
+            ]
+
+            outdata['summary']['center'] = [70, 60]
+            outdata['summary']['size'] = 80
+            outdata['summary']['dataLabels'] = {
+                'enabled': 'true',
+                'format': '<b>{point.name}</b>: <br/> {point.y} ({point.percentage:.1f}%)'
+            }
+
+        else:
+            outdata['categories'] = FWcalendar.timeline
+            outdata['ncategories'] = len(FWcalendar.timeline) - 1
+            outdata['created'] = dict()
+            outdata['created']['type'] = 'spline'
+            outdata['created']['name'] = 'Created'
+            outdata['created']['data'] = created_data
+            outdata['resolved'] = dict()
+            outdata['resolved']['type'] = 'spline'
+            outdata['resolved']['name'] = 'Resolved'
+            outdata['resolved']['data'] = resolved_data
+            outdata['progress'] = dict()
+            outdata['progress']['type'] = 'column'
+            outdata['progress']['name'] = 'Progress'
+            outdata['progress']['data'] = progress_data
+            outdata['summary'] = dict()
+            outdata['summary']['type'] = 'pie'
+            outdata['summary']['name'] = 'Status'
+            outdata['summary']['data'] = [
+                {
+                    'name': 'Resolved',
+                    'y': resolved_data[-1],
+                    'color': 'Highcharts.getOptions().colors[1]'
+                },
+                {
+                    'name': 'Pending',
+                    'y': created_data[-1] - resolved_data[-1],
+                    'color': '#ff4040'
+                }
+            ]
+
+            outdata['summary']['center'] = [70, 60]
+            outdata['summary']['size'] = 80
+            outdata['summary']['dataLabels'] = {
+                'enabled': 'true',
+                'format': '<b>{point.name}</b>: <br/> {point.y} ({point.percentage:.1f}%)'
+            }
 
         return outdata
 
@@ -249,18 +311,19 @@ class DeckReporter:
         if not count:
             return dict()
 
-        pending_count = Counter([issue.age for issue in deck if not issue.resolved ])
+        pending_count = Counter([issue.age for issue in deck if not issue.resolved])
 
-        _min,_max = min(count.keys()), max(count.keys())
-        data = [count[k] for k in range(_min,_max+1)]
+        _min, _max = min(count.keys()), max(count.keys())
+        data = [count[k] for k in range(_min, _max+1)]
 
-        pending_data = [pending_count[k] for k in range(_min,_max+1)]
+        pending_data = [pending_count[k] for k in range(_min, _max+1)]
 
-        recent_count = Counter([issue.age for issue in deck if (date.today() - issue.created).days <= 60 ])
-        recent_data = [recent_count[k] for k in range(_min,_max+1)]
+        recent_count = Counter([issue.age for issue in deck if (date.today() - issue.created).days <= 60])
+        recent_data = [recent_count[k] for k in range(_min, _max+1)]
 
         outdata = dict()
-        outdata['categories'] = [k for k in range(_min,_max+1)]
+
+        outdata['categories'] = [k for k in range(_min, _max+1)]
         outdata['time'] = dict()
         outdata['time']['type'] = 'column'
         outdata['time']['name'] = 'Mature issues'
@@ -275,11 +338,12 @@ class DeckReporter:
         outdata['recent']['name'] = "Recent issues"
         outdata['recent']['color'] = 'green'
         outdata['recent']['data'] = recent_data
+
         return outdata
 
     def _monthly_evolution_graph_data(self, deck):
         month_length = monthrange(date.today().year, date.today().month)[1]
-        month, year = FWcalendar.monthBook[FWcalendar.currentMonth[1]].split('-')
+        month, year = FWcalendar.monthBook[FWcalendar.currentMonth()[1]].split('-')
         createdIssues = Counter([issue.created.day for issue in deck
                                  if issue.created.month == int(month) and issue.created.year == int(year)])
         createdData = list(accumulate([createdIssues[day] for day in range(1, date.today().day+1)]))
@@ -309,7 +373,7 @@ class DeckReporter:
 
     def _monthly_resolutionTime_graph_data(self, deck):
         month_length = monthrange(date.today().year, date.today().month)[1]
-        month, year = FWcalendar.monthBook[FWcalendar.currentMonth[1]].split('-')
+        month, year = FWcalendar.monthBook[FWcalendar.currentMonth()[1]].split('-')
         issues_set = [issue for issue in deck
                                  if (issue.resolved and
                                      issue.resolutionDate.month == int(month) and
@@ -347,10 +411,10 @@ class DeckReporter:
 
 
 class ChannelReporter(DeckReporter, Recorder):
-    def __init__(self, channel, deck):
+    def __init__(self, channel, deck, start=None, end=None):
         self.channel = channel
         # DeckReporter.__init__(self, deck)
-        DeckReporter.__init__(self, channel.name, deck)
+        DeckReporter.__init__(self, channel.name, deck, start=start, end=end)
         Recorder.__init__(self, 'FIWARE.ChannelReporter.' + channel.name + '.pkl')
         self.save()
 
@@ -360,9 +424,9 @@ class ChannelReporter(DeckReporter, Recorder):
 
 
 class TechChapterReporter(DeckReporter):
-    def __init__(self, chapter, deck):
+    def __init__(self, chapter, deck, start=None, end=None):
         # super().__init__(deck)
-        super().__init__(chapter, deck)
+        super().__init__(chapter, deck, start=start, end=end)
         self.enablers = self._enablers(chapter, deck)
 
     def _enablers(self, chapter, deck):
@@ -378,9 +442,9 @@ class TechChapterReporter(DeckReporter):
 class TechChannelReporter(ChannelReporter):
     __chapters = ('Apps', 'Cloud', 'Data', 'IoT', 'I2ND', 'Security', 'WebUI')
 
-    def __init__(self, deck):
+    def __init__(self, deck, start=None, end=None):
         channel = helpdeskBookByName['Main-Help-Desk'].channels['Tech']
-        super().__init__(channel, deck)
+        super().__init__(channel, deck, start=start, end=end)
         self.chapters = self._chapters(deck)
         self.enablers = self._enablers(deck)
         self.save()
