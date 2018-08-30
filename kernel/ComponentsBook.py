@@ -378,8 +378,8 @@ workingGroupsBookByName = tComponentsBook.groupsByName
 #workingGroupsBookByKey = tComponentsBook.groupsByKey
 
 labCompBook = tComponentsBook.labCompByName
-#labCompBookByName = tComponentsBook.labCompByName
-#labCompBookByKey = tComponentsBook.labCompByKey
+labCompBookByName = tComponentsBook.labCompByName
+labCompBookByKey = tComponentsBook.labCompByKey
 
 labNodesBook = tComponentsBook.labNodesByName
 #labNodesBookByName = tComponentsBook.labNodesByName

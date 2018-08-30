@@ -345,7 +345,7 @@ helpdeskBookByName = helpdeskBook.deskByName
 # accountsdeskBookByName = accountsdeskBook.deskByName
 # accountsdeskBookByKey = accountsdeskBook.deskByKey
 
-# labsBook = LabBook()
+labsBook = LabBook()
 # labsBookByName = labsBook.labsByName
 # labsBookByKey = labsBook.labsByKey
 

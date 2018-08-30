@@ -3,8 +3,9 @@ from itertools import accumulate
 from calendar import monthrange
 
 from collections import Counter
-from kernel.ComponentsBook import enablersBook, toolsBook
-from kernel.TrackerBook import chaptersBook
+from kernel.ComponentsBook import enablersBook, toolsBook, labNodesBook
+from kernel.TrackerBook import chaptersBook, labsBook
+from kernel.NodesBook import helpdeskNodesBook
 from kernel.Backlog import Backlog, Issue
 from kernel.IssuesModel import backlogIssuesModel
 from kernel.Calendar import calendar as FWcalendar
@@ -283,26 +284,30 @@ class CoordinationReporter(Reporter):
 
     @property
     def frame_status_graph_data(self):
-        frame='Working On'
+        frame = 'Working On'
         issues = [issue for issue in self.backlog if issue.frame == frame]
-        #print('working on issues =', len(issues))
+        # print('working on issues =', len(issues))
         statuses = sorted(set([issue.status for issue in issues]))
-        #print('found statuses =', statuses)
+        # print('found statuses =', statuses)
 
         enablerIssuesBook = {}
+
         for enablername in enablersBook:
             enabler = enablersBook[enablername]
-            enablerIssuesBook[enablername] = Counter([issue.status for issue in issues if enabler.key == issue.component])
-                #print(enabler, dict(enablerIssuesBook[key]))
+            enablerIssuesBook[enablername] = \
+                Counter([issue.status for issue in issues if enabler.key == issue.component])
+
+            # print(enabler, dict(enablerIssuesBook[key]))
 
         _frame_status_graph_data = []
+
         for status in statuses:
             status_dict = {}
             status_dict['name'] = status
             status_dict['data'] = [enablerIssuesBook[enabler][status] for enabler in enablersBook]
             _frame_status_graph_data.append(status_dict)
 
-        #print('frame_status_graph_data =', _frame_status_graph_data)
+        # print('frame_status_graph_data =', _frame_status_graph_data)
         return _frame_status_graph_data
 
 
@@ -413,14 +418,14 @@ class ChapterReporter(Reporter):
 class ChaptersReporter(Reporter):
     def __init__(self, backlog):
         super().__init__(backlog)
-        #start_time = time.time()
+        # start_time = time.time()
         backlog.review()
-        #elapsed_time = time.time() - start_time
-        #print(elapsed_time)
+        # elapsed_time = time.time() - start_time
+        # print(elapsed_time)
 
     @property
     def chapters_sprint_status_graph_data(self):
-        frame='Working On'
+        frame = 'Working On'
         issues = [issue for issue in self.backlog
                   if issue.frame == frame and issue.issueType in backlogIssuesModel.shortTermTypes]
 
@@ -524,6 +529,45 @@ class ToolReporter(Reporter):
     @property
     def tool(self):
         return toolsBook[self.toolname]
+
+
+class LabReporter(Reporter):
+    def __init__(self, backlog):
+        super().__init__(backlog)
+        backlog.review()
+
+    @property
+    def lab_nodes(self):
+        # return labsBook
+        return helpdeskNodesBook
+
+    @property
+    def tool(self):
+        return toolsBook[self.toolname]
+
+    @property
+    def nodes_execution_status(self):
+        frames = reversed(Issue._timeFrames) # Implemented, Working On, Foreseen
+
+        nodes_issues_book = {}
+
+        for node in helpdeskNodesBook:
+            try:
+                key = labNodesBook[node].key
+                nodes_issues_book[node] = Counter([issue.frame for issue in self.backlog if issue.component == key])
+            except Exception:
+                # There is no data about the corresponding node, therefore we manage it as a empty issues
+                nodes_issues_book[node] = {'Implemented': 0, 'Foreseen': 0, 'Working On': 0}
+
+        _frame_graph_data = []
+
+        for frame in frames:
+            frame_dict = {}
+            frame_dict['name'] = frame
+            frame_dict['data'] = [nodes_issues_book[node_name][frame] for node_name in helpdeskNodesBook]
+            _frame_graph_data.append(frame_dict)
+
+        return _frame_graph_data
 
 
 class EnablerReporter(Reporter):

@@ -3,13 +3,13 @@ __author__ = "Manuel Escriche <mev@tid.es>"
 import os, re, pickle, time
 from datetime import date, datetime
 from collections import namedtuple
-from kernel.TrackerBook import trackersBook, chaptersBook
-from kernel.ComponentsBook import enablersBook, coordinationBook, toolsBook
+from kernel.TrackerBook import trackersBook, chaptersBook, labsBook
+from kernel.ComponentsBook import enablersBook, coordinationBook, toolsBook, tComponentsBook
 from kernel.Backlog import Backlog
 from kernel.Settings import settings
 
-class BacklogFactory:
 
+class BacklogFactory:
     _singlenton = None
 
     def __new__(cls, *args, **kwargs):
@@ -26,21 +26,23 @@ class BacklogFactory:
     def _load(self, trackername):
         fileList = os.listdir(settings.storeHome)
         mfilter = re.compile(r'\bFIWARE\.tracker\.(?P<tracker>[\w\-]+)\.(?P<day>\d{8})[-](?P<hour>\d{4})\.pkl\b')
-        record = namedtuple('record','tracker, filename, day, time')
+        record = namedtuple('record', 'tracker, filename, day, time')
         files = [record(mfilter.match(f).group('tracker'),
                                    mfilter.match(f).group(0),
                                    mfilter.match(f).group('day'),
                                    mfilter.match(f).group('hour'))
                             for f in fileList if mfilter.match(f) if mfilter.match(f).group('tracker') == trackername]
-            #print(files)
-        files.sort(key = lambda e:(e.day, e.time), reverse=True)
-        filename= files[0].filename
+
+        # print(files)
+        files.sort(key=lambda e: (e.day, e.time), reverse=True)
+        filename = files[0].filename
         _timestamp = '{}-{}'.format(files[0].day, files[0].time)
         timestamp = datetime.strptime(_timestamp, '%Y%m%d-%H%M').strftime("%Y%m%d-%H:%M")
-        #print(timestamp)
+        # print(timestamp)
 
         with open(os.path.join(settings.storeHome, filename), 'rb') as f:
             data = pickle.load(f)
+
         return data, timestamp
 
     def __load(self, trackername):
@@ -103,12 +105,29 @@ class BacklogFactory:
     def getTechChaptersBacklog(self):
         data = list()
         _timestamp = list()
+
         for chaptername in chaptersBook:
             trackerkey = chaptersBook[chaptername].keystone
             trackerData, timestamp = self.trackersData[trackerkey]
             data.extend(trackerData)
             _timestamp.extend(timestamp)
+
         backlog = Backlog.fromData(data, max(_timestamp))
+
+        return backlog
+
+    def getLabChapterBacklog(self):
+        data = list()
+        _timestamp = list()
+
+        for labname in labsBook:
+            trackerkey = labsBook[labname].keystone
+            trackerData, timestamp = self.trackersData[trackerkey]
+            data.extend(trackerData)
+            _timestamp.extend(timestamp)
+
+        backlog = Backlog.fromData(data, max(_timestamp))
+
         return backlog
 
 

@@ -138,7 +138,10 @@ class Deck(_Deck):
         self.source = source
         for item in data:
             _type = item['fields']['issuetype']['name']
-            if not _type in ('extRequest', 'eRequest', 'Monitor'): continue
+
+            if _type not in ('extRequest', 'eRequest', 'Monitor'):
+                continue
+
             try:
                 self.append(_IssueTypes[_type](item))
             except Exception as error:
@@ -184,8 +187,8 @@ class NodeDeck(Deck):
     def __init__(self, node, data, timestamp, source):
         self.node = node
         super().__init__(data, timestamp, source)
-        pattern = r'FIWARE\.(Request|Question)\.Lab\.{}(\.[A-Z][\w\-]+)'.format(self.node.name) \
-                 + r'{2,}$'
+        pattern = r'FIWARE\.(Request|Question)\.Lab\.{}(\.[A-Z][\w\-]+)'.format(self.node.name) + r'{2,}$'
+
         for issue in self:
             issue.OkTestName = True if re.match(pattern, issue.summary) else False
 

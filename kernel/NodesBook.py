@@ -35,10 +35,12 @@ class NodesBook(OrderedDict):
 
         tree = ET.parse(xmlfile)
         root = tree.getroot()
+
         for item in root.findall('node'):
             name = item.get('name')
             self[name] = Node(item)
-        self.nodeByWorker = {worker:node for node in self for worker in self[node].workers}
+
+        self.nodeByWorker = {worker: node for node in self for worker in self[node].workers}
 
     def getNode(self, worker):
         try:

@@ -48,7 +48,7 @@ class Settings:
 
     @property
     def chapters(self):
-        return 'Apps', 'Cloud', 'Data', 'IoT', 'I2ND', 'Security', 'WebUI', 'Ops', 'Academy', 'Catalogue'
+        return 'Apps', 'Cloud', 'Data', 'IoT', 'I2ND', 'Security', 'WebUI', 'Ops', 'Academy', 'Catalogue', 'Lab'
 
     @property
     def management(self):

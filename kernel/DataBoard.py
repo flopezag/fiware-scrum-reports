@@ -8,15 +8,20 @@ from kernel.Settings import settings
 class Data:
     @staticmethod
     def getHelpDeskTechChannel():
-        techChannel = helpdeskCompBook['Tech']
-        return DataFactory(settings.storeHome).getComponentData(techChannel.key)
+        tech_channel = helpdeskCompBook['Tech']
+        return DataFactory(settings.storeHome).getComponentData(tech_channel.key)
 
     @staticmethod
     def getChapterHelpDesk(chapter):
-        techChannel = helpdeskCompBook['Tech']
-        return DataFactory(settings.storeHome).getComponentData(techChannel.key)
+        tech_channel = helpdeskCompBook['Tech']
+        return DataFactory(settings.storeHome).getComponentData(tech_channel.key)
 
     @staticmethod
     def getEnablerHelpDesk(enabler):
-        techChannel = helpdeskCompBook['Tech']
-        return DataFactory(settings.storeHome).getComponentData(techChannel.key)
+        tech_channel = helpdeskCompBook['Tech']
+        return DataFactory(settings.storeHome).getComponentData(tech_channel.key)
+
+    @staticmethod
+    def getHelpDeskLabChannel():
+        lab_channel = helpdeskCompBook['Lab']
+        return DataFactory(settings.storeHome).getComponentData(lab_channel.key)
