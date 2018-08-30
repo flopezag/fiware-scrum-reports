@@ -1031,8 +1031,8 @@ class HelpDeskReporter:
 
         print("\n--monitor-- chapter:", chaptername)
 
-        # _date = datetime.now().strftime("%Y%m%d-%H%M")
-        _date = datetime.now().strftime("%Y%m%d")
+        _date = datetime.now().strftime("%Y%m%d-%H%M")
+
         filename = 'FIWARE.helpdesk-tech.report.' + chaptername + '.' + _date + '.xlsx'
         myfile = os.path.join(settings.outHome, filename)
         self.workbook = xlsxwriter.Workbook(myfile)

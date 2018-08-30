@@ -9,15 +9,17 @@ from xlsxwriter.utility import xl_range
 
 from kernel.Calendar import agileCalendar
 from kernel.DataBoard import Data
-from kernel.TrackerBook import chaptersBook
 from kernel.DataFactory import DataEngine
-from kernel.NM_Aggregates import Deck, EnablerDeck, ChapterDeck
+from kernel.NM_Aggregates import Deck, LabDeck, ChapterDeck
 from kernel.NM_HelpDeskReporter import DeckReporter, TechChapterReporter, LabChannelReporter
 from kernel.Reporter import CoordinationReporter
 
 from kernel.Settings import settings
 from kernel.SheetFormats import SpreadsheetFormats
 from kernel.UploaderTool import Uploader
+from kernel.NodesBook import helpdeskNodesBook
+from kernel.ComponentsBook import labNodesBook
+
 
 from functools import reduce
 
@@ -505,11 +507,12 @@ class HelpDeskLabReporter:
                      'n={n}; min={min} days; max={max} days; mean={mean:.0f} days; median={median:.0f} days;'
                      .format(**data))
 
-    def _enabler_helpdesk(self, enabler):
-        print('--------->', enabler.name)
+    def _node_helpdesk(self, node):
+        print('--------->', node.name)
         wb = self.workbook
-        ws = wb.add_worksheet(enabler.name)
-        deck = EnablerDeck(enabler, *Data.getEnablerHelpDesk(enabler.name))
+        ws = wb.add_worksheet(node.name)
+        deck = LabDeck(node, self.data, self.timestamp, self.source)
+        reporter = self.reporter
 
         painter = Painter(wb, ws)
         ws.set_zoom(80)
@@ -523,7 +526,7 @@ class HelpDeskLabReporter:
                                             'bg_color': '#002D67', 'font_color': '#FFE616', 'align': 'center'})
 
         ws.merge_range(xl_range(row, 0, row, 4),
-                       "Help desk for Enabler: '{0}'".format(enabler.name), _heading)
+                       "Help Desk for Node: '{0}'".format(node.name), _heading)
         ws.set_row(0, 42)
         ws.insert_image(0, 0, settings.logofiware, {'x_scale': 0.5, 'y_scale': 0.5, 'x_offset': 0, 'y_offset': 0})
 
@@ -542,21 +545,18 @@ class HelpDeskLabReporter:
         ws.write(row, 0, 'End of Data Analysis:', self.spFormats.bold_right)
         ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.end)))
 
-        #
         row += 2
         _format = self.workbook.add_format({'bold': True, 'font_size': 15, 'color': 'green'})
-        ename = enabler.Name if enabler.GE else enabler.name
-        ws.write(row, 0, 'Enabler:', self.spFormats.bold_right)
-        ws.write(row, 1, ename, _format)
-        row += 1
-        _format = self.workbook.add_format({'bold': True, 'font_size': 15, 'bg_color': '#60C1CF'})
-        ws.write(row, 0, 'Product Owner:', self.spFormats.bold_right)
-        ws.write(row, 1, '{} - {}'.format(enabler.owner, enabler.leader), _format)
-        ws.write_row(row, 2, ('', '', ''), _format)
+        ws.write(row, 0, 'Node:', self.spFormats.bold_right)
+        ws.write(row, 1, node.name, _format)
 
         row += 1
         ws.write(row, 0, 'Work Mode:', self.spFormats.bold_right)
-        ws.write(row, 1, enabler.mode)
+        try:
+            ws.write(row, 1, deck.node.mode)
+        except Exception:
+            # there is no data about the node, therefore we consider the node Inactive
+            ws.write(row, 1, 'Inactive')
 
         row += 2
         ws.write(row, 0, 'HelpDesk Summary:', self.spFormats.bold_right)
@@ -564,29 +564,25 @@ class HelpDeskLabReporter:
         #
         row += 1
 
-        reporter = DeckReporter(enabler.name, deck, start=self.start, end=self.end)
+        reporter = DeckReporter(node.name, deck, start=self.start, end=self.end)
         reporter.deck = deck
         data = reporter.deck.issueType
         ws.write(row, 0, 'Composition', self.spFormats.bold_right)
-        ws.write(row, 1, '{0:,} Issues = {extRequest} extRequests + {Monitor:,} Monitors'
-                 .format(sum(data.values()), **data))
+        ws.write(row, 1, '{} Issues = {} extRequests + {} Monitors'
+                 .format(len(deck), deck.issueType['extRequest'], deck.issueType['Monitor']))
 
         row += 1
         data = reporter.deck.status
         ws.write(row, 0, 'Status', self.spFormats.bold_right)
-        ws.write(row, 1,
-                 '{0:,} Issues = {Open} Open + {In Progress} In Progress + {Impeded} Impeded + {Answered} Answered +'
-                 ' {Closed} Closed'.format(sum(data.values()), **data))
-
-        row += 1
-        data = reporter.deck.resolution
-        ws.write(row, 0, 'Resolved', self.spFormats.bold_right)
-        fields = ' + '.join(['{' + '{0}'.format(item) + '} ' + '{0}'.format(item) for item in data])
-
-        if len(data):
-            ws.write(row, 1, '{0:,} Issues = '.format(sum(data.values())) + fields.format(**data))
-        else:
-            ws.write(row, 1, '0 Issues')
+        ws.write(row, 1, '{} Issues = {} Open + {} In Progress + {} Impeded + {} Answered + {} Closed'
+                 .format(len(deck),
+                         deck.status['Open'],
+                         deck.status['In Progress'],
+                         deck.status['Impeded'],
+                         deck.status['Answered'],
+                         deck.status['Closed']
+                         )
+                 )
 
         if len(reporter.deck):
             row += 2
@@ -605,16 +601,11 @@ class HelpDeskLabReporter:
         ws.write(row, 0, 'HelpDesk Set:', self.spFormats.bold_right)
         ws.write(row, 1, 'Statistics', self.spFormats.bold_left)
 
-        #
         row += 1
         ws.write(row, 0, 'All:', self.spFormats.bold_right)
         self._write_stats(ws, row, reporter.stats)
 
         if reporter.stats['n'] > 0:
-            row += 1
-            ws.write(row, 0, 'Last 60 days:', self.spFormats.bold_right)
-            self._write_stats(ws, row, reporter.statsOfRecent)
-
             row += 1
             ws.write(row, 0, 'Pending Issues:', self.spFormats.bold_right)
             self._write_stats(ws, row, reporter.statsOfPending)
@@ -934,7 +925,7 @@ class HelpDeskLabReporter:
     def lab(self):
         print("\n--monitor-- Help-Desk Lab nodes:")
 
-        _date = datetime.now().strftime("%Y%m%d")
+        _date = datetime.now().strftime("%Y%m%d-%H%M")
         filename = 'FIWARE.helpdesk-lab.report.' + _date + '.xlsx'
         myfile = os.path.join(settings.outHome, filename)
 
@@ -942,13 +933,10 @@ class HelpDeskLabReporter:
         self.spFormats = SpreadsheetFormats(self.workbook)
         self._lab_channel_help_desk()
 
-        '''
-        chapter = chaptersBook[chaptername]
-        self._chapter_helpdesk(chapter)
+        nodes = helpdeskNodesBook
 
-        for _enabler in chapter.enablers:
-            self._enabler_helpdesk(chapter.enablers[_enabler])
-        '''
+        for node in nodes:
+            self._node_helpdesk(helpdeskNodesBook[node])
 
         print('Help-Desk Lab nodes report: W:' + myfile)
         self.workbook.close()
@@ -961,9 +949,6 @@ class WorkBench:
         reporter = HelpDeskLabReporter()
 
         reporter.lab()
-
-        #for _chapter in chapters:
-        #    reporter.chapter(_chapter)
 
     @staticmethod
     def snapshot():
