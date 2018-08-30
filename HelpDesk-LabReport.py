@@ -19,6 +19,8 @@ from kernel.Settings import settings
 from kernel.SheetFormats import SpreadsheetFormats
 from kernel.UploaderTool import Uploader
 
+from functools import reduce
+
 __author__ = "Fernando López"
 
 chapters = ('Lab')
@@ -264,32 +266,34 @@ class Painter:
         self._column += len(headings) + 1
         return chart
 
-    def draw_enablers_contribution(self, data):
+    def draw_nodes_contribution(self, data):
         wb, ws = self._wb, self._ws
-        _data = sorted({k: sum(data[k][0].values()) for k in data}.items(), key=operator.itemgetter(1), reverse=True)
-        enablers = list(reversed([item[0] for item in _data]))
+        #_data = sorted({k: sum(data[k][0].values()) for k in data}.items(), key=operator.itemgetter(1), reverse=True)
+        #nodes = list(reversed([item[0] for item in _data]))
+        nodes = data.keys()
 
         chart = wb.add_chart({'type': 'bar'})
-        headings = ('Enabler', 'Size')
+        headings = ('Nodes', 'Size')
         col = self._column
         ws.write_row(0, col, headings)
-        ws.write_column(1, col+0, enablers)
-        ws.write_column(1, col+1, [sum(data[enabler][0].values()) for enabler in enablers])
+        ws.write_column(1, col+0, nodes)
+        # ws.write_column(1, col+1, [sum(data[node][0].values()) for node in nodes])
+        ws.write_column(1, col+1, [len(data[node]) for node in nodes])
 
         sheet_name = ws.get_name()
 
         chart.add_series({
             'name': [sheet_name, 0, col+1],
-            'categories': [sheet_name, 1, col+0, len(enablers), col+0],
-            'values': [sheet_name, 1, col+1, len(enablers), col+1],
+            'categories': [sheet_name, 1, col+0, len(nodes), col+0],
+            'values': [sheet_name, 1, col+1, len(nodes), col+1],
             'data_labels': {'value': True}
         })
 
-        chart.set_title({'name': "Enablers' Help Desk Contribution"})
+        chart.set_title({'name': "Nodes' Help Desk Contribution"})
         chart.set_y_axis({'name': 'Enablers'})
         chart.set_x_axis({'name': '# items'})
         chart.set_legend({'position': 'top'})
-        height = 100 + 35 * len(enablers)
+        height = 100 + 35 * len(nodes)
         chart.set_size({'width': 500, 'height': height, 'x_scale': 1, 'y_scale': 1})
 
         chart.set_plotarea({'fill': {'color': '#FFFF99'}})
@@ -297,110 +301,59 @@ class Painter:
         self._column += len(headings) + 1
         return chart
 
-    def draw_enablers_service_time(self, data):
+    @staticmethod
+    def calculate_delta_time(a_issue_field):
+        resolution_date = a_issue_field['resolutiondate']
+        created_date = a_issue_field['created']
+
+        resolution_date = datetime.strptime(resolution_date, '%Y-%m-%dT%H:%M:%S.%f%z')
+        created_date = datetime.strptime(created_date, '%Y-%m-%dT%H:%M:%S.%f%z')
+
+        result = (resolution_date - created_date).total_seconds() / 86400
+
+        return result
+
+    def draw_nodes_service_time(self, data):
         wb, ws = self._wb, self._ws
-        _data = sorted({k: data[k][1]['n'] for k in data}.items(), key=operator.itemgetter(1), reverse=True)
-        enablers = list(reversed([item[0] for item in _data]))
+        # _data = sorted({k: data[k][1]['n'] for k in data}.items(), key=operator.itemgetter(1), reverse=True)
+        # nodes = list(reversed([item[0] for item in _data]))
+        nodes = data.keys()
         chart = wb.add_chart({'type': 'bar'})
-        headings = ('Enabler', 'Overall Mean', 'Last 60 days Mean')
+        headings = ('Nodes', 'Overall Mean')
         col = self._column
         ws.write_row(0, col, headings)
-        ws.write_column(1, col+0, enablers)
+        ws.write_column(1, col+0, nodes)
+
+        A = {}
+        for node in nodes:
+            aux_data = data[node].data
+            aux_data = list(map(lambda x: Painter.calculate_delta_time(x['fields']), aux_data))
+
+            if len(aux_data) == 0:
+                A[node] = 0
+            else:
+                A[node] = reduce(lambda x, y: x+y, aux_data) / len(aux_data)
+
         value = (lambda x: int(x) if x else None)
-        ws.write_column(1, col+1, [value(data[enabler][1]['mean']) for enabler in enablers])
-        ws.write_column(1, col+2, [value(data[enabler][2]['mean']) for enabler in enablers])
+        ws.write_column(1, col+1, [A[node] for node in nodes])
 
         sheet_name = ws.get_name()
 
         chart.add_series({
                 'name': [sheet_name, 0, col+1],
-                'categories': [sheet_name, 1, col+0, len(enablers), col+0],
-                'values': [sheet_name, 1, col+1, len(enablers), col+1],
+                'categories': [sheet_name, 1, col+0, len(nodes), col+0],
+                'values': [sheet_name, 1, col+1, len(nodes), col+1],
                 'data_labels': {'value': True}
             })
 
-        chart.add_series({
-                'name': [sheet_name, 0, col+2],
-                'categories': [sheet_name, 1, col+0, len(enablers), col+0],
-                'values': [sheet_name, 1, col+2, len(enablers), col+2],
-                'data_labels': {'value': True}
-            })
-
-        chart.set_title({'name': "Enablers' Help Desk Service Time"})
+        chart.set_title({'name': "Nodes' Help Desk Service Time"})
         chart.set_y_axis({'name': 'Enablers'})
         chart.set_x_axis({'name': '# days'})
         chart.set_legend({'position': 'top'})
-        height = 100 + 35 * len(enablers)
+        height = 100 + 35 * len(nodes)
         chart.set_size({'width': 500, 'height': height, 'x_scale': 1, 'y_scale': 1})
 
         chart.set_plotarea({'fill': {'color': '#CCFFCC'}})
-        chart.set_style(2)
-        self._column += len(headings) + 1
-        return chart
-
-    def draw_chapters_contribution(self, data):
-        wb, ws = self._wb, self._ws
-        chart = wb.add_chart({'type': 'column'})
-        headings = ('Chapter', '# Items')
-        col = self._column
-        ws.write_row(0, col, headings)
-        chapters = [k for k in data]
-        ws.write_column(1, col+0, data)
-        ws.write_column(1, col+1, [data[k][0] for k in data])
-
-        sheet_name = ws.get_name()
-        chart.add_series({
-            'name': [sheet_name, 0, col+1],
-            'categories': [sheet_name, 1, col+0, len(chapters), col+0],
-            'values': [sheet_name, 1, col+1, len(chapters), col+1],
-            'data_labels': {'value': True}
-        })
-
-        chart.set_title({'name': "Chapters' Helpdesk Contribution"})
-        chart.set_x_axis({'name': 'Chapters'})
-        chart.set_y_axis({'name': '# items'})
-        chart.set_legend({'position': 'top'})
-        chart.set_size({'width': 1000, 'height': 288, 'x_scale': 1, 'y_scale': 1})
-
-        chart.set_plotarea({'fill': {'color': '#FFFF99'}})
-        chart.set_style(2)
-        self._column += len(headings) + 1
-        return chart
-
-    def draw_chapters_service_time(self, data):
-        wb, ws = self._wb, self._ws
-        chart = wb.add_chart({'type': 'column'})
-        headings = ('Chapter', 'Mean', 'Last 60 days mean')
-        col = self._column
-        ws.write_row(0, col, headings)
-        chapters = [k for k in data]
-        value = (lambda x: int(x) if x else None)
-        ws.write_column(1, col+0, data)
-        ws.write_column(1, col+1, [value(data[k][1]['mean']) for k in data])
-        ws.write_column(1, col+2, [value(data[k][2]['mean']) for k in data])
-
-        sheet_name = ws.get_name()
-        chart.add_series({
-            'name': [sheet_name, 0, col+1],
-            'categories': [sheet_name, 1, col+0, len(chapters), col+0],
-            'values': [sheet_name, 1, col+1, len(chapters), col+1],
-            'data_labels': {'value': True}
-        })
-
-        chart.add_series({
-            'name': [sheet_name, 0, col+2],
-            'categories': [sheet_name, 1, col+0, len(chapters), col+0],
-            'values': [sheet_name, 1, col+2, len(chapters), col+2],
-            'data_labels': {'value': True}
-        })
-
-        chart.set_title({'name': "Chapters' Helpdesk Service Time"})
-        chart.set_x_axis({'name': 'Chapters'})
-        chart.set_y_axis({'name': '# days'})
-        chart.set_legend({'position': 'top'})
-        chart.set_size({'width': 1000, 'height': 288, 'x_scale': 1, 'y_scale': 1})
-
-        chart.set_plotarea({'fill': {'color': '#FFFF99'}})
         chart.set_style(2)
         self._column += len(headings) + 1
         return chart
@@ -859,10 +812,10 @@ class HelpDeskLabReporter:
         chart = painter.draw_enablers_service_time(reporter.enablers)
         ws.insert_chart(row, 1, chart, {'x_offset': 500, 'y_offset': 0})
 
-    def _tech_channel_help_desk(self):
-        print('---> TechChapters')
+    def _lab_channel_help_desk(self):
+        print('---> Lab Nodes')
         wb = self.workbook
-        ws = wb.add_worksheet('Tech Channel')
+        ws = wb.add_worksheet('Lab Channel')
         deck = self.deck
         reporter = self.reporter
 
@@ -953,10 +906,6 @@ class HelpDeskLabReporter:
 
         if reporter.stats['n'] > 0:
             row += 1
-            ws.write(row, 0, 'Last 60 days:', self.spFormats.bold_right)
-            self._write_stats(ws, row, reporter.statsOfRecent)
-
-            row += 1
             ws.write(row, 0, 'Pending Issues:', self.spFormats.bold_right)
             self._write_stats(ws, row, reporter.statsOfPending)
 
@@ -973,45 +922,35 @@ class HelpDeskLabReporter:
 
         row += 1
         _format = self.workbook.add_format({'bold': True, 'font_size': 13, 'bg_color': '#D0E799'})
-        ws.merge_range(xl_range(row, 1, row, 2), 'Chapters Contribution', _format)
-        row += 1
-
-        chart = painter.draw_chapters_contribution(reporter.chapters)
-        ws.insert_chart(row, 1, chart,  {'x_offset': 0, 'y_offset': 0})
-        row += 15
-
-        chart = painter.draw_chapters_service_time(reporter.chapters)
-        ws.insert_chart(row, 1, chart,  {'x_offset': 0, 'y_offset': 0})
-
-        row += 16
-        ws.merge_range(xl_range(row, 1, row, 2), 'Enablers Contribution and Service Time', _format)
+        ws.merge_range(xl_range(row, 1, row, 2), 'Nodes Contribution and Service Time', _format)
 
         row += 1
-        chart = painter.draw_enablers_contribution(reporter.enablers)
+        chart = painter.draw_nodes_contribution(reporter.nodes)
         ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
 
-        chart = painter.draw_enablers_service_time(reporter.enablers)
+        chart = painter.draw_nodes_service_time(reporter.nodes)
         ws.insert_chart(row, 1, chart, {'x_offset': 500, 'y_offset': 0})
 
-    def chapter(self, chaptername):
-        if chaptername not in settings.chapters:
-            raise Exception("Unknown chapter: {}".format(chaptername))
-
-        print("\n--monitor-- chapter:", chaptername)
+    def lab(self):
+        print("\n--monitor-- Help-Desk Lab nodes:")
 
         _date = datetime.now().strftime("%Y%m%d")
-        filename = 'FIWARE.helpdesk-tech.report.' + chaptername + '.' + _date + '.xlsx'
+        filename = 'FIWARE.helpdesk-lab.report.' + _date + '.xlsx'
         myfile = os.path.join(settings.outHome, filename)
+
         self.workbook = xlsxwriter.Workbook(myfile)
         self.spFormats = SpreadsheetFormats(self.workbook)
-        self._tech_channel_help_desk()
+        self._lab_channel_help_desk()
+
+        '''
         chapter = chaptersBook[chaptername]
         self._chapter_helpdesk(chapter)
 
         for _enabler in chapter.enablers:
             self._enabler_helpdesk(chapter.enablers[_enabler])
+        '''
 
-        print(chaptername, ': W:' + myfile)
+        print('Help-Desk Lab nodes report: W:' + myfile)
         self.workbook.close()
 
 
@@ -1020,6 +959,9 @@ class WorkBench:
     def report():
         print('report')
         reporter = HelpDeskLabReporter()
+
+        reporter.lab()
+
         #for _chapter in chapters:
         #    reporter.chapter(_chapter)
 

@@ -12,7 +12,7 @@ from kernel.NodesBook import helpdeskNodesBook
 from kernel.Recorder import Recorder
 from kernel.DataBoard import Data
 
-from kernel.NM_Aggregates import ChannelDeck, InnChannel, EnablerDeck, ChapterDeck, NodeDeck
+from kernel.NM_Aggregates import ChannelDeck, InnChannel, EnablerDeck, ChapterDeck, LabDeck
 
 __author__ = 'Manuel Escriche'
 
@@ -475,17 +475,19 @@ class LabChannelReporter(ChannelReporter):
         super().__init__(channel, deck, start=start, end=end)
         self.__nodes = list(helpdeskNodesBook.keys())
         self.nodes = self._nodes(deck)
-        self.enablers = self._enablers(deck)
+        # self.enablers = self._enablers(deck)
         self.save()
 
     def _nodes(self, deck):
         data = OrderedDict()
         for node in self.__nodes:
             # _deck = ChapterDeck(chaptersBook[chapter], deck.data, deck.timestamp, deck.source)
-            _deck = NodeDeck(helpdeskNodesBook[node], deck.data, deck.timestamp, deck.source)
+            _deck = LabDeck(helpdeskNodesBook[node], deck.data, deck.timestamp, deck.source)
 
-            reporter = TechChapterReporter(labsBook[node], _deck)
-            data[node] = (len(_deck), reporter.stats, reporter.statsOfRecent, reporter.statsOfVeryRecent)
+            # reporter = TechChapterReporter(labsBook[node], _deck)
+            #reporter = LabChannelReporter(_deck)
+            #data[node] = (len(_deck), reporter.stats, reporter.statsOfRecent, reporter.statsOfVeryRecent)
+            data[node] = _deck
 
         return data
 

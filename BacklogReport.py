@@ -1336,9 +1336,10 @@ class WorkBench:
         reporter = BacklogReporter()
         chapters = settings.chapters
 
+        for _chapter in chapters:
+            reporter.chapter(_chapter)
+
         reporter.lab()
-        # for _chapter in chapters:
-        #     reporter.chapter(_chapter)
 
     @staticmethod
     def snapshot():

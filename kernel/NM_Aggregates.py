@@ -12,8 +12,8 @@ __author__ = "Manuel Escriche <mev@tid.es>"
 
 _IssueTypes = {
     'Epic': Epic, 'Feature': Feature, 'Story': Story, 'Bug': Bug,
-    'WorkItem': WorkItem, 'Risk':Risk,
-    'extRequest':extRequest, 'eRequest':eRequest, 'Monitor': Monitor
+    'WorkItem': WorkItem, 'Risk': Risk,
+    'extRequest': extRequest, 'eRequest': eRequest, 'Monitor': Monitor
 }
 
 
@@ -153,8 +153,10 @@ class EnablerDeck(Deck):
         indata = list()
         for item in data:
             try:
-                if item['fields']['customfield_11105']['value'] == enabler.name: indata.append(item)
-            except: continue
+                if item['fields']['customfield_11105']['value'] == enabler.name:
+                    indata.append(item)
+            except:
+                continue
         super().__init__(indata, timestamp, source)
         self.enabler = enabler
 
@@ -163,6 +165,19 @@ class EnablerDeck(Deck):
                  + r'{2,}$'
         for issue in self:
             issue.OkTestName = True if re.match(pattern, issue.summary) else False
+
+
+class LabDeck(Deck):
+    def __init__(self, node, data, timestamp, source):
+        indata = list()
+        for item in data:
+            try:
+                if item['fields']['customfield_11104']['value'] == node.name:
+                    indata.append(item)
+            except:
+                continue
+        super().__init__(indata, timestamp, source)
+        self.node = node
 
 
 class ChapterDeck(Deck):
