@@ -1,5 +1,9 @@
 __author__ = "Manuel Escriche <mev@tid.es>"
-import os, base64, requests, xlsxwriter, re
+import os
+import base64
+import requests
+import xlsxwriter
+import re
 from datetime import date, datetime
 from xlsxwriter.utility import xl_range
 from operator import attrgetter
@@ -9,13 +13,14 @@ from kernel.SheetFormats import SpreadsheetFormats
 from kernel.TrackerBook import trackersBookByKey
 from kernel.IssuesList import IssuesList
 
+
 class Connector:
 
     url_api = {
-        'session':'/rest/auth/1/session',
-        'project':'/rest/api/latest/project',
-        'component':'/rest/api/latest/component/',
-        'search':'/rest/api/latest/search'
+        'session': '/rest/auth/1/session',
+        'project': '/rest/api/latest/project',
+        'component': '/rest/api/latest/component/',
+        'search': '/rest/api/latest/search'
     }
     _singlenton = None
 

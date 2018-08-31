@@ -3,10 +3,10 @@ import re
 import xlsxwriter
 from datetime import datetime
 from xlsxwriter.utility import xl_range
-from Kernel.Calendar import agileCalendar
-from _Kernel.Settings import settings
-from _Kernel.SheetFormats import SpreadsheetFormats
-from Kernel.TrackerBook import chaptersBook
+from kernel.Calendar import agileCalendar
+from kernel.Settings import settings
+from kernel.SheetFormats import SpreadsheetFormats
+from kernel.TrackerBook import chaptersBook
 
 __author__ = 'Manuel Escriche'
 

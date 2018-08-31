@@ -18,14 +18,11 @@ from kernel.Settings import settings
 from kernel.SheetFormats import SpreadsheetFormats
 from kernel.UploaderTool import Uploader
 from kernel.NodesBook import helpdeskNodesBook
-from kernel.ComponentsBook import labNodesBook
-
-
 from functools import reduce
 
 __author__ = "Fernando López"
 
-chapters = ('Lab')
+chapters = 'Lab'
 
 
 class Painter:
@@ -270,8 +267,6 @@ class Painter:
 
     def draw_nodes_contribution(self, data):
         wb, ws = self._wb, self._ws
-        #_data = sorted({k: sum(data[k][0].values()) for k in data}.items(), key=operator.itemgetter(1), reverse=True)
-        #nodes = list(reversed([item[0] for item in _data]))
         nodes = data.keys()
 
         chart = wb.add_chart({'type': 'bar'})
@@ -317,8 +312,6 @@ class Painter:
 
     def draw_nodes_service_time(self, data):
         wb, ws = self._wb, self._ws
-        # _data = sorted({k: data[k][1]['n'] for k in data}.items(), key=operator.itemgetter(1), reverse=True)
-        # nodes = list(reversed([item[0] for item in _data]))
         nodes = data.keys()
         chart = wb.add_chart({'type': 'bar'})
         headings = ('Nodes', 'Overall Mean')
@@ -326,18 +319,17 @@ class Painter:
         ws.write_row(0, col, headings)
         ws.write_column(1, col+0, nodes)
 
-        A = {}
+        a = {}
         for node in nodes:
             aux_data = data[node].data
             aux_data = list(map(lambda x: Painter.calculate_delta_time(x['fields']), aux_data))
 
             if len(aux_data) == 0:
-                A[node] = 0
+                a[node] = 0
             else:
-                A[node] = reduce(lambda x, y: x+y, aux_data) / len(aux_data)
+                a[node] = reduce(lambda x, y: x+y, aux_data) / len(aux_data)
 
-        value = (lambda x: int(x) if x else None)
-        ws.write_column(1, col+1, [A[node] for node in nodes])
+        ws.write_column(1, col+1, [a[node] for node in nodes])
 
         sheet_name = ws.get_name()
 
@@ -380,7 +372,6 @@ class HelpDeskLabReporter:
         ws = wb.add_worksheet(coordination.name[1:])
         backlog = self.factory.getCoordinationBacklog(coordination.key)
         backlog.sort(key=backlog.sortDict['name'])
-        # print(coordination.project)
 
         painter = Painter(wb, ws)
         ws.set_zoom(80)
@@ -410,14 +401,12 @@ class HelpDeskLabReporter:
         ws.write(row, 0, 'End of Data Analysis:', self.spFormats.bold_right)
         ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.end)))
 
-        #
         row += 2
         _format = self.workbook.add_format({'bold': True, 'font_size': 15, 'bg_color': '#60C1CF'})
         ws.write(row, 0, 'Backlog Owner:', self.spFormats.bold_right)
         ws.write(row, 1, coordination.leader, _format)
         ws.write(row, 2, '', _format)
 
-        #
         row += 2
         ws.write(row, 0, 'Backlog Summary:', self.spFormats.bold_right)
         ws.write(row, 1, '# Items', self.spFormats.bold_left)
@@ -428,13 +417,13 @@ class HelpDeskLabReporter:
         ws.write(row, 0, 'Composition', self.spFormats.bold_right)
         ws.write(row, 1, '{0} Issues = {Epic} Epics + {Feature} Features + '
                          '{Story} User Stories + {WorkItem} WorkItems + {Bug} Bugs'.format(sum(data.values()), **data))
-        #
+
         row += 1
         data = reporter.perspective
         ws.write(row, 0, 'Status', self.spFormats.bold_right)
         ws.write(row, 1, '{0} Issues = {Implemented} Implemented  + {Working On} Working On  + '
                          ' {Foreseen} Foreseen'.format(sum(data.values()), **data))
-        #
+
         row += 1
         data = reporter.sprint_status
         ws.write(row, 0, 'Sprint Status', self.spFormats.red_bold_right)
@@ -512,7 +501,7 @@ class HelpDeskLabReporter:
         wb = self.workbook
         ws = wb.add_worksheet(node.name)
         deck = LabDeck(node, self.data, self.timestamp, self.source)
-        reporter = self.reporter
+        # reporter = self.reporter
 
         painter = Painter(wb, ws)
         ws.set_zoom(80)
@@ -527,6 +516,7 @@ class HelpDeskLabReporter:
 
         ws.merge_range(xl_range(row, 0, row, 4),
                        "Help Desk for Node: '{0}'".format(node.name), _heading)
+
         ws.set_row(0, 42)
         ws.insert_image(0, 0, settings.logofiware, {'x_scale': 0.5, 'y_scale': 0.5, 'x_offset': 0, 'y_offset': 0})
 
@@ -561,18 +551,15 @@ class HelpDeskLabReporter:
         row += 2
         ws.write(row, 0, 'HelpDesk Summary:', self.spFormats.bold_right)
         ws.write(row, 1, '# Items', self.spFormats.bold_left)
-        #
-        row += 1
 
+        row += 1
         reporter = DeckReporter(node.name, deck, start=self.start, end=self.end)
         reporter.deck = deck
-        data = reporter.deck.issueType
         ws.write(row, 0, 'Composition', self.spFormats.bold_right)
         ws.write(row, 1, '{} Issues = {} extRequests + {} Monitors'
                  .format(len(deck), deck.issueType['extRequest'], deck.issueType['Monitor']))
 
         row += 1
-        data = reporter.deck.status
         ws.write(row, 0, 'Status', self.spFormats.bold_right)
         ws.write(row, 1, '{} Issues = {} Open + {} In Progress + {} Impeded + {} Answered + {} Closed'
                  .format(len(deck),
@@ -620,6 +607,7 @@ class HelpDeskLabReporter:
             ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
 
             row += 15
+
         row += 1
         _format = self.workbook.add_format({'bold': True, 'font_size': 16, 'bg_color': '#009999'})
 
@@ -713,7 +701,6 @@ class HelpDeskLabReporter:
         ws.write(row, 0, 'End of Data Analysis:', self.spFormats.bold_right)
         ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.end)))
 
-        #
         row += 2
         _format = self.workbook.add_format({'bold': True, 'font_size': 15, 'color': 'green'})
         ws.write(row, 0, 'Chapter Name:', self.spFormats.bold_right)
@@ -733,7 +720,6 @@ class HelpDeskLabReporter:
         ws.write(row, 0, 'HelpDesk Summary:', self.spFormats.bold_right)
         ws.write(row, 1, '# Items', self.spFormats.bold_left)
 
-        #
         row += 1
         data = deck.issueType
         ws.write(row, 0, 'Composition', self.spFormats.bold_right)
@@ -828,7 +814,6 @@ class HelpDeskLabReporter:
         ws.set_row(0, 42)
         ws.insert_image(0, 0, settings.logofiware, {'x_scale': 0.5, 'y_scale': 0.5, 'x_offset': 0, 'y_offset': 0})
 
-        # TODO: Probably we have to change these data.
         row += 1
         ws.write(row, 0, 'Project Time:', self.spFormats.bold_right)
         ws.write(row, 1, '{}'.format(agileCalendar.projectTime()))
@@ -853,9 +838,8 @@ class HelpDeskLabReporter:
         row += 2
         ws.write(row, 0, 'Tech Channel Summary', self.spFormats.bold_right)
         ws.write(row, 1, '# Items', self.spFormats.bold_left)
-        #
-        row += 1
 
+        row += 1
         reporter.deck = deck
         data = reporter.deck.issueType
         ws.write(row, 0, 'Composition', self.spFormats.bold_right)
@@ -890,7 +874,7 @@ class HelpDeskLabReporter:
 
         ws.write(row, 0, 'Channel Set:', self.spFormats.bold_right)
         ws.write(row, 1, 'Statistics', self.spFormats.bold_left)
-        #
+
         row += 1
         ws.write(row, 0, 'All:', self.spFormats.bold_right)
         self._write_stats(ws, row, reporter.stats)
