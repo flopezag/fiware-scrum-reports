@@ -258,6 +258,7 @@ class Painter:
             # 'values': [sheet_name, 1, col+5, len(data['progress']), col+5],
             'data_labels': {'value': True}
         })
+
         chart.combine(cchart)
 
         chart.set_title({'name': 'Backlog Evolution'})
@@ -555,7 +556,7 @@ class BacklogReporter:
 
         row += 1
         ws.write(row, 0, 'Project Time:', self.spFormats.bold_right)
-        ws.write(row, 1, '{}'.format(agileCalendar.projectTime))
+        ws.write(row, 1, '{}'.format(agileCalendar.projectTime()))
         ws.write(row, 2, 'Report Date:', self.spFormats.bold_right)
         ws.write(row, 3, date.today().strftime('%d-%m-%Y'))
 
@@ -854,7 +855,7 @@ class BacklogReporter:
 
         row += 1
         ws.write(row, 0, 'Project Time:', self.spFormats.bold_right)
-        ws.write(row, 1, '{}'.format(agileCalendar.projectTime))
+        ws.write(row, 1, '{}'.format(agileCalendar.projectTime()))
         ws.write(row, 2, 'Report Date:', self.spFormats.bold_right)
         ws.write(row, 3, date.today().strftime('%d-%m-%Y'))
 
