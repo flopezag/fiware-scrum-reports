@@ -1,14 +1,18 @@
 __author__ = "Manuel Escriche <mev@tid.es>"
 
-import os, base64, requests, xlsxwriter, re
+import os
+import base64
+import requests
+import xlsxwriter
+import re
 from datetime import date, datetime
 from xlsxwriter.utility import xl_range
 from operator import attrgetter
 from collections import namedtuple
-from _Kernel.Settings import settings
-from _Kernel.SheetFormats import SpreadsheetFormats
-from Kernel.TrackerBook import trackersBookByKey
-from Kernel.IssuesList import IssuesList
+from kernel.Settings import settings
+from kernel.SheetFormats import SpreadsheetFormats
+from kernel.TrackerBook import trackersBookByKey
+from kernel.IssuesList import IssuesList
 
 
 class Connector:
@@ -34,7 +38,7 @@ class Connector:
         username = server.username
         password = server.password
         auth = '{}:{}'.format(username, password)
-        keyword = base64.b64encode(bytes(auth,'utf-8'))
+        keyword = base64.b64encode(bytes(auth, 'utf-8'))
         access_key = str(keyword)[2:-1]
         headers = {'Content-Type': 'application/json', "Authorization": "Basic {}".format(access_key)}
         root_url = 'http://{}'.format(server.domain)

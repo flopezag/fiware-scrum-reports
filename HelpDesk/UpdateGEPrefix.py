@@ -2,7 +2,7 @@ __author__ = 'Manuel Escriche'
 
 import re
 from jira.client import JIRA
-from _Kernel.Settings import settings
+from kernel.Settings import settings
 
 server = settings.server['JIRA']
 options = {'server': 'https://{}'.format(server.domain), 'verify': False}
