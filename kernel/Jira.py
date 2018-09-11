@@ -63,6 +63,36 @@ class JIRA:
         data = answer.json()
         return data
 
+    def get_multi_component_data(self, comp_id):
+        start_at = 0
+
+        jql = 'component in {} AND createdDate >= {} AND createdDate <= {}'\
+            .format(comp_id, self.analysis_start_at, self.analysis_finish_on)
+
+        payload = {'fields': JIRA.fields,
+                   'maxResults': 1000, 'startAt': start_at,
+                   'jql': jql
+                   }
+
+        try:
+            data = self.search(payload)
+        except Exception:
+            raise Exception
+
+        total_issues, received_issues = data['total'], len(data['issues'])
+
+        while total_issues > received_issues:
+            payload['startAt'] = received_issues
+
+            try:
+                data['issues'].extend(self.search(payload)['issues'])
+            except Exception:
+                raise Exception
+
+            received_issues = len(data['issues'])
+
+        return data['issues']
+
     def getComponentData(self, comp_id):
         start_at = 0
 
