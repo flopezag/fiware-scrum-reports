@@ -2,22 +2,49 @@ from collections import Counter
 from datetime import datetime
 from kernel.Calendar import calendar as fiware_calendar
 from itertools import accumulate
+from functools import reduce
+import pandas as pd
 
 
 class Analysis:
     def __init__(self, data, enablers):
         self.data = list(map(lambda x: Analysis.clean_data(x['fields']), data))
         self.enablers = enablers
-        self.issue_type = list({'Epic', 'Feature', 'Story', 'WorkItem', 'Bugs'})
+
+        # Static values of data
+        self.issue_type = list({'Epic', 'Feature', 'Story', 'WorkItem', 'Bug'})
         self.status_type = list({'Open', 'Impeded', 'Analysing', 'In Progress', 'Fixed', 'Rejected', 'Closed'})
+        self.status_final_type = list({'Implemented', 'Working On', 'Foreseen'})
 
-        self.c_issue_type = list()
-        self.c_status = list()
+        # Counters issues type
+        self.c_issue_type = {}
+        self.c_status = {}
 
-        self.c_created = list()
-        self.c_updated = list()
-        self.c_resolved = list()
-        self.c_released = list()
+        # Counters issues created
+        self.c_created = {}
+        self.c_updated = {}
+        self.c_resolved = {}
+        self.c_released = {}
+
+        # Counter chapter issue type
+        self.c_chapter_issue_type = {}
+        self.c_chapter_status = {}
+
+        # Counters chapter issues created
+        self.c_chapter_created = {}
+        self.c_chapter_updated = {}
+        self.c_chapter_resolved = {}
+        self.c_chapter_released = {}
+
+        # Counter global issue type
+        self.c_global_issue_type = {}
+        self.c_global_status = {}
+
+        # Counters chapter issues created
+        self.c_global_created = {}
+        self.c_global_updated = {}
+        self.c_global_resolved = {}
+        self.c_global_released = {}
 
         self.calendar_book = fiware_calendar.monthBook
         self.sprints_month = fiware_calendar.pastMonths
@@ -96,11 +123,13 @@ class Analysis:
 
     def get_composition(self):
         print("      Counting Type of Issues")
-        self.c_issue_type = list(map(lambda x: self.counter_issue_type(x), self.enablers))
+        c_issue_type = list(map(lambda x: self.counter_issue_type(x), self.enablers))
+        self.c_issue_type = reduce(lambda a, b: dict(a, **b), c_issue_type)
 
     def get_status(self):
         print("      Counting Status of Issues")
-        self.c_status = list(map(lambda x: self.counter_status(x), self.enablers))
+        c_status = list(map(lambda x: self.counter_status(x), self.enablers))
+        self.c_status = reduce(lambda x, y: dict(x, **y), c_status)
 
     def counter_datetime(self, component_id, field):
         aux = Counter(map(lambda y: y[field], filter(lambda z: z['component_id'] == component_id, self.data)))
@@ -113,9 +142,136 @@ class Analysis:
 
     def get_evolution(self):
         print("      Counting different dates (created, updated, resolved, and released)")
-        self.c_created = list(map(lambda x: self.counter_datetime(x, 'created'), self.enablers))
-        self.c_updated = list(map(lambda x: self.counter_datetime(x, 'updated'), self.enablers))
-        self.c_resolved = list(map(lambda x: self.counter_datetime(x, 'resolved'), self.enablers))
-        self.c_released = list(map(lambda x: self.counter_datetime(x, 'released'), self.enablers))
+        aux = list(map(lambda x: self.counter_datetime(x, 'created'), self.enablers))
+        self.c_created = reduce(lambda a, b: dict(a, **b), aux)
+
+        aux = list(map(lambda x: self.counter_datetime(x, 'updated'), self.enablers))
+        self.c_updated = reduce(lambda a, b: dict(a, **b), aux)
+
+        aux = list(map(lambda x: self.counter_datetime(x, 'resolved'), self.enablers))
+        self.c_resolved = reduce(lambda a, b: dict(a, **b), aux)
+
+        aux = list(map(lambda x: self.counter_datetime(x, 'released'), self.enablers))
+        self.c_released = reduce(lambda a, b: dict(a, **b), aux)
+
+    @staticmethod
+    def reduce_chapter(a_dict, issue_type, data):
+        aux = {}
+
+        if len(data) != 0:
+            dataframe = list(map(lambda y: a_dict[y], data))
+
+            df = pd.DataFrame(dataframe)
+
+            aux = list(map(lambda x: dict([(x, df[x].sum().item())]), issue_type))
+
+            aux = reduce(lambda a, b: dict(a, **b), aux)
+
+        return aux
+
+    @staticmethod
+    def reduce_chapter_evolution(a_dict, data):
+        aux = list()
+
+        if len(data) != 0:
+            dataframe = list(map(lambda y: a_dict[y], data))
+
+            df = pd.DataFrame(dataframe)
+
+            aux = df.sum().tolist()
+
+        return aux
+
+    def get_chapter_composition(self, chapters_name, enabler_per_chapter):
+        aux = list(
+            map(
+                lambda x:
+                    dict([(x, Analysis.reduce_chapter(self.c_issue_type, self.issue_type, enabler_per_chapter[x]))]),
+                chapters_name
+            ))
+
+        self.c_chapter_issue_type = reduce(lambda a, b: dict(a, **b), aux)
+
+    def get_chapter_status(self, chapters_name, enabler_per_chapter):
+        aux = list(
+            map(
+                lambda x:
+                    dict([(x, Analysis.reduce_chapter(self.c_status, self.status_final_type, enabler_per_chapter[x]))]),
+                chapters_name
+            ))
+
+        self.c_chapter_status = reduce(lambda a, b: dict(a, **b), aux)
+
+    def get_chapter_evolution(self, chapters_name, enabler_per_chapter):
+        aux = list(
+            map(
+                lambda x:
+                    dict([(x, Analysis.reduce_chapter_evolution(self.c_created, enabler_per_chapter[x]))]),
+                chapters_name
+            ))
+
+        self.c_chapter_created = reduce(lambda a, b: dict(a, **b), aux)
+
+        aux = list(
+            map(
+                lambda x:
+                    dict([(x, Analysis.reduce_chapter_evolution(self.c_updated, enabler_per_chapter[x]))]),
+                chapters_name
+            ))
+
+        self.c_chapter_updated = reduce(lambda a, b: dict(a, **b), aux)
+
+        aux = list(
+            map(
+                lambda x:
+                    dict([(x, Analysis.reduce_chapter_evolution(self.c_released, enabler_per_chapter[x]))]),
+                chapters_name
+            ))
+
+        self.c_chapter_released = reduce(lambda a, b: dict(a, **b), aux)
+
+        aux = list(
+            map(
+                lambda x:
+                    dict([(x, Analysis.reduce_chapter_evolution(self.c_resolved, enabler_per_chapter[x]))]),
+                chapters_name
+            ))
+
+        self.c_chapter_resolved = reduce(lambda a, b: dict(a, **b), aux)
+
+    def get_global_composition(self, chapters_name):
+        dataframe = list(map(lambda y: self.c_chapter_issue_type[y], chapters_name))
+
+        df = pd.DataFrame(dataframe)
+
+        aux = list(map(lambda x: dict([(x, df[x].sum().item())]), self.issue_type))
+
+        self.c_global_issue_type = reduce(lambda a, b: dict(a, **b), aux)
+
+    def get_global_status(self, chapters_name):
+        dataframe = list(map(lambda y: self.c_chapter_status[y], chapters_name))
+
+        df = pd.DataFrame(dataframe)
+
+        aux = list(map(lambda x: dict([(x, df[x].sum().item())]), self.status_final_type))
+
+        self.c_global_status = reduce(lambda a, b: dict(a, **b), aux)
+
+    def get_global_evolution(self, chapters_name):
+        dataframe = list(map(lambda y: self.c_chapter_created[y], chapters_name))
+        df = pd.DataFrame(dataframe)
+        self.c_global_created = df.sum().tolist()
+
+        dataframe = list(map(lambda y: self.c_chapter_updated[y], chapters_name))
+        df = pd.DataFrame(dataframe)
+        self.c_global_updated = df.sum().tolist()
+
+        dataframe = list(map(lambda y: self.c_chapter_resolved[y], chapters_name))
+        df = pd.DataFrame(dataframe)
+        self.c_global_resolved = df.sum().tolist()
+
+        dataframe = list(map(lambda y: self.c_chapter_released[y], chapters_name))
+        df = pd.DataFrame(dataframe)
+        self.c_global_released = df.sum().tolist()
 
         return
