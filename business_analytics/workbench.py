@@ -2,7 +2,8 @@ import os
 import json
 from kernel.Jira import JIRA
 from functools import reduce
-from business_analytics.analysis import Analysis
+from business_analytics.analysis import Analysis, Data
+from business_analytics.report import Report
 
 
 class WorkBench:
@@ -10,33 +11,67 @@ class WorkBench:
         self.data = list()
         self.enablers = list()
         self.enablers_per_chapter = {}
+        self.enablers_per_name = {}
         self.chapters_name = list()
 
         self.start_date = start_date
         self.end_date = end_date
 
-    def analysis_data(self):
-        analysis = Analysis(self.data, self.enablers)
+        self.analysis = None
+        # self.data = None
+        self.data_analysis = None
 
-        analysis.set_start_date(start_date=self.start_date)
-        analysis.set_end_date(end_date=self.end_date)
+    def analysis_data(self):
+        self.analysis = Analysis(self.data, self.enablers)
+        self.analysis.set_start_date(start_date=self.start_date)
+        self.analysis.set_end_date(end_date=self.end_date)
 
         # Analysis of all GEs
-        analysis.get_composition()
-        analysis.get_status()
-        analysis.get_evolution()
+        self.analysis.get_composition()
+        self.analysis.get_status()
+        self.analysis.get_evolution()
 
         # Reduce to chapters analysis
-        analysis.get_chapter_composition(self.chapters_name, self.enablers_per_chapter)
-        analysis.get_chapter_status(self.chapters_name, self.enablers_per_chapter)
-        analysis.get_chapter_evolution(self.chapters_name, self.enablers_per_chapter)
+        self.analysis.get_chapter_composition(self.chapters_name, self.enablers_per_chapter)
+        self.analysis.get_chapter_status(self.chapters_name, self.enablers_per_chapter)
+        self.analysis.get_chapter_evolution(self.chapters_name, self.enablers_per_chapter)
 
         # Reduce to Global analysis
-        analysis.get_global_composition(self.chapters_name)
-        analysis.get_global_status(self.chapters_name)
-        analysis.get_global_evolution(self.chapters_name)
+        self.analysis.get_global_composition(self.chapters_name)
+        self.analysis.get_global_status(self.chapters_name)
+        self.analysis.get_global_evolution(self.chapters_name)
 
-        return
+        # Create Data structure to manage the final analysis data
+        self.data_analysis = Data()
+        # Counters issues type
+        self.data_analysis.c_issue_type = self.analysis.c_issue_type
+        self.data_analysis.c_status = self.analysis.c_status
+
+        # Counters issues created
+        self.data_analysis.c_created = self.analysis.c_created
+        self.data_analysis.c_updated = self.analysis.c_updated
+        self.data_analysis.c_resolved = self.analysis.c_resolved
+        self.data_analysis.c_released = self.analysis.c_released
+
+        # Counter chapter issue type
+        self.data_analysis.c_chapter_issue_type = self.analysis.c_chapter_issue_type
+        self.data_analysis.c_chapter_status = self.analysis.c_chapter_status
+
+        # Counters chapter issues created
+        self.data_analysis.c_chapter_created = self.analysis.c_chapter_created
+        self.data_analysis.c_chapter_updated = self.analysis.c_chapter_updated
+        self.data_analysis.c_chapter_resolved = self.analysis.c_chapter_resolved
+        self.data_analysis.c_chapter_released = self.analysis.c_chapter_released
+
+        # Counter global issue type
+        self.data_analysis.c_global_issue_type = self.analysis.c_global_issue_type
+        self.data_analysis.c_global_status = self.analysis.c_global_status
+
+        # Counters chapter issues created
+        self.data_analysis.c_global_created = self.analysis.c_global_created
+        self.data_analysis.c_global_updated = self.analysis.c_global_updated
+        self.data_analysis.c_global_resolved = self.analysis.c_global_resolved
+        self.data_analysis.c_global_released = self.analysis.c_global_released
 
     @staticmethod
     def mapping_chapter_enablers(chapter):
@@ -48,6 +83,16 @@ class WorkBench:
             enablers = list(map(lambda x: x['cmp_key'], chapter['enablers']))
 
         return dict([(chapter_name, enablers)])
+
+    @staticmethod
+    def mapping_enablers_name(enablers):
+        if len(enablers) == 0:
+            enablers = {}
+        else:
+            enablers = list(map(lambda x: dict([(x['cmp_key'], x['name'])]), enablers))
+            enablers = dict((key, d[key]) for d in enablers for key in d)
+
+        return enablers
 
     def snapshot(self):
         print("   Getting JIRA session")
@@ -62,6 +107,8 @@ class WorkBench:
             distros_dict = json.load(f)
 
         enablers_per_chapter = list(map(lambda x: WorkBench.mapping_chapter_enablers(x), distros_dict['tracker']))
+        enablers_per_name = list(map(lambda x: WorkBench.mapping_enablers_name(x['enablers']), distros_dict['tracker']))
+        self.enablers_per_name = dict((key, d[key]) for d in enablers_per_name for key in d)
 
         for chapter in enablers_per_chapter:
             key = reduce(lambda x, y: x + y, chapter.keys())
@@ -80,4 +127,24 @@ class WorkBench:
         self.data.extend(jira.get_multi_component_data(enablers))
         print("      data dimension: {}".format(len(self.data)))
 
-        return self.data
+    def report(self):
+        print('   Generating excel report')
+        report = Report(data=self.data_analysis,
+                        enablers=self.enablers,
+                        enablers_per_name=self.enablers_per_name,
+                        start_date=self.start_date,
+                        end_date=self.end_date)
+
+        for chapter in self.chapters_name:
+            report.chapter_report(chapter_name=chapter)
+
+        '''
+        chapters = settings.chapters
+
+        for _chapter in chapters:
+            reporter.chapter(_chapter)
+
+        reporter.lab()
+        '''
+
+        print(report)

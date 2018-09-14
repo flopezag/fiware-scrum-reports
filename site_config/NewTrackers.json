@@ -7,7 +7,7 @@
             "enablers": []
         },
         {
-            "name": "Technical Coordination",
+            "name": "Technical-Coordination",
             "type": "MNG",
             "leader": "",
             "inbox": "",
@@ -19,36 +19,18 @@
             "leader": "ENG - Alessandro Portosa",
             "inbox": "fiware-apps-jira@jira.fiware.org",
             "enablers": [{
-                    "-name": "Orion",
+                    "name": "Orion",
                     "tracker_key": "DATA",
-                    "cmp_key": "10208",
-                    "owner": "FF",
-                    "type": "Product",
-                    "mode": "Development",
-                    "backlog_keyword": "OrionContextBroker",
-                    "GE": "Publish/Subscribe Broker",
-                    "GEi": "Orion Context Broker"
+                    "cmp_key": "10208"
                 },
                 {
-                    "-name": "STH-Comet",
+                    "name": "STH-Comet",
                     "tracker_key": "DATA",
-                    "cmp_key": "11908",
-                    "owner": "UPM",
-                    "type": "Product",
-                    "mode": "Development",
-                    "backlog_keyword": "STH-Comet",
-                    "GE": "STH Comet",
-                    "GEi": "STH Comet"
+                    "cmp_key": "11908"
                 }, {
-                    "-name": "Cygnus",
+                    "name": "Cygnus",
                     "tracker_key": "DATA",
-                    "cmp_key": "11721",
-                    "owner": "UPM",
-                    "type": "Product",
-                    "mode": "Development",
-                    "backlog_keyword": "Cygnus",
-                    "GE": "Cygnus",
-                    "GEi": "Cygnus"
+                    "cmp_key": "11721"
                 }
             ]
         },

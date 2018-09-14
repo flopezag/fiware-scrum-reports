@@ -274,4 +274,46 @@ class Analysis:
         df = pd.DataFrame(dataframe)
         self.c_global_released = df.sum().tolist()
 
-        return
+
+class Data:
+    def __init__(self):
+        # Static values of data
+        self.issue_type = list({'Epic', 'Feature', 'Story', 'WorkItem', 'Bug'})
+        self.status_type = list({'Open', 'Impeded', 'Analysing', 'In Progress', 'Fixed', 'Rejected', 'Closed'})
+        self.status_final_type = list({'Implemented', 'Working On', 'Foreseen'})
+
+        # Counters issues type
+        self.c_issue_type = {}
+        self.c_status = {}
+
+        # Counters issues created
+        self.c_created = {}
+        self.c_updated = {}
+        self.c_resolved = {}
+        self.c_released = {}
+
+        # Counter chapter issue type
+        self.c_chapter_issue_type = {}
+        self.c_chapter_status = {}
+
+        # Counters chapter issues created
+        self.c_chapter_created = {}
+        self.c_chapter_updated = {}
+        self.c_chapter_resolved = {}
+        self.c_chapter_released = {}
+
+        # Counter global issue type
+        self.c_global_issue_type = {}
+        self.c_global_status = {}
+
+        # Counters chapter issues created
+        self.c_global_created = {}
+        self.c_global_updated = {}
+        self.c_global_resolved = {}
+        self.c_global_released = {}
+
+        self.calendar_book = fiware_calendar.monthBook
+        self.sprints_month = fiware_calendar.pastMonths
+
+        self.start_date_index = 0
+        self.end_date_index = len(self.sprints_month)
