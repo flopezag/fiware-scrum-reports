@@ -33,4 +33,10 @@
         <username>user</username>
         <password>password</password>
     </server>
+
+    <server name="GITHUB">
+        <domain>api.github.com</domain>
+        <username>user</username>
+        <password>github token</password>
+    </server>
 </data>

@@ -4,11 +4,13 @@ from kernel.Jira import JIRA
 from functools import reduce
 from business_analytics.analysis import Analysis, Data
 from business_analytics.report import Report
+from business_analytics.github import Github
 
 
 class WorkBench:
     def __init__(self, start_date=None, end_date=None):
-        self.data = list()
+        self.data_jira = list()
+        self.data_github = list()
         self.enablers = list()
         self.enablers_per_chapter = {}
         self.enablers_per_name = {}
@@ -22,9 +24,14 @@ class WorkBench:
         self.data_analysis = None
 
     def analysis_data(self):
-        self.analysis = Analysis(self.data, self.enablers)
+        self.analysis = Analysis(self.data_jira, self.enablers)
+        self.analysis.extend_data(self.data_github)
         self.analysis.set_start_date(start_date=self.start_date)
         self.analysis.set_end_date(end_date=self.end_date)
+        self.analysis.filter_time()
+
+        # TODO: Need to filter data between start date and end date here to calculate the rest of data from here,
+        # currently they are taking all the information
 
         # Analysis of all GEs
         self.analysis.get_composition()
@@ -95,9 +102,6 @@ class WorkBench:
         return enablers
 
     def snapshot(self):
-        print("   Getting JIRA session")
-        jira = JIRA()
-
         print("   Getting enablers' list")
         code_home = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         config_home = os.path.join(code_home, 'site_config')
@@ -105,6 +109,19 @@ class WorkBench:
 
         with open(json_file, 'r') as f:
             distros_dict = json.load(f)
+
+        self.__snapshot_jira__(distros_dict=distros_dict)
+        self.__snapshot_github__(distros_dict=distros_dict)
+
+    def __snapshot_github__(self, distros_dict):
+        print("   Getting GitHub data")
+        github = Github(enablers_dict=distros_dict)
+        self.data_github.extend(github.get_data())
+        print("\n      data dimension: {}".format(len(self.data_github)))
+
+    def __snapshot_jira__(self, distros_dict):
+        print("   Getting JIRA session")
+        jira = JIRA()
 
         enablers_per_chapter = list(map(lambda x: WorkBench.mapping_chapter_enablers(x), distros_dict['tracker']))
         enablers_per_name = list(map(lambda x: WorkBench.mapping_enablers_name(x['enablers']), distros_dict['tracker']))
@@ -123,9 +140,9 @@ class WorkBench:
         enablers = '(' + enablers + ')'
 
         # get the data from jira
-        print("   Getting data from JIRA")
-        self.data.extend(jira.get_multi_component_data(enablers))
-        print("      data dimension: {}".format(len(self.data)))
+        print("   Getting Jira data")
+        self.data_jira.extend(jira.get_multi_component_data(enablers))
+        print("      data dimension: {}".format(len(self.data_jira)))
 
     def report(self):
         print('   Generating excel report')

@@ -233,15 +233,6 @@ class Report:
             ws.write_url(row, 1, '{0}'.format(deploymentBook.roadmap[chapter.name]))
             row += 1
 
-        link = deploymentBook.tracker[chapter.name] + '&func=browse'
-        ws.write(row, 0, 'Tracker:', self.spFormats.bold_right)
-        ws.write_url(row, 1, '{0}'.format(link))
-
-        row += 1
-        link = 'http://backlog.fiware.org/chapter/{}'.format(chapter.name)
-        ws.write(row, 0, 'Backlog:', self.spFormats.bold_right)
-        ws.write_url(row, 1, '{0}'.format(link))
-
         if deploymentBook.materializing[chapter.name]:
             row += 1
             ws.write(row, 0, 'Materializing:', self.spFormats.bold_right)

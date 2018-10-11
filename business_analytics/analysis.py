@@ -52,6 +52,9 @@ class Analysis:
         self.start_date_index = 0
         self.end_date_index = len(self.sprints_month)
 
+    def extend_data(self, data):
+        self.data = self.data + data
+
     def set_start_date(self, start_date):
         start_month_id = fiware_calendar.currentMonth(current_date=start_date)[1]
         self.start_date_index = fiware_calendar.timeline.index(start_month_id)
@@ -59,6 +62,13 @@ class Analysis:
     def set_end_date(self, end_date):
         end_month_id = fiware_calendar.currentMonth(current_date=end_date)[1]
         self.end_date_index = fiware_calendar.timeline.index(end_month_id) + 1
+
+    def filter_time(self):
+        # Now from this data we have to see what is the calendar date
+        date = [self.calendar_book[self.sprints_month[x]]
+                for x in range(self.start_date_index, self.end_date_index + 1)]
+
+        self.data = list(filter(lambda x: x['created'] in date, self.data))
 
     @staticmethod
     def format_datetime(a_datetime, a_format):

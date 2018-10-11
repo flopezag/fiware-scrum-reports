@@ -1,66 +1,87 @@
 {
-    "tracker": [{
-            "name": "Coordination",
-            "type": "MNG",
-            "leader": "",
-            "inbox": "",
-            "enablers": []
+  "tracker": [
+    {
+      "name": "Coordination",
+      "type": "MNG",
+      "leader": "",
+      "inbox": "",
+      "enablers": []
+    },
+    {
+      "name": "Technical-Coordination",
+      "type": "MNG",
+      "leader": "",
+      "inbox": "",
+      "enablers": []
+    },
+    {
+      "name": "Core Context Management",
+      "type": "CHAPTER",
+      "leader": "ENG - Alessandro Portosa",
+      "inbox": "fiware-apps-jira@jira.fiware.org",
+      "enablers": [
+        {
+          "name": "Orion",
+          "tracker_key": "DATA",
+          "cmp_key": "10208",
+          "github": [
+            {
+              "repo": "telefonicaid/fiware-orion"
+            },
+            {
+              "repo": "telefonicaid/fiware-pep-steelskin"
+            }
+          ]
         },
         {
-            "name": "Technical-Coordination",
-            "type": "MNG",
-            "leader": "",
-            "inbox": "",
-            "enablers": []
+          "name": "STH-Comet",
+          "tracker_key": "DATA",
+          "cmp_key": "11908",
+          "github": [
+            {
+              "repo": "telefonicaid/fiware-sth-comet"
+            }
+          ]
         },
         {
-            "name": "Core Context Management",
-            "type": "CHAPTER",
-            "leader": "ENG - Alessandro Portosa",
-            "inbox": "fiware-apps-jira@jira.fiware.org",
-            "enablers": [{
-                    "name": "Orion",
-                    "tracker_key": "DATA",
-                    "cmp_key": "10208"
-                },
-                {
-                    "name": "STH-Comet",
-                    "tracker_key": "DATA",
-                    "cmp_key": "11908"
-                }, {
-                    "name": "Cygnus",
-                    "tracker_key": "DATA",
-                    "cmp_key": "11721"
-                }
-            ]
-        },
-        {
-            "name": "Interface with IoT, Robots, and Third-Party Systems",
-            "type": "CHAPTER",
-            "leader": "",
-            "inbox": "",
-            "enablers": []
-        },
-        {
-            "name": "Processing, Analysis, and Visualization of Context Information",
-            "type": "CHAPTER",
-            "leader": "",
-            "inbox": "",
-            "enablers": []
-        },
-        {
-            "name": "Context Data/API Management, Publication, and Monetization",
-            "type": "CHAPTER",
-            "leader": "",
-            "inbox": "",
-            "enablers": []
-        },
-        {
-            "name": "Deployment Tools",
-            "type": "CHAPTER",
-            "leader": "",
-            "inbox": "",
-            "enablers": []
+          "name": "Cygnus",
+          "tracker_key": "DATA",
+          "cmp_key": "11721",
+          "github": [
+            {
+              "repo": "telefonicaid/fiware-cygnus"
+            }
+          ]
         }
-    ]
+      ]
+    },
+    {
+      "name": "Interface with IoT, Robots, and Third-Party Systems",
+      "type": "CHAPTER",
+      "leader": "",
+      "inbox": "",
+      "enablers": []
+    },
+    {
+      "name": "Processing, Analysis, and Visualization of Context Information",
+      "type": "CHAPTER",
+      "leader": "",
+      "inbox": "",
+      "enablers": []
+    },
+    {
+      "name": "Context Data/API Management, Publication, and Monetization",
+      "type": "CHAPTER",
+      "leader": "",
+      "inbox": "",
+      "enablers": []
+    },
+    {
+      "name": "Deployment Tools",
+      "type": "CHAPTER",
+      "leader": "",
+      "inbox": "",
+      "enablers": []
+    }
+  ]
 }
