@@ -28,6 +28,8 @@ from kernel.Calendar import agileCalendar
 from kernel.Settings import settings
 from kernel.SheetFormats import SpreadsheetFormats
 from business_analytics.draw import Painter
+from kernel.DeploymentModel import deploymentBook
+from functools import reduce
 
 
 class Report:
@@ -60,10 +62,9 @@ class Report:
         '''
         chapter = chaptersBook[chaptername]
         self._coordination_dashboard(chapter.coordination)
-
-        for _enabler in chapter.enablers:
-            self._enabler_dashboard(chapter.enablers[_enabler])
         '''
+        for enabler in self.data.enabler_per_chapter[chapter_name]:
+            self._enabler_dashboard(enabler)
 
         print(chapter_name, ': W:' + my_file)
         self.workbook.close()
@@ -185,6 +186,12 @@ class Report:
         row += 50
         ws.write(row, 0, '')
 
+    @staticmethod
+    def enablers_status(enablers_per_name, status, enablers):
+        a = dict()
+        a[enablers_per_name[enablers]] = status[enablers]
+        return a
+
     def _chapter_dashboard(self, chapter):
         print('------>', chapter)
         wb = self.workbook
@@ -192,6 +199,8 @@ class Report:
         # backlog = self.factory.getChapterBacklog(chapter.name)
 
         painter = Painter(wb, ws)
+        painter.set_dates(start=self.start, end=self.end)
+
         ws.set_zoom(80)
         ws.set_column(0, 0, 30)
         ws.set_column(1, 1, 122)
@@ -226,196 +235,76 @@ class Report:
         ws.write(row, 0, 'Chapter Name:', self.spFormats.bold_right)
         ws.write(row, 1, chapter, _format)
 
-        '''
         row += 2
-        if deploymentBook.roadmap[chapter.name]:
+        if deploymentBook.roadmap[chapter]:
             ws.write(row, 0, 'Roadmap:', self.spFormats.bold_right)
-            ws.write_url(row, 1, '{0}'.format(deploymentBook.roadmap[chapter.name]))
+            ws.write_url(row, 1, '{0}'.format(deploymentBook.roadmap[chapter]))
             row += 1
-
-        if deploymentBook.materializing[chapter.name]:
-            row += 1
-            ws.write(row, 0, 'Materializing:', self.spFormats.bold_right)
-            ws.write_url(row, 1, '{0}'.format(deploymentBook.materializing[chapter.name]))
 
         row += 2
         ws.write(row, 0, 'Backlog Structure:', self.spFormats.bold_right)
-        n_enablers = len(chapter.enablers)
-        n_tools = len(chapter.tools)
-        n_coordination = 1
-        data = (n_enablers + n_tools + n_coordination, n_enablers, n_tools, n_coordination)
-        ws.write(row, 1, '{} Components = {} Enablers + {} Tools + {} Coordination'.format(*data))
+        n_enablers = len(self.data.c_issue_type)
+        ws.write(row, 1, '{} Enablers'.format(n_enablers))
 
         row += 1
         ws.write(row, 0, 'Backlog Summary:', self.spFormats.bold_right)
         ws.write(row, 1, '# Items', self.spFormats.bold_left)
 
         row += 1
-        reporter = ChapterReporter(chapter.name, backlog)
-        data = reporter.issueType
+        data = self.data.c_chapter_issue_type[chapter]
         ws.write(row, 0, 'Composition', self.spFormats.bold_right)
-        ws.write(row, 1, '{0:,} Issues = {Epic:,} Epics + {Feature:,} Features + '
-                         '{Story:,} User Stories + {WorkItem:,} WorkItems + {Bug:,} Bugs'.format(sum(data.values()),
-                                                                                                 **data))
+        if len(data) == 0:
+            ws.write(row, 1, '0 Issues = 0 Epics + 0 Features + 0 User Stories + 0 WorkItems + 0 Bugs')
+        else:
+            ws.write(row, 1, '{0:,} Issues = {Epic:,} Epics + {Feature:,} Features + '
+                             '{Story:,} User Stories + {WorkItem:,} WorkItems + {Bug:,} Bugs'
+                             .format(sum(data.values()), **data))
 
         row += 1
-        data = reporter.perspective
+        data = self.data.c_chapter_status[chapter]
         ws.write(row, 0, 'Status', self.spFormats.bold_right)
-        ws.write(row, 1, '{0:,} Issues = {Implemented:,} Implemented  + {Working On:,} Working On  + '
-                         ' {Foreseen:,} Foreseen'.format(sum(data.values()), **data))
+        if len(data) == 0:
+            ws.write(row, 1, '0 Issues = 0 Implemented  + 0 Working On  + 0 Foreseen')
+        else:
+            ws.write(row, 1, '{0:,} Issues = {Implemented:,} Implemented  + {Working On:,} Working On  + '
+                             ' {Foreseen:,} Foreseen'.format(sum(data.values()), **data))
 
         row += 2
-        chart = painter.draw_composition(reporter.issueType)
+        chart = painter.draw_composition(self.data.c_chapter_issue_type[chapter])
         ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
 
-        chart = painter.draw_status(reporter.perspective)
+        chart = painter.draw_status(self.data.c_chapter_status[chapter])
         ws.insert_chart(row, 1, chart, {'x_offset': 520, 'y_offset': 0})
 
-        if len(reporter.enablers):
-            row += 26
-            chart = painter.draw_component_status('Enabler', reporter.enablers, reporter.enablers_execution_status)
-            ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
-
-        if len(reporter.tools):
-            row += 15
-            chart = painter.draw_component_status('Tool', reporter.tools, reporter.tools_execution_status)
-            ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
+        row += 26
+        chart = painter.draw_evolution(created=self.data.c_chapter_created[chapter],
+                                       updated=self.data.c_chapter_updated[chapter],
+                                       resolved=self.data.c_chapter_resolved[chapter],
+                                       released=self.data.c_chapter_released[chapter])
+        ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
 
         row += 15
-        chart = painter.draw_evolution(reporter.implemented(self.start, self.end))
-        ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
-        '''
+        data = list(map(lambda x: self.enablers_status(self.enablers_per_name, self.data.c_status, x),
+                        self.data.enabler_per_chapter[chapter]))
+        if len(data) != 0:
+            data = dict((key, d[key]) for d in data for key in d)  # reduce(lambda x, y: x + y, data)
+            chart = painter.draw_component_status('Enabler', data)
+            ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
 
         row += 15
         ws.write(row, 0, '')
 
-    '''
-    def get_format(self, issue):
-        _timeSlot = issue.timeSlot.split(' ')[1] if issue.timeSlot != 'Unscheduled' else 'Unscheduled'
-        if _timeSlot in agileCalendar.pastTimeSlots:
-            return self.spFormats.brown
-        elif _timeSlot in agileCalendar.currentTimeSlots():
-            return self.spFormats.green
-        else:
-            return self.spFormats.blue
-
-    def _write_issue(self, ws, row, item):
-        ws.write_url(row, 0, item.url, self.spFormats.link, item.key)
-        if item.issueType == 'Epic':
-            _format = self.workbook.add_format({'color': 'blue', 'underline': 1,
-                                                'align': 'left', 'bg_color': '#99CC00'})
-            if item.p_url:
-                ws.write_url(row, 1, item.p_url, _format, item.name)
-            else:
-                ws.write(row, 1, item.name)
-            _format = self.workbook.add_format({'bg_color': '#99CC00'})
-            ws.write(row, 2, '', _format)
-            ws.write(row, 3, item.status, _format)
-            ws.write(row, 4, item.issueType, _format)
-        elif item.issueType == 'Feature':
-            if item.p_url:
-                ws.write_url(row, 1, item.p_url, self.spFormats.lefty_link, item.name)
-            else:
-                ws.write(row, 1, item.name)
-            _format = self.get_format(item)
-            ws.write(row, 2, item.timeSlot, _format)
-            ws.write(row, 3, item.status, _format)
-            ws.write(row, 4, item.issueType, _format)
-        else:
-            if item.p_url:
-                ws.write_url(row, 1, item.p_url, self.spFormats.lefty_link, item.name)
-            else:
-                ws.write(row, 1, item.name)
-            _format = self.get_format(item)
-            ws.write(row, 2, item.timeSlot, _format)
-            ws.write(row, 3, item.status, _format)
-            ws.write(row, 4, item.issueType, _format)
-
-    def _coordination_dashboard(self, coordination):
-        wb = self.workbook
-        ws = wb.add_worksheet(coordination.name[1:])
-        backlog = self.factory.getCoordinationBacklog(coordination.key)
-        backlog.sort(key=backlog.sortDict['name'])
-
-        painter = Painter(wb, ws)
-        ws.set_zoom(80)
-        ws.set_column(0, 0, 30)
-        ws.set_column(1, 1, 122)
-        ws.set_column(2, 5, 20)
-        row, col = 0, 0
-        _heading = self.workbook.add_format({'bold': True, 'font_size': 30,
-                                             'bg_color': '#002D67', 'font_color': '#FFE616', 'align': 'center'})
-        ws.merge_range(xl_range(row, 0, row, 3), "Coordination Backlog", _heading)
-        ws.set_row(0, 42)
-        ws.insert_image(0, 0, settings.logofiware, {'x_scale': 0.5, 'y_scale': 0.5, 'x_offset': 0, 'y_offset': 0})
-
-        row += 1
-        ws.write(row, 0, 'Project Time:', self.spFormats.bold_right)
-        ws.write(row, 1, '{}'.format(agileCalendar.projectTime()))
-        ws.write(row, 2, 'Report Date:', self.spFormats.bold_right)
-        ws.write(row, 3, date.today().strftime('%d-%m-%Y'))
-
-        row += 1
-        ws.write(row, 0, 'Start of Data Analysis:', self.spFormats.bold_right)
-        ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.start)))
-
-        row += 1
-        ws.write(row, 0, 'End of Data Analysis:', self.spFormats.bold_right)
-        ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.end)))
-
-        row += 2
-        _format = self.workbook.add_format({'bold': True, 'font_size': 15, 'bg_color': '#60C1CF'})
-        ws.write(row, 0, 'Backlog Owner:', self.spFormats.bold_right)
-        ws.write(row, 1, coordination.leader, _format)
-        ws.write(row, 2, '', _format)
-
-        row += 2
-        ws.write(row, 0, 'Backlog Summary:', self.spFormats.bold_right)
-        ws.write(row, 1, '# Items', self.spFormats.bold_left)
-
-        row += 1
-        reporter = CoordinationReporter(coordination.project, backlog)
-        data = reporter.issueType
-        ws.write(row, 0, 'Composition', self.spFormats.bold_right)
-        ws.write(row, 1, '{0} Issues = {Epic} Epics + {Feature} Features + '
-                         '{Story} User Stories + {WorkItem} WorkItems + {Bug} Bugs'.format(sum(data.values()), **data))
-
-        row += 1
-        data = reporter.perspective
-        ws.write(row, 0, 'Status', self.spFormats.bold_right)
-        ws.write(row, 1, '{0} Issues = {Implemented} Implemented  + {Working On} Working On  + '
-                         ' {Foreseen} Foreseen'.format(sum(data.values()), **data))
-
-        row += 2
-        chart = painter.draw_composition(reporter.issueType)
-        ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
-
-        chart = painter.draw_status(reporter.perspective)
-        ws.insert_chart(row, 1, chart, {'x_offset': 520, 'y_offset': 0})
-
-        row += 26
-        chart = painter.draw_evolution(reporter.implemented(self.start, self.end))
-        ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
-
-        row += 15
-        _format = self.workbook.add_format({'bold': True, 'font_size': 20, 'bg_color': '#60C1CF', 'align': 'center'})
-        ws.merge_range(xl_range(row, 0, row, 4), 'Backlog Entries', _format)
-        row += 1
-
-        ws.write_row(row, 0, ('Item Id', 'Item reference', 'Time frame', 'Status', 'Item type'),
-                     self.spFormats.column_heading)
-        for issue in backlog:
-            row += 1
-            self._write_issue(ws, row, issue)
-
     def _enabler_dashboard(self, enabler):
-        print('------>', enabler.name)
+        enabler_name = self.enablers_per_name[enabler]
+        print('------>', enabler_name)
         wb = self.workbook
-        ws = wb.add_worksheet(enabler.name)
-        backlog = self.factory.getEnablerBacklog(enabler.name)
-        backlog.sort(key=backlog.sortDict['name'])
+        ws = wb.add_worksheet(enabler_name)
+        # backlog = self.factory.getEnablerBacklog(enabler_name)
+        # backlog.sort(key=backlog.sortDict['name'])
 
         painter = Painter(wb, ws)
+        painter.set_dates(start=self.start, end=self.end)
+
         ws.set_zoom(80)
         ws.set_column(0, 0, 30)
         ws.set_column(1, 1, 122)
@@ -425,7 +314,7 @@ class Report:
         _heading = self.workbook.add_format({'bold': True, 'font_size': 30,
                                              'bg_color': '#002D67', 'font_color': '#FFE616', 'align': 'center'})
         ws.merge_range(xl_range(row, 0, row, 3),
-                       "Backlog for Enabler: '{0}'".format(enabler.name), _heading)
+                       "Backlog for Enabler: '{0}'".format(enabler_name), _heading)
         ws.set_row(0, 42)
         ws.insert_image(0, 0, settings.logofiware, {'x_scale': 0.5, 'y_scale': 0.5, 'x_offset': 0, 'y_offset': 0})
 
@@ -444,405 +333,38 @@ class Report:
         ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.end)))
 
         row += 2
-        _format = self.workbook.add_format({'bold': True, 'font_size': 15, 'color': 'green'})
-        ename = enabler.Name if enabler.GE else enabler.name
-        ws.write(row, 0, 'Enabler:', self.spFormats.bold_right)
-        ws.write(row, 1, ename, _format)
-        row += 1
-        _format = self.workbook.add_format({'bold': True, 'font_size': 15, 'bg_color': '#60C1CF'})
-        ws.write(row, 0, 'Product Owner:', self.spFormats.bold_right)
-        ws.write(row, 1, '{} - {}'.format(enabler.owner, enabler.leader), _format)
-        ws.write(row, 2, '', _format)
-
-        row += 1
-        ws.write(row, 0, 'Work Mode:', self.spFormats.bold_right)
-        ws.write(row, 1, enabler.mode)
-
-        row += 2
         ws.write(row, 0, 'Backlog Summary:', self.spFormats.bold_right)
         ws.write(row, 1, '# Items', self.spFormats.bold_left)
 
         row += 1
-        reporter = EnablerReporter(enabler.name, backlog)
-        data = reporter.issueType
+        data = self.data.c_issue_type[enabler]
         ws.write(row, 0, 'Composition', self.spFormats.bold_right)
         ws.write(row, 1, '{0:,} Issues = {Epic} Epics + {Feature} Features + '
-                         '{Story:,} User Stories + {WorkItem:,} WorkItems + {Bug} Bugs'.format(sum(data.values()),
-                                                                                               **data))
+                         '{Story:,} User Stories + {WorkItem:,} WorkItems + {Bug} Bugs'
+                         .format(sum(data.values()), **data))
 
         row += 1
-        data = reporter.perspective
+        data = self.data.c_status[enabler]
         ws.write(row, 0, 'Status', self.spFormats.bold_right)
         ws.write(row, 1, '{0:,} Issues = {Implemented:,} Implemented  + {Working On} Working On  + '
                          ' {Foreseen} Foreseen'.format(sum(data.values()), **data))
 
-        if not reporter.length:
-            return
+        # if not reporter.length:
+        #     return
 
         row += 2
-        chart = painter.draw_composition(reporter.issueType)
+        chart = painter.draw_composition(self.data.c_issue_type[enabler])
         ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
 
-        chart = painter.draw_status(reporter.perspective)
+        chart = painter.draw_status(self.data.c_status[enabler])
         ws.insert_chart(row, 1, chart, {'x_offset': 520, 'y_offset': 0})
 
         row += 26
-        chart = painter.draw_evolution(reporter.implemented(self.start, self.end))
-        ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
-        row += 15
-
-        row += 1
-        _format = self.workbook.add_format({'bold': True, 'font_size': 20, 'bg_color': '#60C1CF', 'align': 'center'})
-        ws.merge_range(xl_range(row, 0, row, 4), 'Backlog Entries', _format)
-        row += 1
-
-        ws.write_row(row, 0, ('Item Id', 'Item reference', 'Time frame', 'Status', 'Item type'),
-                     self.spFormats.column_heading)
-        for issue in backlog:
-            row += 1
-            self._write_issue(ws, row, issue)
-
-    def _lab_node_dashboard(self, node):
-        print('------>', node)
-        wb = self.workbook
-        ws = wb.add_worksheet(node)
-        backlog = self.gLabReporter
-
-        try:
-            key = labNodesBook[node].key
-            backlog = list(filter(lambda x: x.component == key, list(backlog.backlog)))
-        except Exception:
-            # There is no data about the corresponding node, therefore we manage it as a empty issues
-            backlog = ()
-
-        painter = Painter(wb, ws)
-        ws.set_zoom(80)
-        ws.set_column(0, 0, 30)
-        ws.set_column(1, 1, 122)
-        ws.set_column(2, 5, 20)
-        row, col = 0, 0
-
-        _heading = self.workbook.add_format({'bold': True, 'font_size': 30,
-                                             'bg_color': '#002D67', 'font_color': '#FFE616', 'align': 'center'})
-        ws.merge_range(xl_range(row, 0, row, 3),
-                       "Backlog for Lab Node: '{0}'".format(node), _heading)
-        ws.set_row(0, 42)
-        ws.insert_image(0, 0, settings.logofiware, {'x_scale': 0.5, 'y_scale': 0.5, 'x_offset': 0, 'y_offset': 0})
-
-        row += 1
-        ws.write(row, 0, 'Project Time:', self.spFormats.bold_right)
-        ws.write(row, 1, '{}'.format(agileCalendar.projectTime()))
-        ws.write(row, 2, 'Report Date:', self.spFormats.bold_right)
-        ws.write(row, 3, date.today().strftime('%d-%m-%Y'))
-
-        row += 1
-        ws.write(row, 0, 'Start of Data Analysis:', self.spFormats.bold_right)
-        ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.start)))
-
-        row += 1
-        ws.write(row, 0, 'End of Data Analysis:', self.spFormats.bold_right)
-        ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.end)))
-
-        row += 2
-        _format = self.workbook.add_format({'bold': True, 'font_size': 15, 'color': 'green'})
-        ws.write(row, 0, 'Node:', self.spFormats.bold_right)
-        ws.write(row, 1, node, _format)
-
-        row += 1
-        ws.write(row, 0, 'Work Mode:', self.spFormats.bold_right)
-
-        try:
-            ws.write(row, 1, labNodesBook[node].mode)
-        except Exception:
-            # there is no data about the node, therefore we consider the node Inactive
-            ws.write(row, 1, 'Inactive')
-
-        row += 2
-        ws.write(row, 0, 'Backlog Summary:', self.spFormats.bold_right)
-        ws.write(row, 1, '# Items', self.spFormats.bold_left)
-
-        row += 1
-        if len(backlog) == 0:
-            ws.write(row, 0, 'Composition', self.spFormats.bold_right)
-            ws.write(row, 1, '0 Issues = 0 Epics + 0 Features + 0 User Stories + 0 WorkItems + 0 Bugs')
-
-            row += 1
-            ws.write(row, 0, 'Status', self.spFormats.bold_right)
-            ws.write(row, 1, '0 Issues = 0 Implemented  + 0 Working On  + 0 Foreseen')
-
-            return
-        else:
-            data = Counter(list(map(lambda x: x['issueType'], backlog)))
-            data_issue_type = \
-                BacklogReporter.fix_values(a_dict=data, keys=['Epic', 'Feature', 'Story', 'WorkItem', 'Bug'])
-
-            ws.write(row, 0, 'Composition', self.spFormats.bold_right)
-            text = '{0:,} Issues = {Epic} Epics + {Feature} Features + {Story} User Stories ' \
-                   '+ {WorkItem} WorkItems + {Bug} Bugs'.format(sum(data_issue_type.values()), **data_issue_type)
-            ws.write(row, 1, text)
-
-            row += 1
-            data = Counter(list(map(lambda x: x['frame'], backlog)))
-            data_frame = \
-                BacklogReporter.fix_values(a_dict=data, keys=['Implemented', 'Working On', 'Foreseen'])
-
-            ws.write(row, 0, 'Status', self.spFormats.bold_right)
-            ws.write(row, 1, '{0:,} Issues = {Implemented:,} Implemented  + {Working On} Working On  + '
-                             ' {Foreseen} Foreseen'.format(sum(data_frame.values()), **data_frame))
-
-            row += 2
-            chart = painter.draw_composition(data_issue_type)
-            ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
-
-            chart = painter.draw_status(data_frame)
-            ws.insert_chart(row, 1, chart, {'x_offset': 520, 'y_offset': 0})
-
-            row += 26
-            from kernel.Reporter import Reporter
-            data = Reporter(backlog)
-            chart = painter.draw_evolution(data.implemented(self.start, self.end))
-            ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
-
-            row += 16
-            _format = \
-                self.workbook.add_format({'bold': True, 'font_size': 20, 'bg_color': '#60C1CF', 'align': 'center'})
-
-            ws.merge_range(xl_range(row, 0, row, 4), 'Backlog Entries', _format)
-
-            row += 1
-            ws.write_row(row, 0, ('Item Id', 'Item reference', 'Time frame', 'Status', 'Item type'),
-                         self.spFormats.column_heading)
-            for issue in backlog:
-                row += 1
-                self._write_issue(ws, row, issue)
-
-    @staticmethod
-    def fix_values(a_dict, keys, value=0):
-        result = {}
-
-        for key in keys:
-            try:
-                result[key] = a_dict[key]
-            except KeyError:
-                result[key] = value
-
-        return result
-
-    def _tool_dashboard(self, tool):
-        print('------>', tool.name)
-        wb = self.workbook
-        ws = wb.add_worksheet(tool.name)
-        backlog = self.factory.getToolBacklog(tool.name)
-        backlog.sort(key=backlog.sortDict['name'])
-        painter = Painter(wb, ws)
-        ws.set_zoom(80)
-        ws.set_column(0, 0, 30)
-        ws.set_column(1, 1, 122)
-        ws.set_column(2, 5, 20)
-        row, col = 0, 0
-
-        _heading = self.workbook.add_format({'bold': True, 'font_size': 30,
-                                             'bg_color': '#002D67', 'font_color': '#FFE616', 'align': 'center'})
-        ws.merge_range(xl_range(row, 0, row, 3),
-                       "Backlog for Tool: '{0}'".format(tool.name), _heading)
-        ws.set_row(0, 42)
-        ws.insert_image(0, 0, settings.logofiware, {'x_scale': 0.5, 'y_scale': 0.5, 'x_offset': 0, 'y_offset': 0})
-
-        row += 1
-        ws.write(row, 0, 'Project Time:', self.spFormats.bold_right)
-        ws.write(row, 1, '{}'.format(agileCalendar.projectTime()))
-        ws.write(row, 2, 'Report Date:', self.spFormats.bold_right)
-        ws.write(row, 3, date.today().strftime('%d-%m-%Y'))
-
-        row += 1
-        ws.write(row, 0, 'Start of Data Analysis:', self.spFormats.bold_right)
-        ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.start)))
-
-        row += 1
-        ws.write(row, 0, 'End of Data Analysis:', self.spFormats.bold_right)
-        ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.end)))
-
-        row += 2
-        _format = self.workbook.add_format({'bold': True, 'font_size': 15, 'bg_color': '#60C1CF'})
-        ws.write(row, 0, 'Product Owner:', self.spFormats.bold_right)
-        ws.write(row, 1, '{} - {}'.format(tool.owner, tool.leader), _format)
-        ws.write(row, 2, '', _format)
-
-        row += 1
-        ws.write(row, 0, 'Work Mode:', self.spFormats.bold_right)
-        ws.write(row, 1, tool.mode)
-
-        row += 2
-        ws.write(row, 0, 'Backlog Summary:', self.spFormats.bold_right)
-        ws.write(row, 1, '# Items', self.spFormats.bold_left)
-
-        row += 1
-        reporter = ToolReporter(tool.name, backlog)
-        data = reporter.issueType
-        ws.write(row, 0, 'Composition', self.spFormats.bold_right)
-        ws.write(row, 1, '{0} Issues = {Epic} Epics + {Feature} Features + '
-                         '{Story} User Stories + {WorkItem} WorkItems + {Bug} Bugs'.format(sum(data.values()), **data))
-
-        row += 1
-        data = reporter.perspective
-        ws.write(row, 0, 'Status', self.spFormats.bold_right)
-        ws.write(row, 1, '{0} Issues = {Implemented} Implemented  + {Working On} Working On  + '
-                         ' {Foreseen} Foreseen'.format(sum(data.values()), **data))
-
-        row += 1
-        data = reporter.sprint_status
-        ws.write(row, 0, 'Sprint Status', self.spFormats.red_bold_right)
-        ws.write_string(row, 1, '{} Issues = {}'.format(sum(data.values()),
-                                                        ' + '.join("{!s} {}".format(v, k) for (k, v) in data.items())))
-
-        row += 1
-        ws.write(row, 0, 'Tests', self.spFormats.bold_right)
-        data = reporter.backlog.testMetrics
-        total = sum(data['OK'].values()) + sum(data['KO'].values())
-        ws.write_rich_string(row, 1,
-                             '{0:,} Tests = {1:,}'.format(total, sum(data['OK'].values())),
-                             self.spFormats.green, ' OK', ' + ',
-                             '{0:,}'.format(sum(data['KO'].values())), self.spFormats.red, ' KO ')
-
-        row += 1
-        data = reporter.errors
-        ws.write(row, 0, 'Errors', self.spFormats.bold_right)
-        ws.write_rich_string(row, 1,
-                             '{:,} Issues = {OK:,}'.format(sum(data.values()), **data), self.spFormats.green, ' OK',
-                             ' + '
-                             ' {KO:,}'.format(sum(data.values()), **data), self.spFormats.red, ' KO')
-
-        if not reporter.length:
-            return
-
-        row += 2
-        chart = painter.draw_composition(reporter.issueType)
-        ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
-
-        chart = painter.draw_status(reporter.perspective)
-        ws.insert_chart(row, 1, chart, {'x_offset': 520, 'y_offset': 0})
-
-        row += 26
-        chart = painter.draw_evolution(reporter.implemented(self.start, self.end))
-        ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
-        row += 15
-
-        _format = self.workbook.add_format({'bold': True, 'font_size': 20, 'bg_color': '#60C1CF', 'align': 'center'})
-        ws.merge_range(xl_range(row, 0, row, 4), 'Backlog Entries', _format)
-        row += 1
-
-        ws.write_row(row, 0, ('Item Id', 'Item reference', 'Time frame', 'Status', 'Item type'),
-                     self.spFormats.column_heading)
-        for issue in backlog:
-            row += 1
-            self._write_issue(ws, row, issue)
-
-    def _lab_chapter_dashboard(self):
-        print('---> LabChapter')
-        wb = self.workbook
-        ws = wb.add_worksheet('Overview')
-
-        painter = Painter(wb, ws)
-        ws.set_zoom(80)
-        ws.set_column(0, 0, 30)
-        ws.set_column(1, 1, 122)
-        ws.set_column(2, 5, 20)
-        row, col = 0, 0
-
-        _heading = self.workbook.add_format({'bold': True, 'font_size': 30,
-                                             'bg_color': '#002D67', 'font_color': '#FFE616', 'align': 'center'})
-
-        ws.merge_range(xl_range(row, 0, row, 3),
-                       "Backlog for Lab Chapter", _heading)
-
-        ws.set_row(0, 42)
-        ws.insert_image(0, 0, settings.logofiware, {'x_scale': 0.5, 'y_scale': 0.5, 'x_offset': 0, 'y_offset': 0})
-
-        row += 1
-        ws.write(row, 0, 'Project Time:', self.spFormats.bold_right)
-        ws.write(row, 1, '{}'.format(agileCalendar.projectTime()))
-
-        ws.write(row, 2, 'Report Date:', self.spFormats.bold_right)
-        ws.write(row, 3, date.today().strftime('%d-%m-%Y'))
-
-        row += 1
-        ws.write(row, 0, 'Start of Data Analysis:', self.spFormats.bold_right)
-        ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.start)))
-
-        row += 1
-        ws.write(row, 0, 'End of Data Analysis:', self.spFormats.bold_right)
-        ws.write(row, 1, '{}'.format(agileCalendar.projectTime(current_date=self.end)))
-
-        row += 2
-        _format = self.workbook.add_format({'bold': True, 'font_size': 15, 'bg_color': '#60C1CF'})
-        ws.write(row, 0, 'Scrum Master:', self.spFormats.bold_right)
-        ws.write(row, 1, 'FF - Veronika Vlnkova', _format)
-        ws.write(row, 2, '', _format)
-
-        row += 1
-        _format = self.workbook.add_format({'bold': True, 'font_size': 15, 'bg_color': '#60C1CF'})
-        ws.write(row, 0, 'Technical Scrum Master:', self.spFormats.bold_right)
-        ws.write(row, 1, 'FF - Fernando López', _format)
-        ws.write(row, 2, '', _format)
-
-        row += 1
-        ws.write(row, 0, 'Backlog Structure:', self.spFormats.bold_right)
-        ws.write(row, 1, '# Items', self.spFormats.bold_left)
-
-        row += 1
-        ws.write(row, 1, '{} Nodes'.format(len(self.gLabReporter.lab_nodes)))
-
-        row += 2
-        ws.write(row, 0, 'Backlog Summary:', self.spFormats.bold_right)
-        ws.write(row, 1, '# Items', self.spFormats.bold_left)
-
-        reporter = self.gLabReporter
-        row += 1
-        data = reporter.issueType
-        ws.write(row, 0, 'Composition', self.spFormats.bold_right)
-        ws.write(row, 1, '{0:,} Issues = {Epic:,} Epics + {Feature:,} Features + '
-                         '{Story:,} User Stories + {WorkItem:,} WorkItems + {Bug:,} Bugs'.format(sum(data.values()),
-                                                                                                 **data))
-
-        row += 1
-        data = reporter.perspective
-        ws.write(row, 0, 'Status', self.spFormats.bold_right)
-        ws.write(row, 1, '{0:,} Issues = {Implemented:,} Implemented  + {Working On:,} Working On  + '
-                         ' {Foreseen:,} Foreseen'.format(sum(data.values()), **data))
-
-        row += 2
-        chart = painter.draw_composition(reporter.issueType)
-        ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
-
-        chart = painter.draw_status(reporter.perspective)
-        ws.insert_chart(row, 1, chart, {'x_offset': 520, 'y_offset': 0})
-
-        row += 26
-        chart = painter.draw_evolution(reporter.implemented(self.start, self.end))
+        chart = painter.draw_evolution(created=self.data.c_created[enabler],
+                                       updated=self.data.c_updated[enabler],
+                                       resolved=self.data.c_resolved[enabler],
+                                       released=self.data.c_released[enabler])
         ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
 
         row += 15
-        chart = painter.draw_lab_status(self.gLabReporter.lab_nodes, reporter.nodes_execution_status)
-        ws.insert_chart(row, 1, chart, {'x_offset': 0, 'y_offset': 0})
-
-        row += 50
         ws.write(row, 0, '')
-
-    def lab(self):
-        print()
-        print("--monitor-- chapter: Lab")
-
-        _date = datetime.now().strftime("%Y%m%d-%H%M")
-        filename = 'FIWARE.backlog.report.lab.' + _date + '.xlsx'
-        myfile = os.path.join(settings.outHome, filename)
-        self.workbook = xlsxwriter.Workbook(myfile)
-        self.spFormats = SpreadsheetFormats(self.workbook)
-        self._lab_chapter_dashboard()
-
-        # for each node we have to get the data to show detailed information
-        for node in helpdeskNodesBook:
-            self._lab_node_dashboard(node)
-
-        print('Lab: W:' + myfile)
-        self.workbook.close()
-    '''

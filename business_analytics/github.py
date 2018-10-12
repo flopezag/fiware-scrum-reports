@@ -95,7 +95,7 @@ class Github:
         url = self.baseurl + '/rate_limit'
         r = requests.get(url=url, auth=(self.username, self.token))
 
-        print('\n        GitHub Rate Limit: {}\n        GitHub Rate Remaining: {}\n'
+        print('        GitHub Rate Limit: {}\n        GitHub Rate Remaining: {}'
               .format(r.headers['X-RateLimit-Limit'], r.headers['X-RateLimit-Remaining']))
 
         self.remaining = float(r.headers['X-RateLimit-Remaining'])

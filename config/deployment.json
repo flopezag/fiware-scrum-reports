@@ -1,0 +1,33 @@
+{
+  "extendedurl": "/plugins/mediawiki/wiki/fiware/index.php/Current_Supported_Features_and_Roadmap_of_components_in_",
+  "chapters": [
+    {
+      "name": "Coordination",
+      "roadmap": ""
+    },
+    {
+      "name": "Technical-Coordination",
+      "roadmap": ""
+    },
+    {
+      "name": "Core Context Management",
+      "roadmap": "Context_Management_(Core)_Chapter"
+    },
+    {
+      "name": "Interface with IoT, Robots, and Third-Party Systems",
+      "roadmap": "Interface_with_IoT,_robotics_and_third_systems_Chapter"
+    },
+    {
+      "name": "Processing, Analysis, and Visualization of Context Information",
+      "roadmap": "Context_Processing,_Analysis_and_Visualisation_Chapter"
+    },
+    {
+      "name": "Context Data/API Management, Publication, and Monetization",
+      "roadmap": "Data/API_Management,_Publication_and_Monetization_Chapter"
+    },
+    {
+      "name": "Deployment Tools",
+      "roadmap": ""
+    }
+  ]
+}

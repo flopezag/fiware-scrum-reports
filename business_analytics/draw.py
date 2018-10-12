@@ -58,7 +58,11 @@ class Painter:
         col = self._column
         ws.write_row(0, col, headings)
         ws.write_column(1, col + 0, keys)
-        ws.write_column(1, col + 1, [data['Foreseen'], data['Working On'], data['Implemented']])
+
+        try:
+            ws.write_column(1, col + 1, [data['Foreseen'], data['Working On'], data['Implemented']])
+        except KeyError:
+            ws.write_column(1, col + 1, [0, 0, 0])
 
         sheet_name = ws.get_name()
         chart.add_series({
@@ -265,27 +269,28 @@ class Painter:
         self._column += len(headings) + 1
         return chart
 
-    def draw_component_status(self, cmp_type, components, data):
+    def draw_component_status(self, cmp_type, data):
         wb = self._wb
         ws = self._ws
-        _data = {item['name']: item['data'] for item in data}
         chart = wb.add_chart({'type': 'column', 'subtype': 'stacked'})
-        status = tuple([item['name'] for item in data])
-        headings = (cmp_type,) + status
+        keys = list(list(data.values())[0].keys())
+        headings = (cmp_type,) + tuple(keys)
         col = self._column
         ws.write_row(0, col, headings)
-        ws.write_column(1, col + 0, components)
+        ws.write_column(1, col + 0, list(data.keys()))
 
-        for i, _status in enumerate(status, start=1):
-            ws.write_column(1, col + i, _data[_status])
+        for i, key in enumerate(list(data.values()), start=1):
+            df = pd.DataFrame(list(key.values())).fillna(0)
+            for j in range(0, len(keys)):
+                ws.write_column(1, col + i + j, df.iloc[j].tolist())
 
         sheet_name = ws.get_name()
 
-        for i, _status in enumerate(status, start=1):
+        for i in range(1, len(keys) + 1):  # , _status in enumerate(list(data.keys()), start=1):
             chart.add_series({
                 'name': [sheet_name, 0, col + i],
-                'categories': [sheet_name, 1, col + 0, len(components), col + 0],
-                'values': [sheet_name, 1, col + i, len(components), col + i],
+                'categories': [sheet_name, 1, col + 0, len(data), col + 0],
+                'values': [sheet_name, 1, col + i, len(data), col + i],
                 'data_labels': {'value': True}
             })
 

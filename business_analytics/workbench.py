@@ -30,9 +30,6 @@ class WorkBench:
         self.analysis.set_end_date(end_date=self.end_date)
         self.analysis.filter_time()
 
-        # TODO: Need to filter data between start date and end date here to calculate the rest of data from here,
-        # currently they are taking all the information
-
         # Analysis of all GEs
         self.analysis.get_composition()
         self.analysis.get_status()
@@ -50,6 +47,7 @@ class WorkBench:
 
         # Create Data structure to manage the final analysis data
         self.data_analysis = Data()
+
         # Counters issues type
         self.data_analysis.c_issue_type = self.analysis.c_issue_type
         self.data_analysis.c_status = self.analysis.c_status
@@ -79,6 +77,10 @@ class WorkBench:
         self.data_analysis.c_global_updated = self.analysis.c_global_updated
         self.data_analysis.c_global_resolved = self.analysis.c_global_resolved
         self.data_analysis.c_global_released = self.analysis.c_global_released
+
+        # Enablers per chapter
+        self.data_analysis.enabler_per_chapter = self.enablers_per_chapter
+        self.data_analysis.enablers_per_name = self.enablers_per_name
 
     @staticmethod
     def mapping_chapter_enablers(chapter):

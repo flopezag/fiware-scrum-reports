@@ -60,28 +60,36 @@
       "type": "CHAPTER",
       "leader": "",
       "inbox": "",
-      "enablers": []
+      "enablers": [
+
+      ]
     },
     {
       "name": "Processing, Analysis, and Visualization of Context Information",
       "type": "CHAPTER",
       "leader": "",
       "inbox": "",
-      "enablers": []
+      "enablers": [
+
+      ]
     },
     {
       "name": "Context Data/API Management, Publication, and Monetization",
       "type": "CHAPTER",
       "leader": "",
       "inbox": "",
-      "enablers": []
+      "enablers": [
+
+      ]
     },
     {
       "name": "Deployment Tools",
       "type": "CHAPTER",
       "leader": "",
       "inbox": "",
-      "enablers": []
+      "enablers": [
+
+      ]
     }
   ]
 }

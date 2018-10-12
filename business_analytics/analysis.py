@@ -327,3 +327,7 @@ class Data:
 
         self.start_date_index = 0
         self.end_date_index = len(self.sprints_month)
+
+        # Enablers per chapter
+        self.enabler_per_chapter = {}
+        self.enablers_per_name = {}
