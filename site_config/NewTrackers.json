@@ -21,7 +21,7 @@
       "inbox": "fiware-apps-jira@jira.fiware.org",
       "enablers": [
         {
-          "name": "Orion",
+          "name": "Orion Context Broker",
           "tracker_key": "DATA",
           "cmp_key": "10208",
           "github": [
@@ -52,6 +52,16 @@
               "repo": "telefonicaid/fiware-cygnus"
             }
           ]
+        },
+        {
+          "name": "QuantumLeap",
+          "tracker_key": "",
+          "cmp_key": "",
+          "github": [
+            {
+              "repo": "smartsdk/ngsi-timeseries-api"
+            }
+          ]
         }
       ]
     },
@@ -61,7 +71,48 @@
       "leader": "",
       "inbox": "",
       "enablers": [
-
+        {
+          "name": "IDAS",
+          "tracker_key": "IOT",
+          "cmp_key": "",
+          "github": [
+            {
+              "repo": "telefonicaid/iotagent-json"
+            },
+            {
+              "repo": "telefonicaid/iotagent-ul"
+            }
+            {
+              "repo": "telefonicaid/lightweightm2m-iotagent"
+            }
+            {
+              "repo": "telefonicaid/sigfox-iotagent"
+            }
+            {
+              "repo": "telefonicaid/fiware-figway"
+            }
+          ]
+        },
+        {
+          "name": "OpenMTC",
+          "tracker_key": "IOT",
+          "cmp_key": "12003",
+          "github": [
+            {
+              "repo": "OpenMTC/OpenMTC"
+            }
+          ]
+        },
+        {
+          "name": "Fast RTPS",
+          "tracker_key": "MIND",
+          "cmp_key": "11838",
+          "github": [
+            {
+              "repo": "eProsima/Fast-RTPS"
+            }
+          ]
+        }
       ]
     },
     {
@@ -70,7 +121,155 @@
       "leader": "",
       "inbox": "",
       "enablers": [
-
+        {
+          "name": "Knowage Business Intelligence Platform",
+          "tracker_key": "APP",
+          "cmp_key": "11905",
+          "github": [
+            {
+              "repo": "KnowageLabs/Knowage-Server"
+            },
+            {
+              "repo": "KnowageLabs/Knowage-Server-Docker"
+            },
+            {
+              "repo": "KnowageLabs/Knowage-Documentation"
+            },
+            {
+              "repo": "KnowageLabs/Knowage-Server-Chef"
+            }
+          ]
+        },
+        {
+          "name": "Wirecloud Web Mashup Platform",
+          "tracker_key": "APP",
+          "cmp_key": "10101",
+          "github": [
+            {
+              "repo": "Wirecloud/wirecloud"
+            }
+          ]
+        },
+        {
+          "name": "Perseo Complex Event Processing (CEP) Platform",
+          "tracker_key": "DATA",
+          "cmp_key": "11909",
+          "github": [
+            {
+              "repo": "telefonicaid/perseo-core"
+            },
+            {
+              "repo": "telefonicaid/perseo-fe"
+            }
+          ]
+        },
+        {
+          "name": "Kurento Real-time Media Stream Processing Platform",
+          "tracker_key": "DATA",
+          "cmp_key": "10211",
+          "github": [
+            {
+              "repo": "Kurento/kms-elements"
+            },
+            {
+              "repo": "Kurento/kurento-java"
+            },
+            {
+              "repo": "Kurento/kurento-log-manager"
+            },
+            {
+              "repo": "Kurento/kurento-tree"
+            },
+            {
+              "repo": "Kurento/kurento-media-server"
+            },
+            {
+              "repo": "Kurento/kurento-client-core-js"
+            },
+            {
+              "repo": "Kurento/kurento-module-crowddetector-bower"
+            },
+            {
+              "repo": "Kurento/kurento-client-js"
+            },
+            {
+              "repo": "Kurento/kms-core"
+            },
+            {
+              "repo": "Kurento/kurento-room"
+            },
+            {
+              "repo": "Kurento/kurento-client-elements-js"
+            },
+            {
+              "repo": "Kurento/kurento-client-filters-js"
+            },
+            {
+              "repo": "Kurento/kms-filters"
+            },
+            {
+              "repo": "Kurento/kms-jsonrpc"
+            },
+            {
+              "repo": "Kurento/kms-cmake-utils"
+            }
+          ]
+        },
+        {
+          "name": "Domibus",
+          "tracker_key": "DATA",
+          "cmp_key": "11839",
+          "github": [
+            {
+              "repo": "Fiware/context.Domibus"
+            }
+          ]
+        },
+        {
+          "name": "FogFlow",
+          "tracker_key": "DATA",
+          "cmp_key": "12002",
+          "github": [
+            {
+              "repo": "smartfog/fogflow"
+            }
+          ]
+        },
+        {
+          "name": "AEON Cloud Messaging Platform",
+          "tracker_key": "DATA",
+          "cmp_key": "10332",
+          "github": [
+            {
+              "repo": "atos-ari-aeon/fiware-cloud-messaging-dashboard"
+            },
+            {
+              "repo": "atos-ari-aeon/fiware-cloud-messaging-api"
+            },
+            {
+              "repo": "atos-ari-aeon/fiware-cloud-messaging-events-manager"
+            },
+            {
+              "repo": "atos-ari-aeon/fiware-cloud-messaging-platform"
+            },
+            {
+              "repo": "atos-ari-aeon/fiware-cloud-messaging-sdk"
+            }
+          ]
+        },
+        {
+          "name": "Cosmos BigData Analysis Platform",
+          "tracker_key": "DATA",
+          "cmp_key": "10210",
+          "github": [
+            {
+              "repo": "telefonicaid/fiware-cosmos"
+            },
+            {
+              "repo": "telefonicaid/fiware-sinfonier"
+            }
+          ]
+        }
       ]
     },
     {
@@ -79,7 +278,74 @@
       "leader": "",
       "inbox": "",
       "enablers": [
-
+        {
+          "name": "Keyrock Identity Manager (IdM)",
+          "tracker_key": "SEC",
+          "cmp_key": "10228",
+          "github": [
+            {
+              "repo": "ging/fiware-idm"
+            }
+          ]
+        },
+        {
+          "name": "Wilma Proxy",
+          "tracker_key": "SEC",
+          "cmp_key": "10402",
+          "github": [
+            {
+              "repo": "ging/fiware-pep-proxy"
+            }
+          ]
+        },
+        {
+          "name": "AuthZForce PDP/PAP Server",
+          "tracker_key": "SEC",
+          "cmp_key": "10229",
+          "github": [
+            {
+              "repo": "authzforce/server"
+            },
+            {
+              "repo": "authzforce/core"
+            },
+            {
+              "repo": "authzforce/core-pdp-api"
+            },
+            {
+              "repo": "authzforce/pap-dao-flat-file"
+            },
+            {
+              "repo": "authzforce/core-pap-api"
+            },
+            {
+              "repo": "authzforce/parent"
+            },
+            {
+              "repo": "authzforce/rest-api-model"
+            }
+          ]
+        },
+        {
+          "name": "CKAN extensions",
+          "tracker_key": "DATA",
+          "cmp_key": "10212",
+          "github": [
+            {
+              "repo": "conwetlab/FIWARE-CKAN-Extensions"
+            }
+          ]
+        },
+        {
+          "name": "Biz Framework",
+          "tracker_key": "APP",
+          "cmp_key": "11505",
+          "github": [
+            {
+              "repo": "FIWARE-TMForum/Business-API-Ecosystem"
+            }
+          ]
+        }
       ]
     },
     {
