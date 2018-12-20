@@ -1,5 +1,4 @@
 import base64
-import certifi
 import requests
 import urllib3
 from kernel.Settings import settings
@@ -19,8 +18,11 @@ class JIRA:
              'resolution,assignee,created,updated,duedate,resolutiondate,fixVersions,releaseDate,issuelinks,' \
              'customfield_11103,customfield_11104,customfield_11105'
 
-    analysis_start_at = '2016-12-01'
-    analysis_finish_on = '2017-11-30'
+    # analysis_start_at = '2016-12-01'
+    # analysis_finish_on = '2017-11-30'
+
+    # analysis_start_at = '2017-12-01'
+    # analysis_finish_on = '2018-11-30'
 
     verify = False
 
@@ -31,7 +33,7 @@ class JIRA:
         'issue': '/rest/api/latest/issue'
     }
 
-    def __init__(self):
+    def __init__(self, period):
         username = settings.server['JIRA'].username
         password = settings.server['JIRA'].password
         auth = '{}:{}'.format(username, password)
@@ -41,6 +43,9 @@ class JIRA:
         self.root_url = 'https://{}'.format(settings.server['JIRA'].domain)
         # print(self.root_url)
         self.session = requests.session()
+
+        self.analysis_start_at = period['start_at']
+        self.analysis_finish_on = period['finish_on']
 
         # url = '{}{}'.format(self.root_url, JIRA.url_api['session'])
         try:

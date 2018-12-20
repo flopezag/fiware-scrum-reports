@@ -62,8 +62,8 @@ class DataEngine:
         # self.jira = JIRA()
 
     @classmethod
-    def snapshot(cls, storage):
-        jira = JIRA()
+    def snapshot(cls, storage, period):
+        jira = JIRA(period=period)
         files = list()
 
         for trackername in trackersBook:

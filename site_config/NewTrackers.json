@@ -1,20 +1,6 @@
 {
   "tracker": [
     {
-      "name": "Coordination",
-      "type": "MNG",
-      "leader": "",
-      "inbox": "",
-      "enablers": []
-    },
-    {
-      "name": "Technical-Coordination",
-      "type": "MNG",
-      "leader": "",
-      "inbox": "",
-      "enablers": []
-    },
-    {
       "name": "Core Context Management",
       "type": "CHAPTER",
       "leader": "ENG - Alessandro Portosa",
@@ -52,16 +38,6 @@
               "repo": "telefonicaid/fiware-cygnus"
             }
           ]
-        },
-        {
-          "name": "QuantumLeap",
-          "tracker_key": "",
-          "cmp_key": "",
-          "github": [
-            {
-              "repo": "smartsdk/ngsi-timeseries-api"
-            }
-          ]
         }
       ]
     },
@@ -74,20 +50,20 @@
         {
           "name": "IDAS",
           "tracker_key": "IOT",
-          "cmp_key": "",
+          "cmp_key": "10218",
           "github": [
             {
               "repo": "telefonicaid/iotagent-json"
             },
             {
               "repo": "telefonicaid/iotagent-ul"
-            }
+            },
             {
               "repo": "telefonicaid/lightweightm2m-iotagent"
-            }
+            },
             {
               "repo": "telefonicaid/sigfox-iotagent"
-            }
+            },
             {
               "repo": "telefonicaid/fiware-figway"
             }
@@ -122,7 +98,7 @@
       "inbox": "",
       "enablers": [
         {
-          "name": "Knowage Business Intelligence Platform",
+          "name": "Knowage Business Intell. Plat.",
           "tracker_key": "APP",
           "cmp_key": "11905",
           "github": [
@@ -151,7 +127,7 @@
           ]
         },
         {
-          "name": "Perseo Complex Event Processing (CEP) Platform",
+          "name": "Perseo CEP Platform",
           "tracker_key": "DATA",
           "cmp_key": "11909",
           "github": [
@@ -164,7 +140,7 @@
           ]
         },
         {
-          "name": "Kurento Real-time Media Stream Processing Platform",
+          "name": "Kurento RT Media Stream Plat.",
           "tracker_key": "DATA",
           "cmp_key": "10211",
           "github": [
@@ -258,7 +234,7 @@
           ]
         },
         {
-          "name": "Cosmos BigData Analysis Platform",
+          "name": "Cosmos BigData Analysis Plat.",
           "tracker_key": "DATA",
           "cmp_key": "10210",
           "github": [
@@ -299,7 +275,7 @@
           ]
         },
         {
-          "name": "AuthZForce PDP/PAP Server",
+          "name": "AuthZForce PDP-PAP Server",
           "tracker_key": "SEC",
           "cmp_key": "10229",
           "github": [

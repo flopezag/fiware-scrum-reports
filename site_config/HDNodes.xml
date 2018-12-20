@@ -7,12 +7,12 @@
     </node>
     <node name='Brittany'>
         <support>support-brittany</support>
-        <mode>Closed</mode>
+        <mode>Open</mode>
         <worker></worker>
     </node>
     <node name='Budapest'>
         <support>WIGNER</support>
-        <mode>Active</mode>
+        <mode>Closed</mode>
         <worker>Budapest Node Helpdesk</worker>
         <worker>Sándor Laki</worker>
     </node>
@@ -23,7 +23,7 @@
     </node>
     <node name="Genoa">
         <support>tntlab</support>
-        <mode>Active</mode>
+        <mode>Closed</mode>
         <worker></worker>
     </node>
     <node name='Gent'>
@@ -33,7 +33,7 @@
     </node>
     <node name="Hannover">
         <support>netzlink</support>
-        <mode>Active</mode>
+        <mode>Closed</mode>
         <worker></worker>
     </node>
     <node name='Karlskrona'>
@@ -61,6 +61,11 @@
         <mode>Negotiation</mode>
         <worker></worker>
     </node>
+    <node name="Noida">
+        <support></support>
+        <mode>Active</mode>
+        <worker></worker>
+    </node>
     <node name='PiraeusN'>
         <support>neuropublic</support>
         <mode>Closed</mode>
@@ -86,6 +91,11 @@
         <mode>Active</mode>
         <worker></worker>
     </node>
+    <node name="Senegal">
+        <support></support>
+        <mode>Active</mode>
+        <worker></worker>
+    </node>
     <node name="SophiaAntipolis">
         <support>Com4Innov</support>
         <mode>Active</mode>
@@ -95,17 +105,12 @@
         <support>spain.node</support>
         <mode>Active</mode>
         <worker>Spain Node Support Team</worker>
-        <worker>Leandro Guillén</worker>
-        <worker>Henar Muñoz</worker>
-        <worker>Jesus Movilla</worker>
         <worker>Fernando Lopez</worker>
-        <worker>Guillermo Jimenez</worker>
         <worker>José Ignacio Carretero Guarde</worker>
-        <worker>Jose Maria Peribañez</worker>
     </node>
     <node name="SpainTenerife">
         <support>fw_support_st</support>
-        <mode>Active</mode>
+        <mode>Closed</mode>
         <worker></worker>
     </node>
     <node name='Stockholm'>
@@ -115,7 +120,7 @@
     </node>
     <node name='Trento'>
         <support>TrentoNodeTeam</support>
-        <mode>Active</mode>
+        <mode>Closed</mode>
         <worker>Trento Node Team</worker>
     </node>
     <node name="Vicenza">
@@ -125,7 +130,7 @@
     </node>
     <node name='Volos'>
         <support>UTH</support>
-        <mode>Active</mode>
+        <mode>Closed</mode>
         <worker>Volos Node Helpdesk</worker>
     </node>
     <node name="Waterford">
@@ -145,7 +150,7 @@
     </node>
     <node name="ZurichS">
         <support>zurichs</support>
-        <mode>Active</mode>
+        <mode>Closed</mode>
         <worker></worker>
     </node>
 </data>

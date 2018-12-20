@@ -92,6 +92,11 @@ class Analysis:
 
     @staticmethod
     def clean_data(enabler):
+        try:
+            released = Analysis.format_datetime_1(enabler['fixVersions'], '%Y-%m-%d')
+        except KeyError:
+            released = None
+
         a_dict = dict([
             ("issuetype", enabler['issuetype']['name']),
             ("component_name", enabler['components'][0]['name']),
@@ -100,7 +105,7 @@ class Analysis:
             ("created", Analysis.format_datetime(enabler['created'], '%Y-%m-%dT%H:%M:%S.%f%z')),
             ("updated", Analysis.format_datetime(enabler['updated'], '%Y-%m-%dT%H:%M:%S.%f%z')),
             ("resolved", Analysis.format_datetime(enabler['resolutiondate'], '%Y-%m-%dT%H:%M:%S.%f%z')),
-            ("released", Analysis.format_datetime_1(enabler['fixVersions'], '%Y-%m-%d'))
+            ("released", released)
         ])
 
         return a_dict

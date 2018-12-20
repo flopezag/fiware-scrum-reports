@@ -123,7 +123,13 @@ class WorkBench:
 
     def __snapshot_jira__(self, distros_dict):
         print("   Getting JIRA session")
-        jira = JIRA()
+
+        period = {
+            'start_at': self.start_date,
+            'finish_on': self.end_date
+        }
+
+        jira = JIRA(period=period)
 
         enablers_per_chapter = list(map(lambda x: WorkBench.mapping_chapter_enablers(x), distros_dict['tracker']))
         enablers_per_name = list(map(lambda x: WorkBench.mapping_enablers_name(x['enablers']), distros_dict['tracker']))
@@ -156,14 +162,3 @@ class WorkBench:
 
         for chapter in self.chapters_name:
             report.chapter_report(chapter_name=chapter)
-
-        '''
-        chapters = settings.chapters
-
-        for _chapter in chapters:
-            reporter.chapter(_chapter)
-
-        reporter.lab()
-        '''
-
-        print(report)

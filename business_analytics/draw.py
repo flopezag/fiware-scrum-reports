@@ -280,9 +280,7 @@ class Painter:
         ws.write_column(1, col + 0, list(data.keys()))
 
         for i, key in enumerate(list(data.values()), start=1):
-            df = pd.DataFrame(list(key.values())).fillna(0)
-            for j in range(0, len(keys)):
-                ws.write_column(1, col + i + j, df.iloc[j].tolist())
+            ws.write_row(i, col + 1, key.values())
 
         sheet_name = ws.get_name()
 
@@ -396,7 +394,7 @@ class Painter:
         length = len(data)
 
         for i in range(0, len(chapters)):
-            ws.write_row(i+1, col+1, df.iloc[i].tolist())
+            ws.write_row(i+1, col+1, df.loc[chapters[i]].tolist())
 
         for i in range(0, len(invert_status)):
             chart.add_series({
@@ -441,7 +439,7 @@ class Painter:
         for i in range(0, len(data)):
             ws.write_row(i+1, col+1, df.iloc[i].tolist())
 
-        for i, _status in enumerate(enablers, start=1):
+        for i in range(1, len(self.status) + 1):
             chart.add_series({
                 'name': [sheet_name, 0, col + i],
                 'categories': [sheet_name, 1, col, length, col],

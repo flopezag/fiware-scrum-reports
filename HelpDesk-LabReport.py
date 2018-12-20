@@ -355,15 +355,19 @@ class Painter:
 
 class HelpDeskLabReporter:
 
-    def __init__(self):
+    def __init__(self, period):
         self.calendar = agileCalendar
         self.workbook = None
         self.spFormats = None
 
         self.data, self.timestamp, self.source = Data.getHelpDeskLabChannel()
         self.deck = Deck(self.data, self.timestamp, self.source)
-        self.start = date(2016, 12, 1)  # year, month, day
-        self.end = date(2017, 11, 30)  # year, month, day
+
+        # self.start = date(2016, 12, 1)  # year, month, day
+        # self.end = date(2017, 11, 30)  # year, month, day
+        self.start = datetime.strptime(period['start_at'], '%Y-%m-%d').date()
+        self.end = datetime.strptime(period['finish_on'], '%Y-%m-%d').date()
+
         self.reporter = LabChannelReporter(self.deck, start=self.start, end=self.end)
         self.reporter.deck = self.deck
 
@@ -928,25 +932,30 @@ class HelpDeskLabReporter:
 
 class WorkBench:
     @staticmethod
-    def report():
+    def report(period):
         print('report')
-        reporter = HelpDeskLabReporter()
+        reporter = HelpDeskLabReporter(period=period)
 
         reporter.lab()
 
     @staticmethod
-    def snapshot():
+    def snapshot(period):
         print('snapshot')
-        DataEngine.snapshot(storage=settings.storeHome)
+        DataEngine.snapshot(storage=settings.storeHome, period=period)
 
     @staticmethod
-    def upload():
+    def upload(period):
         print('upload')
         uploader = Uploader()
         uploader.upload('helpdesklab', 'report', settings.chapters)
 
 
 if __name__ == "__main__":
+    period = {
+        'start_at': '2016-12-01',
+        'finish_on': '2018-11-30'
+    }
+
     options = {'0': WorkBench.snapshot,
                '1': WorkBench.report,
                '2': WorkBench.upload,
@@ -958,10 +967,9 @@ if __name__ == "__main__":
 
         print('\nChosen option: {}\n'.format(choice))
 
-        if choice in ('0', '1', '2', 'E'):
-            options[choice]()
+        if choice in ('0', '1', '2'):
+            options[choice](period=period)
+        elif choice is 'E':
+            exit()
         else:
             print('\n\n\nWrong option, please try again... ')
-
-# TODO: the period of time should be a parameter to put on the initialization
-#       of the scripts and the code should work with or without these data.
