@@ -22,6 +22,6 @@ class Data:
         return DataFactory(settings.storeHome).getComponentData(tech_channel.key)
 
     @staticmethod
-    def getHelpDeskLabChannel():
+    def getHelpDeskLabChannel(period):
         lab_channel = helpdeskCompBook['Lab']
-        return DataFactory(settings.storeHome).getComponentData(lab_channel.key)
+        return DataFactory(settings.storeHome, period).getComponentData(lab_channel.key)

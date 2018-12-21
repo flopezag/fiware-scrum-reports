@@ -116,8 +116,9 @@ class DataEngine:
 
 
 class DataFactory:
-    def __init__(self, storage):
+    def __init__(self, storage, period):
         self.engine = DataEngine(storage)
+        self.period = period
 
     def getTrackerData(self, tracker_id):
         data, timestamp = self.engine.getTrackerData(tracker_id)
@@ -126,7 +127,7 @@ class DataFactory:
 
     def getComponentData(self, cmp_id):
         try:
-            data = JIRA().getComponentData(cmp_id)
+            data = JIRA(period=self.period).getComponentData(cmp_id)
             self.engine.saveComponentData(cmp_id, data)
             timestamp = datetime.now().strftime("%Y%m%d-%H%M")
             source = 'jira'
@@ -138,7 +139,7 @@ class DataFactory:
 
     def getQueryData(self, name, jql):
         try:
-            data = JIRA().getQuery(jql)
+            data = JIRA(period=self.period).getQuery(jql)
             self.engine.saveQueryData(name, data)
             timestamp = datetime.now().strftime("%Y%m%d-%H%M")
             source = 'jira'
@@ -152,7 +153,7 @@ class DataFactory:
         jql = 'project = {} AND component = EMPTY'.format(tracker_id)
         name = '{}-NoComp'.format(tracker_id)
         try:
-            data = JIRA().getQuery(jql)
+            data = JIRA(period=self.period).getQuery(jql)
             self.engine.saveQueryData(name, data)
             timestamp = datetime.now().strftime("%Y%m%d-%H%M")
             source = 'jira'

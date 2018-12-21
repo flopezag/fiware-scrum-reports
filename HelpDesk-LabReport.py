@@ -1,8 +1,7 @@
 import os
 import operator
 from collections import OrderedDict
-from datetime import date, datetime
-
+from datetime import date, datetime, tzinfo, timedelta
 
 import xlsxwriter
 from xlsxwriter.utility import xl_range
@@ -23,6 +22,18 @@ from functools import reduce
 __author__ = "Fernando López"
 
 chapters = 'Lab'
+ZERO = timedelta(0)
+
+
+class UTC(tzinfo):
+    def utcoffset(self, dt):
+        return ZERO
+
+    def tzname(self, dt):
+        return "UTC"
+
+    def dst(self, dt):
+        return ZERO
 
 
 class Painter:
@@ -303,7 +314,14 @@ class Painter:
         resolution_date = a_issue_field['resolutiondate']
         created_date = a_issue_field['created']
 
-        resolution_date = datetime.strptime(resolution_date, '%Y-%m-%dT%H:%M:%S.%f%z')
+        print(a_issue_field['summary'])
+
+        if resolution_date is None:
+            utc = UTC()
+            resolution_date = datetime.now(utc)
+        else:
+            resolution_date = datetime.strptime(resolution_date, '%Y-%m-%dT%H:%M:%S.%f%z')
+
         created_date = datetime.strptime(created_date, '%Y-%m-%dT%H:%M:%S.%f%z')
 
         result = (resolution_date - created_date).total_seconds() / 86400
@@ -360,13 +378,13 @@ class HelpDeskLabReporter:
         self.workbook = None
         self.spFormats = None
 
-        self.data, self.timestamp, self.source = Data.getHelpDeskLabChannel()
-        self.deck = Deck(self.data, self.timestamp, self.source)
-
         # self.start = date(2016, 12, 1)  # year, month, day
         # self.end = date(2017, 11, 30)  # year, month, day
         self.start = datetime.strptime(period['start_at'], '%Y-%m-%d').date()
         self.end = datetime.strptime(period['finish_on'], '%Y-%m-%d').date()
+
+        self.data, self.timestamp, self.source = Data.getHelpDeskLabChannel(period=period)
+        self.deck = Deck(self.data, self.timestamp, self.source)
 
         self.reporter = LabChannelReporter(self.deck, start=self.start, end=self.end)
         self.reporter.deck = self.deck
